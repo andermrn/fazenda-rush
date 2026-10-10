@@ -60,14 +60,6 @@ pular() {
 
 const jogador = new Player();
 
-function animate() {
-    requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    jogador.update();
-    jogador.draw();
-}
-
-animate();
 
 window.addEventListener("keydown", (e) => {
     if (e.code === "Space") {
