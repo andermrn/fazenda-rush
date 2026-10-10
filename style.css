@@ -1,0 +1,29 @@
+/* Seleciona todos os elementos da página. */
+* {
+    margin: 0; /* Remove as margens padrão dos elementos. */
+    padding: 0; /* Remove os espaçamentos internos padrão. */
+    box-sizing: border-box; /* Inclui bordas e preenchimento nas dimensões calculadas. */
+}
+
+/* Aplica estas regras tanto à página inteira quanto ao conteúdo do documento. */
+html, body {
+    width: 100%; /* Faz os elementos ocuparem toda a largura da janela. */
+    height: 100%; /* Faz os elementos ocuparem toda a altura da janela. */
+    overflow: hidden; /* Impede barras de rolagem na página. */
+}
+
+/* Define a aparência geral do corpo da página. */
+body {
+    background-image: url("cenario.png"); /* Usa cenario.png como imagem de fundo. */
+    background-size: cover; /* Preenche a tela com a imagem sem distorcê-la. */
+    background-position: center; /* Mantém o centro da imagem alinhado ao centro da tela. */
+    background-repeat: no-repeat; /* Evita repetir a imagem quando ela for menor que a tela. */
+    background-color: #000; /* Exibe preto como fundo alternativo se a imagem não carregar. */
+}
+
+/* Define como os elementos canvas devem aparecer na página. */
+canvas {
+    display: block; /* Remove o espaço extra que pode existir abaixo de elementos inline. */
+    width: 100vw; /* Define a largura visual do canvas como 100% da largura da janela. */
+    height: 100vh; /* Define a altura visual do canvas como 100% da altura da janela. */
+}
