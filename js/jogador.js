@@ -18,7 +18,7 @@ const GRAVIDADE = 0.6;
 
 // Carrega a folha de sprites usada para desenhar e animar o jogador.
 const imagemJogador = new Image();
-imagemJogador.src = "assets/davi.png";
+imagemJogador.src = "assets/sprites/personagens/davi.png";
 const larguraFrame = 256; // largura de cada quadro na imagem original
 const alturaFrame = 256; // altura de cada quadro na imagem original
 const framesPorAnimacao = 6; // quantidade de quadros em cada linha da animação

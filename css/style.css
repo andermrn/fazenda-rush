@@ -14,7 +14,7 @@ html, body {
 
 /* Define a aparência geral do corpo da página. */
 body {
-    background-image: url("cenario.png"); /* Usa cenario.png como imagem de fundo. */
+    background-image: url("../assets/cenarios/cenario.png"); /* Usa cenario.png como imagem de fundo. */
     background-size: cover; /* Preenche a tela com a imagem sem distorcê-la. */
     background-position: center; /* Mantém o centro da imagem alinhado ao centro da tela. */
     background-repeat: no-repeat; /* Evita repetir a imagem quando ela for menor que a tela. */
