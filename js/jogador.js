@@ -14,55 +14,76 @@ const ctx = canvas.getContext("2d");
 
 let andandoesquerda = false;
 let andandodireita = false;
-const GRAVIDADE = 0.6;
+const GRAVIDADE = 0.1;//*padrao 0.6
 
-// Carrega a folha de sprites usada para desenhar e animar o jogador.
+// Carrega os sprites usada pra animar o player
 const imagemJogador = new Image();
-imagemJogador.src = "assets/sprites/personagens/davi.png";
-const larguraFrame = 256; // largura de cada quadro na imagem original
-const alturaFrame = 256; // altura de cada quadro na imagem original
-const framesPorAnimacao = 6; // quantidade de quadros em cada linha da animação
-const intervaloFrame = 5; // intervalo para deixar a animação mais lenta
+imagemJogador.src = "assets/sprites/personagens/davi_pulo.png";
+const larguraFrame = 256; // largura de cada frame
+const alturaFrame = 256; // altura de cada frame
+const framesPorAnimacao = 6; // quantidade de frames em cada linha 
+const intervaloFrame = 10; // intervalo pra deixar a animação mais lenta, *padrao 5
 
 class Player{ 
-    width = 150;
-    height = 150;
-    posicaoX = 100;
-    posicaoY = 700 - this.height;
-    velocidadeX = 0;
-    velocidadeY = 0;
-    forcadopulo = -20;
-    estanochao = true;
-    velocidadeandar = 6;
+    width = 150;//largura do player
+    height = 150;//altura do player
+    posicaoX = 100;//posiçâo x inicial do player
+    posicaoY = 700 - this.height;//posição y inicial do player
+    velocidadeX = 0;//velocidade x inicial
+    velocidadeY = 0;//velocidade y inicial
+    forcadopulo = -10;//força do pulo, *padrao -20
+    estanochao = true;//verificação se o personagem está no chão
+    velocidadeandar = 6;//velocidade
     frameX = 0; // coluna do quadro atual
     frameY = 0; // linha do quadro atual
     gameFrame = 0; // controla o intervalo entre os quadros da animação
 
-draw(){
-    // Escolhe a linha da folha conforme a direção; a primeira linha é a animação parada.
+draw(){//função pra definir o frame exibido
+    // Aplicação da linha conforme valores de velocidade
+
+    //animações horizontais
+
     if (this.velocidadeX < 0) {
         this.frameY = 2;//velocidade negativa, ou seja o personagem vai para esquerda, entãoa acessa a linha 2 dos sprites que é o personagem indo pra esquerda
     } else if (this.velocidadeX > 0) {
         this.frameY = 1;//velocidade positiva, ou seja o personagem vai para direita, então acessa a linha 1 dos sprites que é o personagem indo pra direita
-    } else {
+    } else if(this.velocidadeX == 0){
         this.frameY = 0;//velocidade igual a zero então, acessa a linha 0 que é o personagem parado
     }
 
-    // Desenha o sprite somente depois que a imagem carregar corretamente.
-    if (imagemJogador.complete && imagemJogador.naturalWidth > 0) {//*preciso entender ainda
+    //animações verticais laterais
+    if(this.velocidadeY < 0 &&this.velocidadeX > 0){
+        this.frameY = 3;
+    }else if(this.velocidadeY > 0 &&this.velocidadeX > 0){
+        this.frameY = 3;
+    }
+    else if(this.velocidadeY < 0 && this.velocidadeX < 0){
+        this.frameY = 4;
+    } else if(this.velocidadeY > 0 &&this.velocidadeX < 0){
+        this.frameY = 4;
+    }else
+
+    //animações verticais paradas
+    if(this.velocidadeY < 0 || this.velocidadeY>0&&this.velocidadeX == 0){
+        this.frameY = 9;
+    }
+
+
+    // Desenha o sprite depois da imagem carregar corretamente
+    if (imagemJogador.complete && imagemJogador.naturalWidth > 0) {
         const larguraDesenho = 150; // define a largura do personagem na tela
         const alturaDesenho = 150; // define a altura do personagem na tela
-        // Centraliza o sprite dentro da largura usada para colisão do jogador.
+        // Centraliza o sprite dentro da largura usada para colisão do jogador
         const posicaoDesenhoX = this.posicaoX + (this.width - larguraDesenho) / 2;
-        // Alinha a base do sprite com a base do jogador; Y cresce de cima para baixo no canvas.
+        // Alinha a base do sprite com a base do jogador; Y cresce de cima para baixo no canvas
         const posicaoDesenhoY = this.posicaoY + this.height - alturaDesenho;
 
         ctx.drawImage(
-            imagemJogador, // imagem que contém os quadros do personagem
-            this.frameX * larguraFrame, // posição horizontal do quadro na imagem
-            this.frameY * alturaFrame, // posição vertical do quadro na imagem
-            larguraFrame, // largura do recorte do quadro na imagem original
-            alturaFrame, // altura do recorte do quadro na imagem original
+            imagemJogador, // imagem que contém os frames do personagem
+            this.frameX * larguraFrame, // posição horizontal do frame na imagem
+            this.frameY * alturaFrame, // posição vertical do frame na imagem
+            larguraFrame, // largura do recorte do frame na imagem original
+            alturaFrame, // altura do recorte do frame na imagem original
             posicaoDesenhoX, // coordenada X onde o sprite começa a ser desenhado no canvas
             posicaoDesenhoY, // coordenada Y onde o sprite começa a ser desenhado no canvas
             larguraDesenho, // largura final do personagem na tela
@@ -70,21 +91,31 @@ draw(){
         );
     }
 
-    // Avança um quadro da animação a cada intervalo para controlar sua velocidade.
+    // Avança um frame da animação a cada intervalo para controlar sua velocidade.
+
+    if(this.frameX == 4 && this.frameY == 3){
+        this.frameX = 4;
+        this.frameY = 3;
+    }else if(this.frameX == 4 && this.frameY == 4){
+        this.frameX = 4;
+        this.frameY = 4;
+    }else{
+
     if (this.gameFrame % intervaloFrame === 0) {//a cada 5, ira dar 0, e um frame ira rodar
         this.frameX = (this.frameX + 1) % framesPorAnimacao;
     }
     this.gameFrame++;
 }
+}
 
-update(){
+update(){//função pra definir todos os valores corretamente
 
     this.velocidadeX = 0;
     if (andandodireita) {
         this.velocidadeX += this.velocidadeandar;//velocidade horizontal recebe velocidade de andar
     }
     if (andandoesquerda) {
-        this.velocidadeX -= this.velocidadeandar;//velocidade horizontal recebe velocidade de andar
+        this.velocidadeX -= this.velocidadeandar;//velocidade horizontal recebe velocidade de andar negativa
     }
     this.posicaoX += this.velocidadeX;//posicaox = posicaox + velocidadex
     this.posicaoX = Math.max(0, Math.min(this.posicaoX, canvas.width - this.width));//*preciso entender ainda
@@ -102,6 +133,7 @@ update(){
 
 pular() {
     if (this.estanochao) {//se esta no chao for true, velocidadey recebe forcadopulo e estanochao fica false
+        this.framex = 0;//reinicia animações pra evitar bugs
         this.velocidadeY = this.forcadopulo;
         this.estanochao = false;
     }
