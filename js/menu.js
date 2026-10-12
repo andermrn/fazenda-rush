@@ -1,63 +1,106 @@
-const telaMenu = document.getElementById("tela-menu");
-const telaSelecao = document.getElementById("tela-selecao");
-const telaJogo = document.getElementById("tela-jogo");
+// Cria uma função anônima e a executa imediatamente.
+// Isso cria um escopo próprio para as variáveis e funções deste arquivo,
+// evitando que suas declarações sejam expostas no escopo global.
+// Também ajuda a evitar conflitos de nomes com outros scripts,
+// como jogador.js, inimigo.js e jogo.js.
 
-const btnJogar = document.getElementById("btn-jogar");
-const btnSair = document.getElementById("btn-sair");
-const btnConfirmar = document.getElementById("btn-confirmar");
-const btnVoltar = document.getElementById("btn-voltar");
+(() => {
+    const telaMenu = document.getElementById("tela-menu");
+    const telaSelecao = document.getElementById("tela-selecao");
+    const telaJogo = document.getElementById("tela-jogo");
 
-const botoesPersonagens = document.querySelectorAll(".personagem");
-const textoPersonagem = document.getElementById("personagem-selecionado");
-const mensagemInicio = document.getElementById("mensagem-inicio");
+    const btnJogar = document.getElementById("btn-jogar");
+    const btnSair = document.getElementById("btn-sair");
+    const btnConfirmar = document.getElementById("btn-confirmar");
+    const btnVoltar = document.getElementById("btn-voltar");
 
-let personagemEscolhido = null;
+    const botoesPersonagens = document.querySelectorAll(".personagem");
+    const textoPersonagem = document.getElementById("personagem-selecionado");
+    const musicaMenu = document.getElementById("musica-menu");
 
-// Abre a seleção de personagens
-btnJogar.addEventListener("click", function () {
-    telaMenu.hidden = true;
-    telaSelecao.hidden = false;
-});
+    let personagemEscolhido = null;
 
-// Seleciona um personagem
-botoesPersonagens.forEach(function (botao) {
-    botao.addEventListener("click", function () {
-        personagemEscolhido = botao.dataset.personagem;
-
-        textoPersonagem.textContent = "Personagem selecionado: " + personagemEscolhido;
-        btnConfirmar.disabled = false;
-
-        botoesPersonagens.forEach(function (outroBotao) {
-            outroBotao.classList.remove("selecionado");
-        });
-
-        botao.classList.add("selecionado");
-    });
-});
-
-// Volta ao menu inicial
-btnVoltar.addEventListener("click", function () {
-    telaSelecao.hidden = true;
-    telaMenu.hidden = false;
-});
-
-// Confirma o personagem e abre a tela do jogo
-btnConfirmar.addEventListener("click", function () {
-    if (personagemEscolhido === null) {
-        return;
+    function mostrarTela(tela) {
+        telaMenu.hidden = tela !== telaMenu;
+        telaSelecao.hidden = tela !== telaSelecao;
+        telaJogo.hidden = tela !== telaJogo;
     }
 
-    telaSelecao.hidden = true;
-    telaJogo.hidden = false;
+    function iniciarMusica() {
+        if (!musicaMenu) {
+            return;
+        }
 
-    mensagemInicio.textContent = "Personagem escolhido: " + personagemEscolhido;
+        musicaMenu.play().catch(() => {
+            console.log("A reprodução da música foi bloqueada pelo navegador.");
+        });
+    }
 
-    console.log("Personagem escolhido:", personagemEscolhido);
+    function selecionarPersonagem(botao) {
+        personagemEscolhido = botao.dataset.personagem;
 
-    // A inicialização real do jogo será integrada posteriormente.
-});
+        textoPersonagem.textContent =
+            "Personagem selecionado: " + personagemEscolhido;
 
-// Botão Sair
-btnSair.addEventListener("click", function () {
-    window.close();
-});
+        btnConfirmar.disabled = false;
+
+        botoesPersonagens.forEach((outroBotao) => {
+            outroBotao.classList.toggle(
+                "selecionado",
+                outroBotao === botao
+            );
+        });
+    }
+
+    function confirmarPersonagem() {
+        if (!personagemEscolhido) {
+            return;
+        }
+
+        telaJogo.dataset.personagem = personagemEscolhido;
+
+        mostrarTela(telaJogo);
+
+        console.log("Personagem escolhido:", personagemEscolhido);
+    }
+
+    function voltarAoMenu() {
+        personagemEscolhido = null;
+
+        textoPersonagem.textContent =
+            "Nenhum personagem selecionado.";
+
+        btnConfirmar.disabled = true;
+
+        botoesPersonagens.forEach((botao) => {
+            botao.classList.remove("selecionado");
+        });
+
+        mostrarTela(telaMenu);
+    }
+
+    btnJogar.addEventListener("click", () => {
+        mostrarTela(telaSelecao);
+        iniciarMusica();
+    });
+
+    botoesPersonagens.forEach((botao) => {
+        botao.addEventListener("click", () => {
+            selecionarPersonagem(botao);
+        });
+    });
+
+    btnConfirmar.addEventListener("click", confirmarPersonagem);
+
+    btnVoltar.addEventListener("click", voltarAoMenu);
+
+    btnSair.addEventListener("click", () => {
+        window.close();
+
+        setTimeout(() => {
+            if (!window.closed) {
+                alert("Para sair do jogo, feche esta aba do navegador.");
+            }
+        }, 100);
+    });
+})();

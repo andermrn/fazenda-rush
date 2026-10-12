@@ -5,6 +5,11 @@
     box-sizing: border-box; /* Inclui bordas e preenchimento nas dimensões calculadas. */
 }
 
+/*Garante que os elementos que possuem o atributo hidden fiquem ocultos na página. ander*/
+[hidden] {
+    display: none !important;
+}
+
 /* Aplica estas regras tanto à página inteira quanto ao conteúdo do documento. */
 html, body {
     width: 100%; /* Faz os elementos ocuparem toda a largura da janela. */
