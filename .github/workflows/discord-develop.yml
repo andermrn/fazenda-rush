@@ -10,29 +10,32 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Enviar aviso para o Discord
+      - name: Enviar embed para o Discord
         env:
           WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           COMMITS: ${{ toJson(github.event.commits) }}
-          USERS: ${{ vars.DISCORD_USERS || '{}' }}
           REPO: ${{ github.repository }}
         run: |
           jq -n \
             --argjson commits "$COMMITS" \
-            --argjson users "$USERS" \
             --arg repo "$REPO" '
-            def mention($c):
-              ($c.author.username // $c.author.name) as $u
-              | if $users[$u] then "<@\($users[$u])>" else "**\($u)**" end;
-            {
-              content: (
-                "🚀 Novo commit em **\($repo)** na branch `develop`!\n\n"
-                + ($commits | map(
-                    "👤 " + mention(.) + " — " + (.message | split("\n")[0])
-                    + "\n🔗 " + .url
-                  ) | join("\n\n"))
-                + "\n\n⚠️ Lembrem-se de dar `git pull origin develop`!"
-              ),
-              allowed_mentions: { parse: ["users"] }
-            }' \
+            def user($c): ($c.author.username // $c.author.name);
+            ($commits[:10]) as $list
+            | {
+                content: "@everyone Novo commit na `develop`!\n⚠️ **Lembrem-se de dar `git pull origin develop`!**",
+                embeds: ($list | map({
+                  title: (.message | split("\n")[0] | .[:256]),
+                  url: .url,
+                  color: 5763719,
+                  author: (
+                    {name: user(.)}
+                    + (if .author.username
+                       then {icon_url: ("https://github.com/" + .author.username + ".png")}
+                       else {} end)
+                  ),
+                  footer: {text: ($repo + " • develop")},
+                  timestamp: .timestamp
+                })),
+                allowed_mentions: { parse: ["everyone"] }
+              }' \
           | curl -sS -H "Content-Type: application/json" -d @- "$WEBHOOK"

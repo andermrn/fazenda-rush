@@ -1,13 +1,13 @@
 const imagemInimigo = new Image();
 imagemInimigo.src = "assets/sprites/fase1/inimigo.png"; 
 
-// Aqui é a largura de cada sprite no .png: 512x512
-const larguraFrameInimigo = 512;
+// Aqui é a largura de cada sprite no .png: 640x512
+const larguraFrameInimigo = 640;
 const alturaFrameInimigo = 512;
 
 // Numero de colunas por linha (os calculos vou trabalhar em cima dela)
 const colunasInimigo = 6; 
-const intervaloFrameInimigo = 10; // intervalo para deixar a animação mais lenta, tipo: a cada 5 chamadas de draw(), troca a coluna
+const intervaloFrameInimigo = 6; // intervalo para deixar a animação mais lenta, tipo: a cada 5 chamadas de draw(), troca a coluna
 
 
 
@@ -15,10 +15,10 @@ const intervaloFrameInimigo = 10; // intervalo para deixar a animação mais len
 class Inimigo {
     //atributos do inimigo
     x = 300;//posição horizontal
-    y = 500;//posição vertical
+    y = 400;//posição vertical
 
-    // Alterei para 100 agora para a adição dos sprites!
-    largura = 100;
+    // Alterei para 125x100 agora para a adição dos sprites!
+    largura = 125;
     altura = 100;
 
     velocidade = 3;
@@ -28,6 +28,7 @@ class Inimigo {
     frameX = 0;       // coluna do quadro atual, como são 6 colunas, vai de 0 a 5
     frameY = 1;       // linha do quadro atual (0 = ta andando pra esquerda, 1 = ta andando pra direita)
     gameFrame = 0;    // apenas um contador que uso para controlar a velocidade da animação
+    atacando = false;   // true = parado perto do jogador (vai ficar dando coice)
 
 
 
@@ -40,11 +41,22 @@ class Inimigo {
 
     draw() {
 
-        // Aqui é simples, se o inimig tiver indo para esquerda (direcao == -1), a linha vai ser a 0
-        // Se estiver indo pra direita (direcao == 1), a linha vai ser a 1
-        if( this.direcao === -1 ) {
-            this.frameY = 0;
-        } else this.frameY = 1;
+        if( this.atacando === true ) {
+            // Atacando: usa as linhas do coice
+            if (this.direcao === -1) {
+                this.frameY = 2;   // coice para a esquerda (LINHA 3)
+            } else {
+                this.frameY = 3;   // coice para a direita (LINHA 4)
+            }
+
+        } else { // Caso ele não esteja atacando
+            // Aqui é simples, se o inimig tiver indo para esquerda (direcao == -1), a linha vai ser a 0
+            // Se estiver indo pra direita (direcao == 1), a linha vai ser a 1
+            if( this.direcao === -1 ) {
+                this.frameY = 0;
+            } else this.frameY = 1;
+        }
+
 
         // So desenha se a imageme ja terminou de carregar (Script de Vini7)
         if( imagemInimigo.complete && imagemInimigo.naturalWidth > 0 ) {
@@ -78,6 +90,7 @@ class Inimigo {
 
     //atualiza a posição e controla a direção do inimigo
     atualizar() { //faz se mover, patrulhar e perseguir
+        this.atacando = false;   // a cada atualização vamos assumir que o inimigo NÃO está atacando
         let distancia;// armazena a distância entre as bordas do inimigo e do jogador
         let distanciaEsquerda = jogador.posicaoX - (this.x + this.largura);// calcula a distãncia entre a borda direita do inimigo e a borda esquerda do jogador
         let distanciaDireita = this.x - (jogador.posicaoX + jogador.width);// calcula os limites da borda direita do jogador e a borda esquerda do inimigo
@@ -96,10 +109,13 @@ class Inimigo {
             } else {
                 this.direcao = -1
             }
+
             if (this.direcao == 1 && this.x + this.largura < jogador.posicaoX) { //move o inimigo até enconstar no jogador
                 this.x += this.velocidade * this.direcao;
-            } if (this.direcao == -1 && this.x > jogador.posicaoX + jogador.width) {
+            } else if (this.direcao == -1 && this.x > jogador.posicaoX + jogador.width) {
                 this.x += this.velocidade * this.direcao;
+            } else { // Aqui ele encostou no jogador
+                this.atacando = true; // para e ataca
             }
 
         } else {
