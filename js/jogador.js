@@ -1,14 +1,5 @@
 //estudar linha 52, 90, 115, 136
 
-const canvas = document.getElementById("canvas");
-
-function ajustarCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-
-ajustarCanvas();
-window.addEventListener("resize", ajustarCanvas);
 
 const ctx = canvas.getContext("2d");
 
