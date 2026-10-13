@@ -1,82 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Fazenda Rush</title>
 
-    <link rel="stylesheet" href="css/style.css">
-
-    <link rel="shortcut icon" href="assets/logo/fazenda-rush-logo.jpeg" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="shortcut icon"
+      href="assets/logo/fazenda-rush-logo.jpeg"
+      type="image/x-icon"
+    />
 
     <script src="js/menu.js" defer></script>
-
     <script src="js/jogador.js" defer></script>
     <script src="js/inimigo.js" defer></script>
     <script src="js/jogo.js" defer></script>
-</head>
-<body>
-    <audio
-        id="musica-menu"
-        src="assets/audio/musica-menu.mp3"
-        loop
-    ></audio>
+  </head>
+
+  <body>
+    <audio id="musica-menu" src="assets/audio/musica-menu.mp3" loop></audio>
 
     <main>
-        <section id="tela-menu">
-            <h1>Fazenda Rush</h1>
+      <!-- Tela inicial -->
+      <section id="tela-menu">
+    <video id="video-fundo" autoplay muted loop playsinline>
+        <source src="assets/videos/men-fazenda-rush.mp4" type="video/mp4" />
+        Seu navegador não suporta vídeos.
+    </video>
 
-            <button id="btn-jogar" type="button">Jogar</button>
-            <button id="btn-sair" type="button">Sair</button>
-        </section>
+    <div class="conteudo-menu">
+        <h1>Fazenda Rush</h1>
+        <button id="btn-jogar" type="button">Jogar</button>
+        <button id="btn-sair" type="button">Sair</button>
+    </div>
+</section>
 
-        <section id="tela-selecao" hidden>
-            <h2>Escolha seu personagem</h2>
+      <!-- Tela de seleção de personagens -->
+      <section id="tela-selecao" hidden>
+        <h2>Escolha seu personagem</h2>
 
-            <div id="lista-personagens">
-                <button class="personagem" data-personagem="Ander" type="button">
-                    Ander
-                </button>
+        <div id="lista-personagens">
+          <button class="personagem" data-personagem="Ander" type="button">
+            Ander
+          </button>
 
-                <button class="personagem" data-personagem="Joabe" type="button">
-                    Joabe
-                </button>
+          <button class="personagem" data-personagem="Joabe" type="button">
+            Joabe
+          </button>
 
-                <button class="personagem" data-personagem="Vinicius" type="button">
-                    Vinicius
-                </button>
+          <button class="personagem" data-personagem="Vinicius" type="button">
+            Vinicius
+          </button>
 
-                <button class="personagem" data-personagem="Davi" type="button">
-                    Davi
-                </button>
+          <button class="personagem" data-personagem="Davi" type="button">
+            Davi
+          </button>
 
-                <button class="personagem" data-personagem="Joaquim" type="button">
-                    Joaquim
-                </button>
-            </div>
+          <button class="personagem" data-personagem="Joaquim" type="button">
+            Joaquim
+          </button>
+        </div>
 
-            <p id="personagem-selecionado" aria-live="polite">
-                Nenhum personagem selecionado.
-            </p>
+        <p id="personagem-selecionado" aria-live="polite">
+          Nenhum personagem selecionado.
+        </p>
 
-            <button id="btn-confirmar" type="button" disabled>
-                Confirmar
-            </button>
+        <button id="btn-confirmar" type="button" disabled>
+          Confirmar
+        </button>
 
-            <button id="btn-voltar" type="button">Voltar</button>
-        </section>
+        <button id="btn-voltar" type="button">Voltar</button>
+      </section>
 
-        <section id="tela-jogo" hidden>
-            <canvas id="canvas"></canvas>
+      <!-- Tela do jogo -->
+      <section id="tela-jogo" hidden>
+        <canvas id="canvas"></canvas>
 
-            <img
-                id="cenario"
-                src="assets/cenarios/cenario.png"
-                alt="Cenario de fundo"
-                hidden
-            >
-        </section>
+        <img
+          id="cenario"
+          src="assets/cenarios/cenario.png"
+          alt="Cenário de fundo"
+          hidden
+        />
+      </section>
     </main>
-</body>
+  </body>
 </html>

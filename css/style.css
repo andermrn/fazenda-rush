@@ -1,34 +1,60 @@
-/* Seleciona todos os elementos da página. */
+/* Seleciona todos os elementos da página */
 * {
-    margin: 0; /* Remove as margens dos elementos. */
-    padding: 0; /* Remove os espaçamentos internos padrão. */
-    box-sizing: border-box; /* Inclui bordas e preenchimento nas dimensões calculadas. */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/*Garante que os elementos que possuem o atributo hidden fiquem ocultos na página. ander*/
+/* Garante que os elementos com o atributo hidden fiquem ocultos */
 [hidden] {
     display: none !important;
 }
 
-/* Aplica estas regras tanto à página inteira quanto ao conteúdo do documento. */
-html, body {
-    width: 100%; /* Faz os elementos ocuparem toda a largura da janela. */
-    height: 100%; /* Faz os elementos ocuparem toda a altura da janela. */
-    overflow: hidden; /* Impede barras de rolagem na página. */
-}
-
-/* Aplicação do Cenário */
+/* Configurações gerais da página */
+html,
 body {
-    background-image: url("../assets/cenarios/cenario.png"); /* Definindo a imagem do cenário */
-    background-size: cover; /* Preencher a tela sem distorção */
-    background-position: center; /* Centro da imagem alinhado ao centro da tela. */
-    background-repeat: no-repeat; /* Não repete a imagem se for menor que a tela. */
-    background-color: #000; /* Se a imagem não carregar, exibe preto */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
-/* Define como os elementos canvas devem aparecer na página. */
+/* Aplicação do cenário de fundo */
+body {
+    background-image: url("../assets/cenarios/cenario.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000;
+}
+
+/* Define como o canvas deve aparecer */
 canvas {
-    display: block; /* Remove o espaço extra que pode existir abaixo de elementos inline. */
-    width: 100vw; /* Define a largura do canvas como 100% da largura da página. */
-    height: 100vh; /* Define a altura do canvas como 100% da altura da página */
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Tela inicial do menu */
+#tela-menu {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Vídeo de fundo do menu */
+#video-fundo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Conteúdo do menu sobre o vídeo */
+.conteudo-menu {
+    position: relative;
+    z-index: 1;
 }
