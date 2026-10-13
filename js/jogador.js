@@ -14,7 +14,7 @@ const ctx = canvas.getContext("2d");
 
 let andandoesquerda = false;
 let andandodireita = false;
-const GRAVIDADE = 0.1;//*padrao 0.6
+const GRAVIDADE = 0.8;//*padrao 0.8
 
 // Carrega os sprites usada pra animar o player
 const imagemJogador = new Image();
@@ -31,7 +31,7 @@ class Player{
     posicaoY = 700 - this.height;//posição y inicial do player
     velocidadeX = 0;//velocidade x inicial
     velocidadeY = 0;//velocidade y inicial
-    forcadopulo = -10;//força do pulo, *padrao -20
+    forcadopulo = -22;//força do pulo, *padrao -22
     estanochao = true;//verificação se o personagem está no chão
     velocidadeandar = 6;//velocidade
     frameX = 0; // coluna do quadro atual
