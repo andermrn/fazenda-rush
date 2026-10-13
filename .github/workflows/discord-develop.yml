@@ -1,0 +1,38 @@
+# SCRIPT PARA NOTIFICAR NOVOS COMMIT LÁ NO SERVIDOR DO DISCORD!!!
+
+name: Notificar Discord (develop)
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar aviso para o Discord
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          COMMITS: ${{ toJson(github.event.commits) }}
+          USERS: ${{ vars.DISCORD_USERS || '{}' }}
+          REPO: ${{ github.repository }}
+        run: |
+          jq -n \
+            --argjson commits "$COMMITS" \
+            --argjson users "$USERS" \
+            --arg repo "$REPO" '
+            def mention($c):
+              ($c.author.username // $c.author.name) as $u
+              | if $users[$u] then "<@\($users[$u])>" else "**\($u)**" end;
+            {
+              content: (
+                "🚀 Novo commit em **\($repo)** na branch `develop`!\n\n"
+                + ($commits | map(
+                    "👤 " + mention(.) + " — " + (.message | split("\n")[0])
+                    + "\n🔗 " + .url
+                  ) | join("\n\n"))
+                + "\n\n⚠️ Lembrem-se de dar `git pull origin develop`!"
+              ),
+              allowed_mentions: { parse: ["users"] }
+            }' \
+          | curl -sS -H "Content-Type: application/json" -d @- "$WEBHOOK"
