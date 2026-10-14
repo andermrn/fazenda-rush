@@ -55,6 +55,117 @@ canvas {
 
 /* Conteúdo do menu sobre o vídeo */
 .conteudo-menu {
-    position: relative;
+    position: absolute;
+    inset: 0;
     z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Título do jogo */
+.titulo-jogo {
+    width: 55%;
+    max-width: 800px;
+    margin-top: 5vh;
+}
+
+/* Imagem do título */
+.titulo-jogo img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Botão Jogar */
+#btn-jogar {
+    width: 260px;
+    margin-top: 10vh;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    transition: transform 0.25s ease;
+}
+
+/* Imagem do botão */
+#btn-jogar img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Efeito ao passar o mouse */
+#btn-jogar:hover {
+    transform: scale(1.1);
+}
+
+/* Efeito ao pressionar o botão */
+#btn-jogar:active {
+    transform: scale(0.96);
+}
+
+/* Destaque ao navegar pelo teclado */
+#btn-jogar:focus-visible {
+    outline: 2px solid #f5c16c;
+    outline-offset: 6px;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 600px) {
+    .titulo-jogo {
+        width: 85%;
+        margin-top: 8vh;
+    }
+
+    #btn-jogar {
+        width: 210px;
+        margin-top: 12vh;
+    }
+}
+
+
+
+#btn-sair {
+    width: 260px;
+    margin-top: 10vh;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    transition: transform 0.25s ease;
+}
+
+/* Imagem do botão */
+#btn-sair img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Efeito ao passar o mouse */
+#btn-sair:hover {
+    transform: scale(1.1);
+}
+
+/* Efeito ao pressionar o botão */
+#btn-sair:active {
+    transform: scale(0.96);
+}
+
+/* Destaque ao navegar pelo teclado */
+#btn-sair:focus-visible {
+    outline: 2px solid #f5c16c;
+    outline-offset: 6px;
+}
+
+
+#btn-sair {
+    width: 210px;
+    margin-top: 12vh;
 }
