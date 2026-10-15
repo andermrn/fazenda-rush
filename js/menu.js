@@ -17,6 +17,7 @@
     const botoesPersonagens = document.querySelectorAll(".personagem");
     const textoPersonagem = document.getElementById("personagem-selecionado");
     const musicaMenu = document.getElementById("musica-menu");
+    const btnMusica = document.getElementById("btn-musica");
 
     let personagemEscolhido = null;
 
@@ -35,6 +36,14 @@
             console.log("A reprodução da música foi bloqueada pelo navegador.");
         });
     }
+
+    function alternarMusica() {
+    if (!musicaMenu) {
+        return;
+    }
+
+    musicaMenu.muted = !musicaMenu.muted;
+}
 
     function selecionarPersonagem(botao) {
         personagemEscolhido = botao.dataset.personagem;
@@ -93,6 +102,8 @@
     btnConfirmar.addEventListener("click", confirmarPersonagem);
 
     btnVoltar.addEventListener("click", voltarAoMenu);
+
+    btnMusica.addEventListener("click", alternarMusica);
 
     btnSair.addEventListener("click", () => {
         window.close();
