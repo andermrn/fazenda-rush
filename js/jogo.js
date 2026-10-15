@@ -7,9 +7,10 @@ function ajustarCanvas() {
 
 ajustarCanvas();
 window.addEventListener("resize", ajustarCanvas);
-const plataforma1 = new plataforma(650,550,400,100,"assets/cenarios/plataforma.png")
-const plataforma2 = new plataforma(40,550,400,100,"assets/cenarios/plataforma.png")
-const plataforma3 = new plataforma(1300,550,400,100,"assets/cenarios/plataforma.png")
+const plataforma1 = new plataforma(550,400,300,40,"assets/cenarios/plataformac.png")
+const plataforma2 = new plataforma(100,550,300,40,"assets/cenarios/plataformac.png")
+const plataforma3 = new plataforma(1000,550,300,40,"assets/cenarios/plataformac.png")
+const plataformas = [plataforma1, plataforma2, plataforma3];//cplt
 function animate(){
     requestAnimationFrame(animate);
     ctx.clearRect(0,0,canvas.width,canvas.height);

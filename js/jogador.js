@@ -16,10 +16,10 @@ const framesPorAnimacao = 6; // quantidade de frames em cada linha
 const intervaloFrame = 10; // intervalo pra deixar a animação mais lenta, *padrao 5
 
 class Player{ 
-    width = 150;//largura do player
-    height = 150;//altura do player
+    width = 20;//largura do player, hitbox, padrao:150
+    height = 20;//altura do player, hitbox padrao:150
     posicaoX = 100;//posiçâo x inicial do player
-    posicaoY = 700 - this.height;//posição y inicial do player
+    posicaoY = 400;//posição y inicial do player
     velocidadeX = 0;//velocidade x inicial
     velocidadeY = 0;//velocidade y inicial
     forcadopulo = -22;//força do pulo, *padrao -22
@@ -64,10 +64,13 @@ draw(){//função pra definir o frame exibido
     if (imagemJogador.complete && imagemJogador.naturalWidth > 0) {
         const larguraDesenho = 150; // define a largura do personagem na tela
         const alturaDesenho = 150; // define a altura do personagem na tela
+
+        const ajustevisual = 12;//o sprite do personagem abaixo dele tem um espaço em branco, isso faz com que ele pareça flutuar nas plataformas
+        //logo defino um valor que vai fazer ele ficar mais embaixo, somando no posicaodesenhoy
         // Centraliza o sprite dentro da largura usada para colisão do jogador
         const posicaoDesenhoX = this.posicaoX + (this.width - larguraDesenho) / 2;
         // Alinha a base do sprite com a base do jogador; Y cresce de cima para baixo no canvas
-        const posicaoDesenhoY = this.posicaoY + this.height - alturaDesenho;
+        const posicaoDesenhoY = this.posicaoY + this.height - alturaDesenho + ajustevisual;
 
         ctx.drawImage(
             imagemJogador, // imagem que contém os frames do personagem
@@ -111,9 +114,51 @@ update(){//função pra definir todos os valores corretamente
     this.posicaoX += this.velocidadeX;//posicaox = posicaox + velocidadex
     this.posicaoX = Math.max(0, Math.min(this.posicaoX, canvas.width - this.width));//*preciso entender ainda
 
-    this.velocidadeY += GRAVIDADE;//velocidadey = velocidadey + gravidade
-    this.posicaoY += this.velocidadeY;//posicaoy = posicaoy + velocidadey
-    this.estanochao = false;
+
+//inicio cplt
+    // Guarda a posição vertical anterior à aplicação da gravidade. Ela será
+    // comparada com a posição atual para detectar se o jogador cruzou o topo
+    // de uma plataforma neste quadro.
+    const yAnterior = this.posicaoY;//guarda o valor do topo da plataforma
+
+// Aplica a gravidade à velocidade vertical e, em seguida, move o jogador.
+this.velocidadeY += GRAVIDADE;
+this.posicaoY += this.velocidadeY;
+// O jogador só será considerado no chão novamente se uma colisão com uma
+// plataforma ou com a base do canvas for detectada neste quadro.
+this.estanochao = false;
+//y - this.height = topo
+//y + this.height = base
+
+if (this.velocidadeY >= 0) {//se o jogador estiver parado ou descendol, faça
+   
+    for (const plataformaAtual of plataformas) {//plataformaAtual é a plataforma verificado nesse momento, de todas de plataformas
+        
+        const estavaAcima =
+            yAnterior + this.height <= plataformaAtual.y;
+        //como o y cresce pra baixo, pra cima diminui, ou seja, quanto menor o y, mais alto
+        //o yAnterior + this.height vai calcular a altura da base do jogador, se ela for menor que a altura da plataforma atual, ou seja, mais alta, estavaAcima = true
+
+        const passouPeloTopo =
+            this.posicaoY + this.height >= plataformaAtual.y;//passoupelotopo é true se a base do jogador tiver abaixo ou na altura da plataforma
+
+        const sobrepoeNaHorizontal =//define o limite horizontal da plataforma, verifica se o jogador da dentro dos limites horizontais
+            this.posicaoX  > plataformaAtual.x &&
+            this.posicaoX < plataformaAtual.x + plataformaAtual.largura;
+
+        // Só há pouso quando as três condições são verdadeiras: o jogador
+        // vinha de cima, cruzou o topo e está alinhado horizontalmente.
+        if (estavaAcima && passouPeloTopo && sobrepoeNaHorizontal) {
+            // Alinha a base do jogador exatamente ao topo da plataforma para
+            // que ele não fique parcialmente dentro dela.
+            this.posicaoY = plataformaAtual.y - this.height;
+            
+            this.velocidadeY = 0;//velocidade agora é 0, pois ele esta na plataforma
+            this.estanochao = true;//como esta na plataforma pode pular novamente
+            break;
+        }
+    }
+}//fim cplt
 
     if (this.posicaoY + this.height >= canvas.height) {//se o personagem ultrapassar a altura da tela jogar ele la pra baixo
         this.posicaoY = canvas.height - this.height;

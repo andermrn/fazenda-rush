@@ -14,10 +14,8 @@ class plataforma{
         }
 
 
-
-
-
     }
+
 
         draw(){    
             
@@ -34,19 +32,9 @@ class plataforma{
 
             ctx.fillRect(this.x,this.y,this.largura,this.altura);
             }
-                
-
-
-
-
-
-
 
 
         }
-
-
-
 
 
 }
