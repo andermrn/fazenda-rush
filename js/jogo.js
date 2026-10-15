@@ -23,5 +23,9 @@ function animate(){
     plataforma1.draw();
     plataforma2.draw();
     plataforma3.draw();
+
+    atualizarProjeteis();
+    verificarColisoes();
+    desenharProjeteis();
 }
 animate();

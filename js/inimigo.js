@@ -30,7 +30,8 @@ class Inimigo {
     gameFrame = 0;    // apenas um contador que uso para controlar a velocidade da animação
     atacando = false;   // true = parado perto do jogador (vai ficar dando coice)
 
-
+    vida = 10;
+    morto = false;
 
     // DRAW() ANTIGO: APENAS UM QUADRADO, VOU CRIAR OUTRO DRAW() MAS AGORA COM O SPRITE!!!!
     // // desenha o inimigo no canvas
@@ -40,7 +41,7 @@ class Inimigo {
     // }
 
     draw() {
-
+        if (this.morto) return;
         if( this.atacando === true ) {
             // Atacando: usa as linhas do coice
             if (this.direcao === -1) {
@@ -101,6 +102,7 @@ class Inimigo {
         } else {
             distancia = 0//inimigo está encostando ou sobrepondo o jogador
         }
+        if (this.morto) return;
         //perseguição
         if(distancia <=150) { //se a distancia entre o inimigo e o personagem for de até 150 pixels ele persegue
             let passo = Math.min(this.velocidade,distancia);

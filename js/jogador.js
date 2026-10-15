@@ -28,6 +28,7 @@ class Player{
     frameX = 0; // coluna do quadro atual
     frameY = 0; // linha do quadro atual
     gameFrame = 0; // controla o intervalo entre os quadros da animação
+    direcao = 1;
 
 draw(){//função pra definir o frame exibido
     // Aplicação da linha conforme valores de velocidade
@@ -186,9 +187,11 @@ window.addEventListener("keydown", (e) => {//ao pressionar space, pular
 
     if (e.key === "d") {//ao pressionar d andar direita
         andandodireita = true;
+        jogador.direcao = 1;
     }
     if (e.key === "a") {//ao pressionar a andar esquerda
         andandoesquerda = true;
+        jogador.direcao = -1;
     }
 });
 

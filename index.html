@@ -17,6 +17,7 @@
     <script src="js/jogador.js" defer></script>
     <script src="js/inimigo.js" defer></script>
     <script src="js/abelha.js" defer></script>
+    <script src="js/combate.js" defer></script>
     <script src="js/jogo.js" defer></script>
   </head>
 
@@ -26,23 +27,29 @@
     <main>
       <!-- Tela inicial -->
       <section id="tela-menu">
-    <video id="video-fundo" autoplay muted loop playsinline>
-        <source src="assets/videos/men-fazenda-rush.mp4" type="video/mp4" />
-        Seu navegador não suporta vídeos.
-    </video>
+        <video id="video-fundo" autoplay muted loop playsinline>
+          <source src="assets/videos/men-fazenda-rush.mp4" type="video/mp4" />
+          Seu navegador não suporta vídeos.
+        </video>
 
-    <div class="conteudo-menu">
-        <h1 class="titulo-jogo">
-            <img src="assets/cenarios/logo-fazenda-rush-removebg-preview.png" alt="Fazenda rush logo">
-        </h1>
-        <button id="btn-jogar" type="button" aria-label="Jogar">
-            <img src="assets/cenarios/Botão de Madeira Pixelado “JOGAR”.png" alt="">
-        </button>
-        <button id="btn-sair" type="button" aria-label="Sair">
-            <img src="assets/cenarios/btn-sair-removebg.png" alt="">
-        </button>
-    </div>
-</section>
+        <div class="conteudo-menu">
+          <h1 class="titulo-jogo">
+            <img
+              src="assets/cenarios/logo-fazenda-rush-removebg-preview.png"
+              alt="Fazenda rush logo"
+            />
+          </h1>
+          <button id="btn-jogar" type="button" aria-label="Jogar">
+            <img
+              src="assets/cenarios/Botão de Madeira Pixelado “JOGAR”.png"
+              alt=""
+            />
+          </button>
+          <button id="btn-sair" type="button" aria-label="Sair">
+            <img src="assets/cenarios/btn-sair-removebg.png" alt="" />
+          </button>
+        </div>
+      </section>
 
       <!-- Tela de seleção de personagens -->
       <section id="tela-selecao" hidden>
@@ -74,9 +81,7 @@
           Nenhum personagem selecionado.
         </p>
 
-        <button id="btn-confirmar" type="button" disabled>
-          Confirmar
-        </button>
+        <button id="btn-confirmar" type="button" disabled>Confirmar</button>
 
         <button id="btn-voltar" type="button">Voltar</button>
       </section>
