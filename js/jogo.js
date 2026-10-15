@@ -16,6 +16,8 @@ function animate(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     jogador.update();
     jogador.draw();
+    abelha1.mover();
+    abelha1.draw();
     inimigo.atualizar();
     inimigo.draw();
     plataforma1.draw();
