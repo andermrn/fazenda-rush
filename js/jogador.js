@@ -203,9 +203,3 @@ window.addEventListener("keyup", (e) => {
         andandoesquerda = false;
     }
 });
-
-// window.addEventListener("resize", () => {//*preciso entender ainda
-//     canvas.width = window.innerWidth;
-//     canvas.height = 700;
-//     jogador.posicaoX = Math.min(jogador.posicaoX, canvas.width - jogador.width);
-// });

@@ -13,6 +13,32 @@ const plataforma2 = new plataforma(180,650,300,40,"assets/cenarios/plataformac.p
 const plataforma3 = new plataforma(1160,650,300,40,"assets/cenarios/plataformac.png")
 const plataformas = [plataforma1, plataforma2, plataforma3];//cplt
 
+const portal = new Portal();
+
+let faseAtual = 1;
+
+// Pré-carrega o cenário da fase 2 (o navegador já baixa a imagem antes de precisar dela)
+const cenarioFase2 = new Image();
+cenarioFase2.src = "assets/cenarios/cenario2.png";
+
+function trocarCenario() {
+    if( faseAtual === 1 ) {
+        canvas.style.backgroundImage = 'url("assets/cenarios/cenario2.png")';
+        faseAtual = 2;
+
+        // Volta o jogador para o começo da fase, no chão
+        jogador.posicaoX = 100;
+        jogador.posicaoY = canvas.height - jogador.height;
+    } else {
+        canvas.style.backgroundImage = 'url("assets/cenarios/cenario1.jpeg")';
+        faseAtual = 1;
+
+        // Volta o jogador para o começo da fase, no chão
+        jogador.posicaoX = 100;
+        jogador.posicaoY = canvas.height - jogador.height;
+    }
+}
+
 function animate(){
     requestAnimationFrame(animate);
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -29,6 +55,12 @@ function animate(){
     plataforma1.draw();
     plataforma2.draw();
     plataforma3.draw();
+
+    portal.atualizar();   
+    portal.draw();        
+    if (portal.colisaoJogador() === true) {
+        trocarCenario();
+    }
 
     atualizarProjeteis();
     verificarColisoes();

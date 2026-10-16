@@ -35,7 +35,7 @@ canvas {
     height: 100vh;
 
     /* Cenário dentro do canvas, para acompanhar o jogo */
-    background-image: url("../assets/cenarios/cenario.png");
+    background-image: url("../assets/cenarios/cenario1.jpeg");
     background-size: cover;
     background-position: center bottom;
     background-repeat: no-repeat;
