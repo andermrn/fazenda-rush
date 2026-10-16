@@ -101,6 +101,6 @@ function verificarColisoes() {
     for (let i = projeteis.length - 1; i >= 0; i--) {
         if (!projeteis[i].ativo) {
             projeteis.splice(i, 1);
-        }
+        } 
     }
 }

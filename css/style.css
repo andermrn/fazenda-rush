@@ -194,3 +194,120 @@ canvas {
     object-fit: contain;
     display: block;
 }
+
+/* Tela de seleção de personagens */
+#tela-selecao {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 40px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+/* Título */
+.titulo-selecao {
+    margin: 0 0 15px;
+    text-align: center;
+    font-size: 32px;
+}
+
+/* Área dos personagens */
+#lista-personagens {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Botão de cada personagem */
+.personagem {
+    width: 150px;
+    padding: 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    background: #263b2b;
+    border: 3px solid #60452b;
+    border-radius: 8px;
+
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Retângulo que substituirá o sprite */
+.sprite-placeholder {
+    width: 120px;
+    height: 150px;
+
+    background: #8a9873;
+    border: 2px solid #1b281b;
+    box-sizing: border-box;
+}
+
+/* Personagem selecionado */
+.personagem.selecionado {
+    border-color: #f5d76e;
+    background: #425c37;
+    transform: translateY(-5px);
+}
+
+/* Nome do personagem selecionado */
+#personagem-selecionado {
+    margin: 0;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* Área dos botões */
+#btn-confirmar,
+#btn-voltar {
+    width: 200px;
+    height: 70px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 0.2s ease;
+}
+
+/* Imagens dos botões */
+#btn-confirmar img,
+#btn-voltar img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block;
+}
+
+/* Animação ao passar o mouse */
+#btn-confirmar:not(:disabled):hover,
+#btn-voltar:hover {
+    transform: scale(1.12);
+}
+
+/* Efeito ao clicar */
+#btn-confirmar:not(:disabled):active,
+#btn-voltar:active {
+    transform: scale(0.95);
+}
+
+/* Botão confirmar desativado */
+#btn-confirmar:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}

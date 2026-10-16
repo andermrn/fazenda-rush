@@ -24,7 +24,7 @@
   <body>
     <audio id="musica-menu" src="assets/audio/musica-menu.mp3" loop></audio>
     <button id="btn-musica" aria-label="Mutar música">
-      <img src="assets/cenarios/btn-mutar-musica-removebg.png" alt="">
+      <img src="assets/cenarios/btn-mutar-musica-removebg.png" alt="" />
     </button>
     <main>
       <!-- Tela inicial -->
@@ -55,27 +55,32 @@
 
       <!-- Tela de seleção de personagens -->
       <section id="tela-selecao" hidden>
-        <h2>Escolha seu personagem</h2>
+        <h2 class="titulo-selecao">ESCOLHA SEU PERSONAGEM</h2>
 
         <div id="lista-personagens">
           <button class="personagem" data-personagem="Ander" type="button">
-            Ander
+            <div class="sprite-placeholder"></div>
+            <span>Ander</span>
           </button>
 
           <button class="personagem" data-personagem="Joabe" type="button">
-            Joabe
+            <div class="sprite-placeholder"></div>
+            <span>Joabe</span>
           </button>
 
           <button class="personagem" data-personagem="Vinicius" type="button">
-            Vinicius
+            <div class="sprite-placeholder"></div>
+            <span>Vinicius</span>
           </button>
 
           <button class="personagem" data-personagem="Davi" type="button">
-            Davi
+            <div class="sprite-placeholder"></div>
+            <span>Davi</span>
           </button>
 
           <button class="personagem" data-personagem="Joaquim" type="button">
-            Joaquim
+            <div class="sprite-placeholder"></div>
+            <span>Joaquim</span>
           </button>
         </div>
 
@@ -83,9 +88,13 @@
           Nenhum personagem selecionado.
         </p>
 
-        <button id="btn-confirmar" type="button" disabled>Confirmar</button>
+        <button id="btn-confirmar" type="button" disabled>
+            <img src="assets/cenarios/btn-confirmar.png" alt="">
+        </button>
 
-        <button id="btn-voltar" type="button">Voltar</button>
+        <button id="btn-voltar" type="button">
+            <img src="assets/cenarios/btn-voltar.png" alt="">
+        </button>
       </section>
 
       <!-- Tela do jogo -->
