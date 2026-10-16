@@ -55,11 +55,11 @@ function atirar() {
     );
 }
 
-window.addEventListener("keydown", (e) => {
-    if (e.code === "Enter" && !e.repeat) {
+window.addEventListener("click", (e) => {
+    
         e.preventDefault();
         atirar();
-    }
+    
 });
 
 function atualizarProjeteis() {

@@ -8,9 +8,9 @@ function ajustarCanvas() {
 ajustarCanvas();
 window.addEventListener("resize", ajustarCanvas);
 
-const plataforma1 = new plataforma(550,400,300,40,"assets/cenarios/plataformac.png")
-const plataforma2 = new plataforma(100,550,300,40,"assets/cenarios/plataformac.png")
-const plataforma3 = new plataforma(1000,550,300,40,"assets/cenarios/plataformac.png")
+const plataforma1 = new plataforma(670,450,300,40,"assets/cenarios/plataformac.png")
+const plataforma2 = new plataforma(180,650,300,40,"assets/cenarios/plataformac.png")
+const plataforma3 = new plataforma(1160,650,300,40,"assets/cenarios/plataformac.png")
 const plataformas = [plataforma1, plataforma2, plataforma3];//cplt
 
 function animate(){
