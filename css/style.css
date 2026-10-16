@@ -18,20 +18,27 @@ body {
     overflow: hidden;
 }
 
-/* Aplicação do cenário de fundo */
+/* Fundo da página */
 body {
-    background-image: url("../assets/cenarios/cenario.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     background-color: #000;
 }
 
-/* Define como o canvas deve aparecer */
+/* O canvas ocupa a janela inteira.
+   O JS ajusta a largura interna dele para ter a mesma proporção da janela,
+   então nada fica esticado. */
 canvas {
     display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
+
+    /* Cenário dentro do canvas, para acompanhar o jogo */
+    background-image: url("../assets/cenarios/cenario.png");
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
 }
 
 /* Tela inicial do menu */
@@ -127,11 +134,10 @@ canvas {
     }
 }
 
-
-
+/* Botão Sair */
 #btn-sair {
-    width: 260px;
-    margin-top: 10vh;
+    width: 210px;
+    margin-top: 12vh;
     padding: 0;
 
     background: transparent;
@@ -164,12 +170,7 @@ canvas {
     outline-offset: 6px;
 }
 
-
-#btn-sair {
-    width: 210px;
-    margin-top: 12vh;
-}
-
+/* Botão de música */
 #btn-musica {
     position: fixed;
     top: 15px;
