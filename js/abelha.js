@@ -31,6 +31,9 @@ class Abelha {
         this.frameX = 0;
         this.frameY = 1; // Começa na direita (Esquerda = 0; Direita = 1)
         this.gameFrame = 0;
+
+        this.vida = 10;
+        this.morta = false;
     }
     reiniciar() {
     this.x = 600;
@@ -44,9 +47,13 @@ class Abelha {
     this.frameX = 0;
     this.frameY = 1;
     this.gameFrame = 0;
+
+    this.vida = 10;
+    this.morta = false;
 }
     
     mover() {
+        if (this.morta) return;
         const diferencaX = jogador.posicaoX - this.x;//indica se o jogador está à direita ou a esquerda da abelha
         const diferencaY = jogador.posicaoY - this.y;//indica se está acima ou abaixo
         const distancia = Math.sqrt( Math.pow(diferencaX,2) + Math.pow (diferencaY,2));// transforma as duas diferenças em uma unica distância(Math.pow eleva as diferenças ao quadrado) e (Math.sqrt calcula a raiz quadrada)
@@ -96,7 +103,7 @@ class Abelha {
     }
 
     draw() {
-
+        if (this.morta) return;
         if( this.direcaoX === -1 ) {
             this.frameY = 0; // Voando para Esquerda
         } else this.frameY = 1; // Voando para Direita

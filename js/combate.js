@@ -97,6 +97,14 @@ function verificarColisoes() {
                 inimigo.morto = true;
             }
         }
+        if (!abelha1.morta && detectarColisao(projetil, abelha1)) {
+    abelha1.vida--;
+    projetil.ativo = false;
+
+    if (abelha1.vida <= 0) {
+        abelha1.morta = true;
+    }
+}
     }
 
     for (let i = projeteis.length - 1; i >= 0; i--) {
