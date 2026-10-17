@@ -1,6 +1,3 @@
-//estudar linha 52, 90, 115, 136
-
-
 const ctx = canvas.getContext("2d");
 
 let andandoesquerda = false;
@@ -29,11 +26,19 @@ class Player{
     frameY = 0; // linha do quadro atual
     gameFrame = 0; // controla o intervalo entre os quadros da animação
     direcao = 1;
+    tiro = false;
 
 draw(){//função pra definir o frame exibido
     // Aplicação da linha conforme valores de velocidade
-
     //animações horizontais
+    if(this.tiro == true&&this.direcao == 1){
+        this.frameY = 5;
+    }
+        else if(this.tiro == true&&this.direcao == -1){
+            this.frameY = 6;
+        }else
+        
+    
 
     if (this.velocidadeX < 0) {
         this.frameY = 2;//velocidade negativa, ou seja o personagem vai para esquerda, entãoa acessa a linha 2 dos sprites que é o personagem indo pra esquerda
@@ -41,7 +46,7 @@ draw(){//função pra definir o frame exibido
         this.frameY = 1;//velocidade positiva, ou seja o personagem vai para direita, então acessa a linha 1 dos sprites que é o personagem indo pra direita
     } else if(this.velocidadeX == 0){
         this.frameY = 0;//velocidade igual a zero então, acessa a linha 0 que é o personagem parado
-    }
+    }else
 
     //animações verticais laterais
     if(this.velocidadeY < 0 &&this.velocidadeX > 0){
@@ -73,6 +78,16 @@ draw(){//função pra definir o frame exibido
         // Alinha a base do sprite com a base do jogador; Y cresce de cima para baixo no canvas
         const posicaoDesenhoY = this.posicaoY + this.height - alturaDesenho + ajustevisual;
 
+          // Guarda o contexto antes de espelhar, para não afetar o cenário.
+          ctx.save();
+
+            // Espelha a pose parada quando o personagem está virado para a esquerda.
+            if (this.frameY === 0 && this.direcao === -1) {
+                ctx.translate(2 * posicaoDesenhoX + larguraDesenho, 0);
+                ctx.scale(-1, 1);
+            }
+
+
         ctx.drawImage(
             imagemJogador, // imagem que contém os frames do personagem
             this.frameX * larguraFrame, // posição horizontal do frame na imagem
@@ -84,7 +99,10 @@ draw(){//função pra definir o frame exibido
             larguraDesenho, // largura final do personagem na tela
             alturaDesenho // altura final do personagem na tela
         );
-    }
+        // Restaura o contexto para os próximos desenhos não ficarem espelhados.
+        ctx.restore();
+
+      
 
     // Avança um frame da animação a cada intervalo para controlar sua velocidade.
 
@@ -101,9 +119,10 @@ draw(){//função pra definir o frame exibido
     }
     this.gameFrame++;
 }
-}
+}}
 
 update(){//função pra definir todos os valores corretamente
+
 
     this.velocidadeX = 0;
     if (andandodireita) {
@@ -170,7 +189,7 @@ if (this.velocidadeY >= 0) {//se o jogador estiver parado ou descendol, faça
 
 pular() {
     if (this.estanochao) {//se esta no chao for true, velocidadey recebe forcadopulo e estanochao fica false
-        this.framex = 0;//reinicia animações pra evitar bugs
+        this.frameX = 0;//reinicia animações pra evitar bugs
         this.velocidadeY = this.forcadopulo;
         this.estanochao = false;
     }
@@ -203,3 +222,14 @@ window.addEventListener("keyup", (e) => {
         andandoesquerda = false;
     }
 });
+
+window.addEventListener("mousedown", (e) => {//ao clicar no mouse fazer:
+        e.preventDefault();
+        jogador.tiro = true;
+        atirar();
+})
+
+window.addEventListener("mouseup", (e) => {//ao soltar o mouse fazer:
+        e.preventDefault();
+        jogador.tiro = false;
+})

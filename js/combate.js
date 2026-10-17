@@ -54,14 +54,15 @@ function atirar() {
         new Projetil(x, y, jogador.direcao)
     );
 }
-
+/*
 window.addEventListener("click", (e) => {
     
         e.preventDefault();
+        jogador.tiro = true;
         atirar();
     
 });
-
+*/
 function atualizarProjeteis() {
     for (const projetil of projeteis) {
         projetil.atualizar();
