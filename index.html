@@ -59,28 +59,29 @@
         <h2 class="titulo-selecao">ESCOLHA SEU PERSONAGEM</h2>
 
         <div id="lista-personagens">
+          
           <button class="personagem" data-personagem="Ander" type="button">
-            <div class="sprite-placeholder"></div>
+            <canvas id="sprite-ander" class="sprite-placeholder" width="256" height="256"></canvas>
             <span>Ander</span>
           </button>
 
           <button class="personagem" data-personagem="Joabe" type="button">
-            <div class="sprite-placeholder"></div>
+            <canvas id="sprite-joabe" class="sprite-placeholder" width="256" height="256"></canvas>
             <span>Joabe</span>
           </button>
 
           <button class="personagem" data-personagem="Vinicius" type="button">
-            <div class="sprite-placeholder"></div>
+            <canvas id="sprite-vinicius" class="sprite-placeholder" width="256" height="256"></canvas>
             <span>Vinicius</span>
           </button>
 
           <button class="personagem" data-personagem="Davi" type="button">
-            <div class="sprite-placeholder"></div>
+            <canvas id="sprite-davi" class="sprite-placeholder" width="256" height="256"></canvas>
             <span>Davi</span>
           </button>
 
           <button class="personagem" data-personagem="Joaquim" type="button">
-            <div class="sprite-placeholder"></div>
+            <canvas id="sprite-joaquim" class="sprite-placeholder" width="256" height="256"></canvas>
             <span>Joaquim</span>
           </button>
         </div>
@@ -100,18 +101,14 @@
   
       <!-- Tela do jogo -->
       <section id="tela-jogo" hidden>
+
         <canvas id="canvas"></canvas>
 
-        <img
-          id="cenario"
-          src="assets/cenarios/cenario.png"
-          alt="Cenário de fundo"
-          hidden
-        />
       </section>
     </main>
 
     <script src="js/plataforma.js"></script>
     <script src="js/portal.js"></script>
+    <script src="js/selecao-personagens.js"></script>
   </body>
 </html>

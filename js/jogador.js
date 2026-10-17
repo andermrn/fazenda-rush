@@ -6,7 +6,7 @@ const GRAVIDADE = 0.8;//*padrao 0.8
 
 // Carrega os sprites usada pra animar o player
 const imagemJogador = new Image();
-imagemJogador.src = "assets/sprites/personagens/davi_pulo.png";
+imagemJogador.src = "assets/sprites/personagens/davi.png";
 const larguraFrame = 256; // largura de cada frame
 const alturaFrame = 256; // altura de cada frame
 const framesPorAnimacao = 6; // quantidade de frames em cada linha 

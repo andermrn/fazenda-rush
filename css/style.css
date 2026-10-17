@@ -23,10 +23,11 @@ body {
     background-color: #000;
 }
 
-/* O canvas ocupa a janela inteira.
+/* O canvas DO JOGO ocupa a janela inteira.
    O JS ajusta a largura interna dele para ter a mesma proporção da janela,
-   então nada fica esticado. */
-canvas {
+   então nada fica esticado.
+   Usa #canvas (id) para não afetar os canvas dos cartões de personagem. */
+#canvas {
     display: block;
     position: fixed;
     top: 0;
@@ -226,7 +227,7 @@ canvas {
 
 /* Botão de cada personagem */
 .personagem {
-    width: 150px;
+    width: 200px;   /* antes 150: aumentado para caber o canvas de 160px */
     padding: 12px;
 
     display: flex;
@@ -243,14 +244,10 @@ canvas {
     cursor: pointer;
 }
 
-/* Retângulo que substituirá o sprite */
+/* Canvas onde o sprite do personagem é desenhado (animação idle) */
 .sprite-placeholder {
-    width: 120px;
-    height: 150px;
-
-    background: #8a9873;
-    border: 2px solid #1b281b;
-    box-sizing: border-box;
+    width: 160px;
+    height: 160px;
 }
 
 /* Personagem selecionado */
