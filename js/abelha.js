@@ -32,6 +32,19 @@ class Abelha {
         this.frameY = 1; // Começa na direita (Esquerda = 0; Direita = 1)
         this.gameFrame = 0;
     }
+    reiniciar() {
+    this.x = 600;
+    this.y = 200;
+
+    this.velocidade = 2;
+
+    this.direcaoX = 1;
+    this.direcaoY = 1;
+
+    this.frameX = 0;
+    this.frameY = 1;
+    this.gameFrame = 0;
+}
     
     mover() {
         const diferencaX = jogador.posicaoX - this.x;//indica se o jogador está à direita ou a esquerda da abelha
@@ -39,7 +52,7 @@ class Abelha {
         const distancia = Math.sqrt( Math.pow(diferencaX,2) + Math.pow (diferencaY,2));// transforma as duas diferenças em uma unica distância(Math.pow eleva as diferenças ao quadrado) e (Math.sqrt calcula a raiz quadrada)
         //COLISÃO
      if(this.x + this.largura >= jogador.posicaoX - 10 && jogador.posicaoX + jogador.width + 10 >= this.x && jogador.posicaoY + jogador.height >= this.y && this.y + this.altura >= jogador.posicaoY){
-        console.log("COLIDIU");
+        jogador.receberDano();
     //ele para
     } else {
         //PERSEGUIÇÃO

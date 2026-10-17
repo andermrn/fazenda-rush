@@ -104,4 +104,19 @@ function verificarColisoes() {
             projeteis.splice(i, 1);
         } 
     }
+    if (
+    !inimigo.morto &&
+    detectarColisao(
+        {
+            x: jogador.posicaoX,
+            y: jogador.posicaoY,
+            largura: jogador.width,
+            altura: jogador.height
+        },
+        inimigo
+    )
+) {
+    jogador.receberDano();
 }
+}
+

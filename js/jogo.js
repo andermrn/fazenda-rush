@@ -39,8 +39,27 @@ function trocarCenario() {
     }
 }
 
+let jogoEncerrado = false;
+function reiniciarPartida() {
+    jogador.reiniciar();
+    inimigo.reiniciar();
+    abelha1.reiniciar();
+    projeteis.length = 0;
+    jogoEncerrado = false;
+    window.reiniciarPartida = reiniciarPartida;
+}
+
 function animate(){
     requestAnimationFrame(animate);
+    if (jogoEncerrado) {
+    return;
+}
+
+if (jogador.vidas <= 0) {
+    jogoEncerrado = true;
+    window.voltarParaSelecao();
+    return;
+}
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
     jogador.update();

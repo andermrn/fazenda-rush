@@ -135,6 +135,16 @@ class Inimigo {
         // faz ele sempre estar no "chão"
         this.y = canvas.height - this.altura;
     }
+    reiniciar() {
+    this.x = 300;
+    this.y = 400;
+    this.vida = 10;
+    this.morto = false;
+    this.atacando = false;
+    this.direcao = 1;
+    this.frameX = 0;
+    this.frameY = 0;
+}
 }
 //cria um objeto da classe inimigo
 let inimigo = new Inimigo();

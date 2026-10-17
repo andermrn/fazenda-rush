@@ -65,6 +65,7 @@
         if (!personagemEscolhido) {
             return;
         }
+        window.reiniciarPartida();
 
         telaJogo.dataset.personagem = personagemEscolhido;
 
@@ -87,6 +88,19 @@
 
         mostrarTela(telaMenu);
     }
+    function voltarParaSelecao() {
+    personagemEscolhido = null;
+
+    textoPersonagem.textContent = "Nenhum personagem selecionado.";
+    btnConfirmar.disabled = true;
+
+    botoesPersonagens.forEach((botao) => {
+        botao.classList.remove("selecionado");
+    });
+    
+    mostrarTela(telaSelecao);
+}
+window.voltarParaSelecao = voltarParaSelecao;
 
     btnJogar.addEventListener("click", () => {
         mostrarTela(telaSelecao);
