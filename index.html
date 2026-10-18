@@ -28,7 +28,7 @@
     </button>
     <main>
       <!-- Tela inicial -->
-    
+
       <section id="tela-menu">
         <video id="video-fundo" autoplay muted loop playsinline>
           <source src="assets/videos/men-fazenda-rush.mp4" type="video/mp4" />
@@ -53,35 +53,63 @@
           </button>
         </div>
       </section>
-   
+
       <!-- Tela de seleção de personagens -->
       <section id="tela-selecao" hidden>
-        <h2 class="titulo-selecao">ESCOLHA SEU PERSONAGEM</h2>
-
+        <div class="titulo-selecao">
+          <img
+            src="assets/cenarios/esp-menu-selecao.png"
+            alt="Escolha seu personagem"
+          />
+        </div>
         <div id="lista-personagens">
-          
           <button class="personagem" data-personagem="Ander" type="button">
-            <canvas id="sprite-ander" class="sprite-placeholder" width="256" height="256"></canvas>
+            <canvas
+              id="sprite-ander"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
             <span>Ander</span>
           </button>
 
           <button class="personagem" data-personagem="Joabe" type="button">
-            <canvas id="sprite-joabe" class="sprite-placeholder" width="256" height="256"></canvas>
+            <canvas
+              id="sprite-joabe"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
             <span>Joabe</span>
           </button>
 
           <button class="personagem" data-personagem="Vinicius" type="button">
-            <canvas id="sprite-vinicius" class="sprite-placeholder" width="256" height="256"></canvas>
+            <canvas
+              id="sprite-vinicius"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
             <span>Vinicius</span>
           </button>
 
           <button class="personagem" data-personagem="Davi" type="button">
-            <canvas id="sprite-davi" class="sprite-placeholder" width="256" height="256"></canvas>
+            <canvas
+              id="sprite-davi"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
             <span>Davi</span>
           </button>
 
           <button class="personagem" data-personagem="Joaquim" type="button">
-            <canvas id="sprite-joaquim" class="sprite-placeholder" width="256" height="256"></canvas>
+            <canvas
+              id="sprite-joaquim"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
             <span>Joaquim</span>
           </button>
         </div>
@@ -91,19 +119,17 @@
         </p>
 
         <button id="btn-confirmar" type="button" disabled>
-            <img src="assets/cenarios/btn-confirmar.png" alt="">
+          <img src="assets/cenarios/btn-confirmar.png" alt="" />
         </button>
 
         <button id="btn-voltar" type="button">
-            <img src="assets/cenarios/btn-voltar.png" alt="">
+          <img src="assets/cenarios/btn-voltar.png" alt="" />
         </button>
       </section>
-  
+
       <!-- Tela do jogo -->
       <section id="tela-jogo" hidden>
-
         <canvas id="canvas"></canvas>
-
       </section>
     </main>
 
