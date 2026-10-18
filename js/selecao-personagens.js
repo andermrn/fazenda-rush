@@ -11,9 +11,18 @@ const ctxVinicius = canvasVinicius.getContext("2d");
 const ctxDavi = canvasDavi.getContext("2d");
 const ctxJoaquim = canvasJoaquim.getContext("2d");
 
-// Por enquanto apenas uma
-const imagemSelecao = new Image();
-imagemSelecao.src = "assets/sprites/personagens/davi.png";
+const imagemSelecaoDavi = new Image();
+imagemSelecaoDavi.src = "assets/sprites/personagens/davi.png";
+
+const imagemSelecaoVinicius = new Image();
+imagemSelecaoVinicius.src = "assets/sprites/personagens/vinicius.png";
+
+const imagemSelecaoJoabe = new Image();
+imagemSelecaoJoabe.src = "assets/sprites/personagens/joabe.png";
+
+const imagemSelecaoJoaquim = new Image();
+imagemSelecaoJoaquim.src = "assets/sprites/personagens/joaquim.png";
+
 
 const larguraFrameSelecao = 256;
 const alturaFrameSelecao = 256;
@@ -47,11 +56,11 @@ function animarSelecao() {
     requestAnimationFrame(animarSelecao); // Fica rodando a 60 fps
 
     // Um desenho por cartão, chamados um a um
-    desenharPersonagem(ctxAnder, imagemSelecao, 0);
-    desenharPersonagem(ctxJoabe, imagemSelecao, 1);
-    desenharPersonagem(ctxVinicius, imagemSelecao, 9);
-    desenharPersonagem(ctxDavi, imagemSelecao, 2);
-    desenharPersonagem(ctxJoaquim, imagemSelecao, 5);
+    desenharPersonagem(ctxAnder, imagemSelecaoDavi, 0);
+    desenharPersonagem(ctxJoabe, imagemSelecaoJoabe, 13);
+    desenharPersonagem(ctxVinicius, imagemSelecaoVinicius, 5);
+    desenharPersonagem(ctxDavi, imagemSelecaoDavi, 0);
+    desenharPersonagem(ctxJoaquim, imagemSelecaoJoaquim, 2);
 
     if ( gameFrameSelecao % intervaloFrameSelecao === 0 ) {
         frameXSelecao += 1;

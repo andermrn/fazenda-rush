@@ -14,6 +14,8 @@ const alturaFrame = 256;
 const framesPorAnimacao = 6;
 const intervaloFrame = 10;
 
+const vida_infinita = true;
+
 class Player {
     width = 20;
     height = 20;
@@ -191,7 +193,7 @@ class Player {
             return;
         }
 
-        this.vidas--;
+        if( !vida_infinita ) this.vidas--;
         this.invulneravel = true;
 
         console.log(`Vidas restantes: ${this.vidas}`);
