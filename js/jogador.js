@@ -7,7 +7,25 @@ const GRAVIDADE = 0.8;
 
 // Carrega os sprites usados para animar o jogador
 const imagemJogador = new Image();
-imagemJogador.src = "assets/sprites/personagens/davi.png";
+
+const spritesPersonagens = {
+    Ander: "assets/sprites/personagens/davi.png",
+    Joabe: "assets/sprites/personagens/joabe.png",
+    Vinicius: "assets/sprites/personagens/vinicius.png",
+    Davi: "assets/sprites/personagens/davi.png",
+    Joaquim: "assets/sprites/personagens/joaquim.png"
+};
+
+function trocarPersonagem(nome) {
+    const caminho = spritesPersonagens[nome];
+
+    if (!caminho) {
+        console.error("Personagem não encontrado:", nome);
+        return;
+    }
+
+    imagemJogador.src = caminho;
+}
 
 const larguraFrame = 256;
 const alturaFrame = 256;
