@@ -38,12 +38,12 @@
     }
 
     function alternarMusica() {
-    if (!musicaMenu) {
-        return;
-    }
+        if (!musicaMenu) {
+            return;
+        }
 
-    musicaMenu.muted = !musicaMenu.muted;
-}
+        musicaMenu.muted = !musicaMenu.muted;
+    }
 
     function selecionarPersonagem(botao) {
         personagemEscolhido = botao.dataset.personagem;
@@ -65,10 +65,9 @@
         if (!personagemEscolhido) {
             return;
         }
+        trocarPersonagem(personagemEscolhido);
         window.reiniciarPartida();
-
         telaJogo.dataset.personagem = personagemEscolhido;
-
         mostrarTela(telaJogo);
 
         console.log("Personagem escolhido:", personagemEscolhido);
@@ -89,18 +88,18 @@
         mostrarTela(telaMenu);
     }
     function voltarParaSelecao() {
-    personagemEscolhido = null;
+        personagemEscolhido = null;
 
-    textoPersonagem.textContent = "Nenhum personagem selecionado.";
-    btnConfirmar.disabled = true;
+        textoPersonagem.textContent = "Nenhum personagem selecionado.";
+        btnConfirmar.disabled = true;
 
-    botoesPersonagens.forEach((botao) => {
-        botao.classList.remove("selecionado");
-    });
-    
-    mostrarTela(telaSelecao);
-}
-window.voltarParaSelecao = voltarParaSelecao;
+        botoesPersonagens.forEach((botao) => {
+            botao.classList.remove("selecionado");
+        });
+
+        mostrarTela(telaSelecao);
+    }
+    window.voltarParaSelecao = voltarParaSelecao;
 
     btnJogar.addEventListener("click", () => {
         mostrarTela(telaSelecao);
