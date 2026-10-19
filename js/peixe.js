@@ -2,7 +2,9 @@
 class Peixe extends Abelha {
     constructor() {
         super();
- this.x = 600;//eixo X
+        this.vida = 10;
+        this.morta = false;
+        this.x = 600;//eixo X
         this.y = 200;//eixo Y
 
         this.velocidade = 2;// velocidade que o inimigo se move
@@ -17,6 +19,7 @@ class Peixe extends Abelha {
     }
 
      mover() {
+        if (this.morta) return; //peixe para quando morre
         const diferencaX = jogador.posicaoX - this.x;//indica se o jogador está à direita ou a esquerda da abelha
         const diferencaY = jogador.posicaoY - this.y;//indica se está acima ou abaixo
         const distancia = Math.sqrt( Math.pow(diferencaX,2) + Math.pow (diferencaY,2));// transforma as duas diferenças em uma unica distância(Math.pow eleva as diferenças ao quadrado) e (Math.sqrt calcula a raiz quadrada)
@@ -70,6 +73,7 @@ class Peixe extends Abelha {
     }
 
     draw() {
+        if (this.morta) return;
         ctx.fillStyle = "blue";
         ctx.fillRect(this.x, this.y, this.largura, this.altura);
     }

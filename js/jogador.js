@@ -207,19 +207,23 @@ class Player {
 
     // Recebe dano e ativa a invulnerabilidade temporária
     receberDano() {
-        if (this.invulneravel || this.vidas <= 0) {
-            return;
-        }
-
-        if( !vida_infinita ) this.vidas--;
-        this.invulneravel = true;
-
-        console.log(`Vidas restantes: ${this.vidas}`);
-
-        setTimeout(() => {
-            this.invulneravel = false;
-        }, this.tempoInvulnerabilidade);
+    if (this.invulneravel || this.vidas <= 0) {
+        return;
     }
+
+    this.vidas--;
+    this.invulneravel = true;
+
+    console.log(`Vidas restantes: ${this.vidas}`);
+
+    if (this.vidas <= 0) {
+        this.morto = true;
+    }
+
+    setTimeout(() => {
+        this.invulneravel = false;
+    }, this.tempoInvulnerabilidade);
+}
 
     pular() {
         if (this.estanochao) {

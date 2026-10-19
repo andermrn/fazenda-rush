@@ -105,6 +105,14 @@ function verificarColisoes() {
         abelha1.morta = true;
     }
 }
+    if (!peixe1.morta && detectarColisao(projetil, peixe1)) {
+    peixe1.vida--;
+    projetil.ativo = false;
+
+    if (peixe1.vida <= 0) {
+        peixe1.morta = true;
+    }
+}
     }
 
     for (let i = projeteis.length - 1; i >= 0; i--) {
@@ -122,6 +130,20 @@ function verificarColisoes() {
             altura: jogador.height
         },
         inimigo
+    )
+) {
+    jogador.receberDano();
+}
+if (
+    !peixe1.morta &&
+    detectarColisao(
+        {
+            x: jogador.posicaoX,
+            y: jogador.posicaoY,
+            largura: jogador.width,
+            altura: jogador.height
+        },
+        peixe1
     )
 ) {
     jogador.receberDano();
