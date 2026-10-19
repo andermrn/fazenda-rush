@@ -68,6 +68,9 @@ if (jogador.vidas <= 0) {
     abelha1.mover();
     abelha1.draw();
 
+    peixe1.mover();
+    peixe1.draw();
+
     inimigo.atualizar();
     inimigo.draw();
 

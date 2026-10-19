@@ -63,19 +63,23 @@ class Abelha {
     //ele para
     } else {
         //PERSEGUIÇÃO
-        if(distancia <= 600 && jogador.height + jogador.posicaoY >= 440){
-            this.velocidade = 4; // ela persegue mais rapido que patrulha
-            if ( diferencaX < 0 ){
-                this.direcaoX = -1;
-            } else {
+        if(distancia <= 600 && jogador.height + jogador.posicaoY >= 470){
+            this.velocidade = 3; // ela persegue mais rapido que patrulha
+            if ( diferencaX < -30 ){
+                this.direcaoX = -1;//Verifica os limites do canva caso a abelha chege ela troca de direção
+            } else if (diferencaX > 30){
                 this.direcaoX = 1;
+            }else {
+                this.direcaoX = 0
             }
-            if (diferencaY < 0 ){
+            if (diferencaY < -10 ){
                 this.direcaoY = -1;
-            } else {
+            } else if (diferencaY > 10){
                 this.direcaoY = 1;
+            } else {
+                this.direcaoY = 0;
             }
-            if(this.y + this.altura >= canvas.height - 40){
+            if(this.y + this.altura >= canvas.height - 10){
                 this.direcaoY = -1;
             }
             if (this.y <= 400){
