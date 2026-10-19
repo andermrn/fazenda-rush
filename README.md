@@ -1,198 +1,123 @@
 # 🌾 Fazenda Rush
 
-<<<<<<< HEAD
-**Fazenda Rush** é um jogo 2D desenvolvido como projeto acadêmico para o componente curricular **Programação Visual e Autoria Web**.
+**Fazenda Rush** é um jogo 2D de plataforma desenvolvido como projeto acadêmico para o componente curricular **Programação Visual e Autoria Web**, utilizando apenas tecnologias web nativas.
 
-O projeto tem como objetivo aplicar conceitos de desenvolvimento web por meio da criação de um jogo interativo.
+O jogo reúne menu interativo, seleção de personagens, movimentação com física, combate por projéteis, dois tipos de inimigos, plataformas e um portal de troca de fase.
 
-## Sobre o jogo
-
-O jogo está em desenvolvimento e contará com movimentação de personagem, cenários com plataformas, inimigos e mecânicas de combate.
-
-## Tecnologias utilizadas
-
-* HTML5
-* CSS3
-* JavaScript
-
-O projeto será desenvolvido sem bibliotecas externas, utilizando os recursos nativos dessas tecnologias.
-
-## Equipe de desenvolvimento
-
-Projeto desenvolvido em equipe por estudantes do curso de Tecnologia em Análise e Desenvolvimento de Sistemas (TADS).
-
-## Status do projeto
-
-**Em desenvolvimento.**
-
-## Objetivo acadêmico
-
-Aplicar conhecimentos de programação, desenvolvimento web, lógica de jogos, organização de código, controle de versão e trabalho em equipe.
-
----
-
-Desenvolvido para fins acadêmicos em 2026.
-=======
-**Fazenda Rush** é um jogo 2D desenvolvido como projeto acadêmico, utilizando tecnologias web. O projeto reúne movimentação de personagens, animações com spritesheets, comportamento de inimigos e um menu interativo para proporcionar a base de uma experiência de jogo no estilo plataforma.
-
-O desenvolvimento utiliza HTML, CSS e JavaScript.
-
-> **Versão:** 1.0.0 — versão inicial do projeto.
+> **Versão:** 0.5.0 — em desenvolvimento.
 
 ---
 
 ## Sobre o jogo
 
-O objetivo do projeto é desenvolver um jogo 2D com mecânicas de movimentação, animação e interação com inimigos, além de uma interface para navegação e seleção de personagens.
+O jogador controla um personagem em um cenário de fazenda, enfrentando inimigos, desviando de ataques e atravessando um portal para mudar de fase. O projeto é construído em JavaScript puro, com a lógica separada em módulos para jogador, inimigos, combate, plataformas, portal e menu.
 
-A estrutura foi organizada em módulos JavaScript para separar as responsabilidades do jogador, dos inimigos e do loop principal do jogo.
+---
 
-## Funcionalidades implementadas
+## Funcionalidades
 
-### Menu e seleção de personagens
+### Menu e navegação
 
+* Página única (`index.html`) que reúne **menu**, **seleção de personagens** e **jogo**, com alternância de telas via DOM.
 * Menu inicial com as opções **Jogar** e **Sair**.
-* Tela de seleção com cinco personagens disponíveis. (Não finalizado.)
-* Música de fundo no menu.
+* Vídeo de fundo em loop no menu.
+* Música de fundo no menu, com botão para **mutar/desmutar**.
+* Tela de seleção com cinco personagens (clique, destaque e botão **Confirmar**), além do botão **Voltar**.
+* Sprites animados nos cartões de seleção.
 
 ### Jogador
 
-* Movimentação por meio do teclado.
-* Controles de movimento com as teclas **A** e **D**.
+* Movimentação com as teclas **A** e **D**.
 * Pulo com a tecla **Espaço**.
-* Física básica com gravidade.
-* Limitação de movimentação nas bordas.
-* Animações com spritesheet para os estados de personagem parado, movimentação para a direita e movimentação para a esquerda.
-* Ajuste responsivo do Canvas à janela.
+* Gravidade e limitação de movimento nas bordas do Canvas.
+* Colisão com plataformas (o jogador pousa sobre elas ao descer).
+* Disparo de projéteis com o **clique do mouse**, com animação de tiro.
+* Sistema de **3 vidas**, com 1,5 s de invulnerabilidade após receber dano (efeito de piscar).
+* Animações por spritesheet (parado, esquerda, direita, pulo e tiro).
+* Reinício da partida ao perder todas as vidas.
 
 ### Inimigos
 
-* Movimentação e animação por spritesheet.
-* Comportamento de patrulha.
-* Perseguição ao jogador.
+* **Cavalo:** patrulha, perseguição ao jogador e ataque de coice, com animação própria. Fica sempre no chão e possui 10 pontos de vida.
+* **Abelha:** inimigo aéreo com patrulha em 2D e perseguição ao jogador (velocidade aumenta ao perseguir). Possui 10 pontos de vida.
+* Ambos causam dano ao jogador por contato e morrem ao ter a vida zerada.
+
+### Cenário e fases
+
+* Três plataformas com sprite e colisão.
+* Portal animado no canto inferior direito.
+* Duas fases (cenários de fundo diferentes), alternadas ao tocar no portal.
+* Canvas responsivo: altura fixa e largura proporcional à janela.
 
 ### Loop do jogo
 
-* Atualização contínua dos elementos.
-* Limpeza e redesenho do Canvas.
-* Atualização e renderização do jogador e do inimigo.
-* Uso de `requestAnimationFrame` para executar o loop do jogo.
+* Atualização, limpeza e redesenho contínuos do Canvas com `requestAnimationFrame`.
+
+---
+
+## Controles
+
+| Tecla / Ação | Resultado |
+| --- | --- |
+| **A** | Move para a esquerda |
+| **D** | Move para a direita |
+| **Espaço** | Pula (no chão ou sobre plataforma) |
+| **Clique esquerdo do mouse** | Dispara um projétil na direção em que o jogador olha |
+| Botão 🔇 (canto superior esquerdo) | Muta/desmuta a música do menu |
 
 ---
 
 ## Tecnologias utilizadas
 
-* **HTML5** — estrutura das páginas.
-* **CSS3** — estilização da interface.
+* **HTML5** — estrutura da página.
+* **CSS3** — estilização das telas.
 * **JavaScript** — lógica e comportamento do jogo.
-* **Canvas API** — renderização dos elementos gráficos.
-* **Spritesheets** — animações dos personagens.
+* **Canvas** — renderização dos elementos gráficos.
+* **Spritesheets** — animações de personagens, inimigos e portal.
 * **Git e GitHub** — versionamento e colaboração.
+* **GitHub Actions** — workflow que notifica um canal do Discord a cada push na branch `develop`.
 
-O projeto utiliza JavaScript puro, sem frameworks ou bibliotecas externas para a lógica principal do jogo.
-
----
-
-## 📁 Estrutura do projeto
-
-A organização geral dos arquivos está descrita abaixo. Os caminhos exatos dos recursos podem variar conforme a estrutura atual do repositório.
-
-```text
-fazenda-rush/
-├── .vscode/
-│   └── settings.json
-├── assets/
-│   ├── audio/
-│   ├── cenarios/
-│   └── sprites/
-│       ├── fase1/
-│       └── personagens/
-├── css/
-│   └── style.css
-├── js/
-│   ├── inimigo.js
-│   ├── jogador.js
-│   ├── jogo.js
-│   └── menu.js
-├── index.html
-├── menu.html
-└── README.md
-```
-
-### Responsabilidade dos arquivos
-
-| Arquivo      | Responsabilidade                                    |
-| ------------ | --------------------------------------------------- |
-| `index.html` | Página principal do jogo e elemento Canvas.         |
-| `menu.html`  | Interface do menu e seleção de personagens.         |
-| `jogador.js` | Física, movimentação e animação do jogador.         |
-| `inimigo.js` | Movimento, animação e comportamento dos inimigos.   |
-| `jogo.js`    | Loop principal e atualização dos elementos do jogo. |
-| `menu.js`    | Navegação entre as telas do menu.                   |
-| `style.css`  | Estilização da interface.                           |
-| `assets/`    | Recursos de áudio, sprites e cenário.               |
-
----
-
-##  Como executar
-
-### 1. Clone o repositório
-
-```bash
-git clone https://github.com/andermrn/fazenda-rush.git
-```
-
-### 2. Acesse a pasta do projeto
-
-```bash
-cd fazenda-rush
-```
-
-### 3. Abra o projeto
-
-Abra a pasta no Visual Studio Code.
-
-Você pode executar as páginas HTML diretamente no navegador ou utilizar uma extensão de servidor local, como o Live Server, caso seja necessário para carregar os recursos do jogo.
-
-**Observação:** o projeto possui páginas separadas para o menu e para o jogo. A integração entre a tela de seleção e o Canvas principal ainda está pendente, conforme o estado atual do desenvolvimento. Por isso, as duas experiências podem precisar ser executadas separadamente.
+O projeto utiliza JavaScript puro, sem frameworks ou bibliotecas externas.
 
 ---
 
 ## 🎯 Estado atual do projeto
 
-| Funcionalidade                                     | Estado        |
-| -------------------------------------------------- | ------------- |
-| Menu inicial                                       | Implementado  |
-| Seleção de cinco personagens                       | Pendente      |
-| Música de fundo do menu                            | Implementada  |
-| Canvas responsivo                                  | Implementado  |
-| Movimentação e física básica do jogador            | Implementadas |
-| Controles de teclado                               | Implementados |
-| Animações do jogador                               | Implementadas |
-| Animações dos inimigos                             | Implementadas |
-| Patrulha e perseguição dos inimigos                | Implementadas |
-| Loop principal com `requestAnimationFrame`         | Implementado  |
-| Integração da tela de seleção com o jogo principal | Pendente      |
+| Funcionalidade | Estado |
+| --- | --- |
+| Menu inicial, vídeo de fundo e música | Implementado |
+| Botão de mutar música | Implementado |
+| Integração seleção ↔ jogo (página única) | Implementada |
+| Seleção de personagens (clique, destaque, confirmar) | Implementada |
+| Personagem escolhido alterar o sprite no jogo | Pendente |
+| Sprites distintos para os cinco personagens | Pendente |
+| Movimentação, pulo, gravidade e bordas | Implementados |
+| Colisão com plataformas | Implementada |
+| Disparo de projéteis com o mouse | Implementado |
+| Sistema de vidas e invulnerabilidade | Implementado |
+| Inimigo Cavalo | Implementado |
+| Inimigo Abelha | Implementado |
+| Portal e troca de cenário | Implementados |
+| Animação de pulo | Parcial (bug conhecido) |
+| HUD (vidas, pontuação, tempo) | Pendente |
+| Tela de Game Over | Pendente |
+| Condição de vitória | Pendente |
+| Pontuação e coletáveis | Pendente |
+| Trilha sonora e efeitos sonoros durante o jogo | Pendente |
+| Tela de pausa | Pendente |
+| Controles para dispositivos móveis | Pendente |
+| Câmera com scroll | Pendente |
 
 ---
 
 ## Equipe de desenvolvimento
 
-Projeto desenvolvido colaborativamente por estudantes do curso de Análise e Desenvolvimento de Sistemas, com divisão de responsabilidades entre interface, lógica do jogo, personagens, inimigos e recursos gráficos.
+Projeto desenvolvido colaborativamente por estudantes do curso de Tecnologia em Análise e Desenvolvimento de Sistemas (TADS), com divisão de responsabilidades entre interface, lógica do jogo, personagens, inimigos e recursos gráficos.
 
 **Integrantes:**
 
-* [Pedro Vinicius 1]
-* [Joabe Gabriel 2]
-* [Joaquim Vinicius 3]
-* [David de Souaz 4]
-* [Joanderson Moreno 5]
-
----
-
-## Contexto acadêmico
-
-Projeto desenvolvido no contexto acadêmico, com o objetivo de aplicar conhecimentos de desenvolvimento web, lógica de programação, animação gráfica e trabalho colaborativo com controle de versão.
-
-
->>>>>>> develop
+* Pedro Vinicius
+* Joabe Gabriel
+* Joaquim Vinicius
+* Davi Silva
+* Joanderson Moreno

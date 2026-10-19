@@ -16,56 +16,101 @@
     <script src="js/menu.js" defer></script>
     <script src="js/jogador.js" defer></script>
     <script src="js/inimigo.js" defer></script>
+    <script src="js/abelha.js" defer></script>
+    <script src="js/combate.js" defer></script>
     <script src="js/jogo.js" defer></script>
   </head>
 
   <body>
     <audio id="musica-menu" src="assets/audio/musica-menu.mp3" loop></audio>
-
+    <button id="btn-musica" aria-label="Mutar música">
+      <img src="assets/cenarios/btn-mutar-musica-removebg.png" alt="" />
+    </button>
     <main>
       <!-- Tela inicial -->
-      <section id="tela-menu">
-    <video id="video-fundo" autoplay muted loop playsinline>
-        <source src="assets/videos/men-fazenda-rush.mp4" type="video/mp4" />
-        Seu navegador não suporta vídeos.
-    </video>
 
-    <div class="conteudo-menu">
-        <h1 class="titulo-jogo">
-            <img src="assets/cenarios/logo-fazenda-rush-removebg-preview.png" alt="Fazenda rush logo">
-        </h1>
-        <button id="btn-jogar" type="button" aria-label="Jogar">
-            <img src="assets/cenarios/Botão de Madeira Pixelado “JOGAR”.png" alt="">
-        </button>
-        <button id="btn-sair" type="button" aria-label="Sair">
-            <img src="assets/cenarios/btn-sair-removebg.png" alt="">
-        </button>
-    </div>
-</section>
+      <section id="tela-menu">
+        <video id="video-fundo" autoplay muted loop playsinline>
+          <source src="assets/videos/men-fazenda-rush.mp4" type="video/mp4" />
+          Seu navegador não suporta vídeos.
+        </video>
+
+        <div class="conteudo-menu">
+          <h1 class="titulo-jogo">
+            <img
+              src="assets/cenarios/logo-fazenda-rush-removebg-preview.png"
+              alt="Fazenda rush logo"
+            />
+          </h1>
+          <button id="btn-jogar" type="button" aria-label="Jogar">
+            <img
+              src="assets/cenarios/Botão de Madeira Pixelado “JOGAR”.png"
+              alt=""
+            />
+          </button>
+          <button id="btn-sair" type="button" aria-label="Sair">
+            <img src="assets/cenarios/btn-sair-removebg.png" alt="" />
+          </button>
+        </div>
+      </section>
 
       <!-- Tela de seleção de personagens -->
       <section id="tela-selecao" hidden>
-        <h2>Escolha seu personagem</h2>
-
+        <div class="titulo-selecao">
+          <img
+            src="assets/cenarios/esp-menu-selecao.png"
+            alt="Escolha seu personagem"
+          />
+        </div>
         <div id="lista-personagens">
           <button class="personagem" data-personagem="Ander" type="button">
-            Ander
+            <canvas
+              id="sprite-ander"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
+            <span>Ander</span>
           </button>
 
           <button class="personagem" data-personagem="Joabe" type="button">
-            Joabe
+            <canvas
+              id="sprite-joabe"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
+            <span>Joabe</span>
           </button>
 
           <button class="personagem" data-personagem="Vinicius" type="button">
-            Vinicius
+            <canvas
+              id="sprite-vinicius"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
+            <span>Vinicius</span>
           </button>
 
           <button class="personagem" data-personagem="Davi" type="button">
-            Davi
+            <canvas
+              id="sprite-davi"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
+            <span>Davi</span>
           </button>
 
           <button class="personagem" data-personagem="Joaquim" type="button">
-            Joaquim
+            <canvas
+              id="sprite-joaquim"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
+            <span>Joaquim</span>
           </button>
         </div>
 
@@ -74,24 +119,22 @@
         </p>
 
         <button id="btn-confirmar" type="button" disabled>
-          Confirmar
+          <img src="assets/cenarios/btn-confirmar.png" alt="" />
         </button>
 
-        <button id="btn-voltar" type="button">Voltar</button>
+        <button id="btn-voltar" type="button">
+          <img src="assets/cenarios/btn-voltar.png" alt="" />
+        </button>
       </section>
 
       <!-- Tela do jogo -->
       <section id="tela-jogo" hidden>
         <canvas id="canvas"></canvas>
-
-        <img
-          id="cenario"
-          src="assets/cenarios/cenario.png"
-          alt="Cenário de fundo"
-          hidden
-        />
       </section>
     </main>
+
     <script src="js/plataforma.js"></script>
+    <script src="js/portal.js"></script>
+    <script src="js/selecao-personagens.js"></script>
   </body>
 </html>

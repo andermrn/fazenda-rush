@@ -17,6 +17,7 @@
     const botoesPersonagens = document.querySelectorAll(".personagem");
     const textoPersonagem = document.getElementById("personagem-selecionado");
     const musicaMenu = document.getElementById("musica-menu");
+    const btnMusica = document.getElementById("btn-musica");
 
     let personagemEscolhido = null;
 
@@ -35,6 +36,14 @@
             console.log("A reprodução da música foi bloqueada pelo navegador.");
         });
     }
+
+    function alternarMusica() {
+    if (!musicaMenu) {
+        return;
+    }
+
+    musicaMenu.muted = !musicaMenu.muted;
+}
 
     function selecionarPersonagem(botao) {
         personagemEscolhido = botao.dataset.personagem;
@@ -56,6 +65,7 @@
         if (!personagemEscolhido) {
             return;
         }
+        window.reiniciarPartida();
 
         telaJogo.dataset.personagem = personagemEscolhido;
 
@@ -78,6 +88,19 @@
 
         mostrarTela(telaMenu);
     }
+    function voltarParaSelecao() {
+    personagemEscolhido = null;
+
+    textoPersonagem.textContent = "Nenhum personagem selecionado.";
+    btnConfirmar.disabled = true;
+
+    botoesPersonagens.forEach((botao) => {
+        botao.classList.remove("selecionado");
+    });
+    
+    mostrarTela(telaSelecao);
+}
+window.voltarParaSelecao = voltarParaSelecao;
 
     btnJogar.addEventListener("click", () => {
         mostrarTela(telaSelecao);
@@ -93,6 +116,8 @@
     btnConfirmar.addEventListener("click", confirmarPersonagem);
 
     btnVoltar.addEventListener("click", voltarAoMenu);
+
+    btnMusica.addEventListener("click", alternarMusica);
 
     btnSair.addEventListener("click", () => {
         window.close();

@@ -18,20 +18,28 @@ body {
     overflow: hidden;
 }
 
-/* Aplicação do cenário de fundo */
+/* Fundo da página */
 body {
-    background-image: url("../assets/cenarios/cenario.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     background-color: #000;
 }
 
-/* Define como o canvas deve aparecer */
-canvas {
+/* O canvas DO JOGO ocupa a janela inteira.
+   O JS ajusta a largura interna dele para ter a mesma proporção da janela,
+   então nada fica esticado.
+   Usa #canvas (id) para não afetar os canvas dos cartões de personagem. */
+#canvas {
     display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
+
+    /* Cenário dentro do canvas, para acompanhar o jogo */
+    background-image: url("../assets/cenarios/cenario1.jpeg");
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
 }
 
 /* Tela inicial do menu */
@@ -127,11 +135,10 @@ canvas {
     }
 }
 
-
-
+/* Botão Sair */
 #btn-sair {
-    width: 260px;
-    margin-top: 10vh;
+    width: 210px;
+    margin-top: 12vh;
     padding: 0;
 
     background: transparent;
@@ -164,8 +171,154 @@ canvas {
     outline-offset: 6px;
 }
 
+/* Botão de música */
+#btn-musica {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
 
-#btn-sair {
-    width: 210px;
-    margin-top: 12vh;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#btn-musica img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Tela de seleção de personagens */
+#tela-selecao {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 40px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+
+    background-image: url("../assets/cenarios/fundo-selecao-personagem.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Título da seleção de personagens */
+.titulo-selecao {
+    width: 450px;
+    max-width: 90%;
+    margin: 0 0 15px;
+}
+
+.titulo-selecao img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Área dos personagens */
+#lista-personagens {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Botão de cada personagem */
+.personagem {
+    width: 200px;   /* antes 150: aumentado para caber o canvas de 160px */
+    padding: 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    background: #263b2b;
+    border: 3px solid #60452b;
+    border-radius: 8px;
+
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Canvas onde o sprite do personagem é desenhado (animação idle) */
+.sprite-placeholder {
+    width: 160px;
+    height: 160px;
+}
+
+/* Personagem selecionado */
+.personagem.selecionado {
+    border-color: #f5d76e;
+    background: #425c37;
+    transform: translateY(-5px);
+}
+
+/* Nome do personagem selecionado */
+#personagem-selecionado {
+    margin: 0;
+    text-align: center;
+    font-size: 18px;
+    color: white;
+    font-family: sans-serif;
+}
+
+/* Área dos botões */
+#btn-confirmar,
+#btn-voltar {
+    width: 200px;
+    height: 70px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 0.2s ease;
+}
+
+/* Imagens dos botões */
+#btn-confirmar img,
+#btn-voltar img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block;
+}
+
+/* Animação ao passar o mouse */
+#btn-confirmar:not(:disabled):hover,
+#btn-voltar:hover {
+    transform: scale(1.12);
+}
+
+/* Efeito ao clicar */
+#btn-confirmar:not(:disabled):active,
+#btn-voltar:active {
+    transform: scale(0.95);
+}
+
+/* Botão confirmar desativado */
+#btn-confirmar:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
 }

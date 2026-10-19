@@ -30,7 +30,8 @@ class Inimigo {
     gameFrame = 0;    // apenas um contador que uso para controlar a velocidade da animação
     atacando = false;   // true = parado perto do jogador (vai ficar dando coice)
 
-
+    vida = 10;
+    morto = false;
 
     // DRAW() ANTIGO: APENAS UM QUADRADO, VOU CRIAR OUTRO DRAW() MAS AGORA COM O SPRITE!!!!
     // // desenha o inimigo no canvas
@@ -40,7 +41,7 @@ class Inimigo {
     // }
 
     draw() {
-
+        if (this.morto) return;
         if( this.atacando === true ) {
             // Atacando: usa as linhas do coice
             if (this.direcao === -1) {
@@ -90,7 +91,7 @@ class Inimigo {
 
     //atualiza a posição e controla a direção do inimigo
     atualizar() { //faz se mover, patrulhar e perseguir
-        this.atacando = false;   // a cada atualização vamos assumir que o inimigo NÃO está atacando
+       this.atacando = false;   // a cada atualização vamos assumir que o inimigo NÃO está atacando
         let distancia;// armazena a distância entre as bordas do inimigo e do jogador
         let distanciaEsquerda = jogador.posicaoX - (this.x + this.largura);// calcula a distãncia entre a borda direita do inimigo e a borda esquerda do jogador
         let distanciaDireita = this.x - (jogador.posicaoX + jogador.width);// calcula os limites da borda direita do jogador e a borda esquerda do inimigo
@@ -101,29 +102,31 @@ class Inimigo {
         } else {
             distancia = 0//inimigo está encostando ou sobrepondo o jogador
         }
+        if (this.morto) return;
         //perseguição
-        if(distancia <= 150) { //se a distancia entre o inimigo e o personagem for de até 150 pixels ele persegue
-            //console.log("Jogador detectado!!!");
+        if(distancia <=150) { //se a distancia entre o inimigo e o personagem for de até 150 pixels ele persegue
+            let passo = Math.min(this.velocidade,distancia);
             if (this.x < jogador.posicaoX) {//define a direcao que o inimigo deve perseguir
                 this.direcao = 1;
             } else {
                 this.direcao = -1
             }
-
+            if(distancia > 0){
             if (this.direcao == 1 && this.x + this.largura < jogador.posicaoX) { //move o inimigo até enconstar no jogador
-                this.x += this.velocidade * this.direcao;
+                this.x += passo * this.direcao;
             } else if (this.direcao == -1 && this.x > jogador.posicaoX + jogador.width) {
-                this.x += this.velocidade * this.direcao;
-            } else { // Aqui ele encostou no jogador
+                this.x += passo * this.direcao;
+            }
+         } else { // Aqui ele encostou no jogador
+           
                 this.atacando = true; // para e ataca
             }
 
         } else {
-            //caso o inimigo esteja a mais de 150 pixels de distancia do jogador, o inimigo continua patrulhando
+            
             if (this.x >= canvas.width) { //faz o inimigo reaparecer pela esquerda quando sai completamente pela direita.
                 this.x = -this.largura;
             }
-            // inverte a direção ao atingir o limite esquerdo
              else if (this.x + this.largura <= 0) {//// Faz o inimigo reaparecer pela direita ao sair completamente pela esquerda.
                 this.x = canvas.width;
             }
@@ -131,9 +134,17 @@ class Inimigo {
         }
         // faz ele sempre estar no "chão"
         this.y = canvas.height - this.altura;
-        //impede que o inimigo ultrapasse os limites x do canvas
-       // this.x = Math.max(0, Math.min(this.x, canvas.width - this.largura));
     }
+    reiniciar() {
+    this.x = 300;
+    this.y = 400;
+    this.vida = 10;
+    this.morto = false;
+    this.atacando = false;
+    this.direcao = 1;
+    this.frameX = 0;
+    this.frameY = 0;
+}
 }
 //cria um objeto da classe inimigo
 let inimigo = new Inimigo();
