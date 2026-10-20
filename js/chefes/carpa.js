@@ -5,13 +5,17 @@ class Carpa {
         this.largura = 100;
         this.altura = 100;
         this.cor = "blue";
+        this.vida = 10;
+        this.morto = false;
     }
 
     mover() {
+        if (this.morto) return;
         this.y = canvas.height - this.altura;
     }
 
     draw() {
+        if (this.morto) return;
         ctx.fillStyle = this.cor;
         ctx.fillRect(
             this.x,
@@ -19,5 +23,13 @@ class Carpa {
             this.largura,
             this.altura
         );
+    }
+
+    reiniciar() {
+    this.x = 700;
+    this.y = canvas.height - this.altura;
+
+    this.vida = 10;
+    this.morto = false;
     }
 }

@@ -7,7 +7,7 @@ function ajustarCanvas() {
 
 ajustarCanvas();
 window.addEventListener("resize", ajustarCanvas);
- 
+
 const plataforma1 = new plataforma(670, 450, 300, 40, "assets/cenarios/plataformac.png")
 const plataforma2 = new plataforma(180, 650, 300, 40, "assets/cenarios/plataformac.png")
 const plataforma3 = new plataforma(1160, 650, 300, 40, "assets/cenarios/plataformac.png")
@@ -48,7 +48,7 @@ function trocarCenario() {
         // Volta o jogador para o começo da fase, no chão
         jogador.posicaoX = 100;
         jogador.posicaoY = canvas.height - jogador.height;
-    } else if( faseAtual === 2 ) {
+    } else if (faseAtual === 2) {
         canvas.style.backgroundImage = 'url("assets/cenarios/fases/cenario-fase3.png")';
         faseAtual = 3;
 
@@ -68,8 +68,13 @@ function reiniciarPartida() {
 
     abelha1.reiniciar();
     for (const peixe of peixes) {
-    peixe.reiniciar();
-}
+        peixe.reiniciar();
+    }
+    // Restaura o estado dos chefes para permitir uma nova partida.
+    bodao.reiniciar();
+    carpa.reiniciar();
+    rainha.reiniciar();
+
     projeteis.length = 0;
     jogoEncerrado = false;
     window.reiniciarPartida = reiniciarPartida;
@@ -90,41 +95,41 @@ function animate() {
 
     jogador.update();
     jogador.draw();
-    
+
     carpa.mover();
     carpa.draw();
-     
+
     rainha.draw();
     rainha.mover();
-    
+
     bodao.movimento();
     bodao.draw();
 
     abelha1.mover();
     abelha1.draw();
 
-   // Atualiza e desenha todos os peixes.
-for (const peixe of peixes) {
-    peixe.mover();
-    peixe.draw();
-}
+    // Atualiza e desenha todos os peixes.
+    for (const peixe of peixes) {
+        peixe.mover();
+        peixe.draw();
+    }
 
- for (const inimigo of inimigos) {
-    inimigo.atualizar(); //ele percorre a lista inimigos e atualiza os três, um por vez, a cada quadro do jogo.
-    inimigo.draw();
-   }
+    for (const inimigo of inimigos) {
+        inimigo.atualizar(); //ele percorre a lista inimigos e atualiza os três, um por vez, a cada quadro do jogo.
+        inimigo.draw();
+    }
 
     plataforma1.draw();
     plataforma2.draw();
     plataforma3.draw();
 
-    if( faseAtual === 1 ) {
+    if (faseAtual === 1) {
         portalAbelha.atualizar();
         portalAbelha.draw();
         if (portalAbelha.colisaoJogador() === true) {
             trocarCenario();
         }
-    } else if( faseAtual === 2 ) {
+    } else if (faseAtual === 2) {
         portalPeixe.atualizar();
         portalPeixe.draw();
         if (portalAbelha.colisaoJogador() === true) {

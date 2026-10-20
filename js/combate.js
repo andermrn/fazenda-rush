@@ -3,6 +3,7 @@ class Projetil {
         this.x = x;
         this.y = y;
 
+
         this.largura = 12;
         this.altura = 6;
 
@@ -15,7 +16,6 @@ class Projetil {
     atualizar() {
         this.x += this.velocidade * this.direcao;
 
-        // Desativa o disparo quando ele sai da tela.
         if (this.x > canvas.width || this.x + this.largura < 0) {
             this.ativo = false;
         }
@@ -31,7 +31,10 @@ class Projetil {
             this.altura
         );
     }
+
+
 }
+
 const projeteis = [];
 
 function detectarColisao(a, b) {
@@ -48,32 +51,28 @@ function atirar() {
         ? jogador.posicaoX + jogador.width
         : jogador.posicaoX - 12;
 
-    const y = jogador.posicaoY - 40
+
+    const y = jogador.posicaoY - 40;
 
     projeteis.push(
         new Projetil(x, y, jogador.direcao)
     );
+
+
 }
-/*
-window.addEventListener("click", (e) => {
-    
-        e.preventDefault();
-        jogador.tiro = true;
-        atirar();
-    
-});
-*/
+
 function atualizarProjeteis() {
     for (const projetil of projeteis) {
         projetil.atualizar();
     }
 
-    // Remove os disparos que já saíram da tela.
     for (let i = projeteis.length - 1; i >= 0; i--) {
         if (!projeteis[i].ativo) {
             projeteis.splice(i, 1);
         }
     }
+
+
 }
 
 function desenharProjeteis() {
@@ -82,71 +81,102 @@ function desenharProjeteis() {
     }
 }
 
+// Reúne todos os inimigos e chefes que podem receber dano.
+function obterAlvos() {
+    return [
+        ...inimigos,
+        abelha1,
+        ...peixes,
+        bodao,
+        carpa,
+        rainha
+    ];
+}
+
+// Verifica se o alvo já morreu.
+function alvoEstaMorto(alvo) {
+    return alvo.morto === true || alvo.morta === true;
+}
+
+// Aplica dano e elimina o alvo quando sua vida chega a zero.
+function causarDano(alvo) {
+    if (alvoEstaMorto(alvo)) {
+        return;
+    }
+
+    alvo.vida--;
+
+    console.log(
+        `${alvo.constructor.name}: ${alvo.vida} de vida restante`
+    );
+
+    if (alvo.vida <= 0) {
+        alvo.vida = 0;
+
+        if ("morta" in alvo) {
+            alvo.morta = true;
+        } else {
+            alvo.morto = true;
+        }
+
+        console.log(`${alvo.constructor.name} foi derrotado!`);
+    }
+
+
+}
+
 function verificarColisoes() {
+    const alvos = obterAlvos();
+
+
+    // Verifica os projéteis contra todos os inimigos.
     for (let i = projeteis.length - 1; i >= 0; i--) {
         const projetil = projeteis[i];
 
-        if (!projetil.ativo) continue;
+        if (!projetil.ativo) {
+            continue;
+        }
 
-        if (!inimigo.morto && detectarColisao(projetil, inimigo)) {
-            inimigo.vida--;
+        for (const alvo of alvos) {
+            if (alvoEstaMorto(alvo)) {
+                continue;
+            }
 
-            projetil.ativo = false;
+            if (detectarColisao(projetil, alvo)) {
+                causarDano(alvo);
 
-            if (inimigo.vida <= 0) {
-                inimigo.morto = true;
+                // Um projétil só pode atingir um alvo.
+                projetil.ativo = false;
+
+                break;
             }
         }
-        if (!abelha1.morta && detectarColisao(projetil, abelha1)) {
-    abelha1.vida--;
-    projetil.ativo = false;
-
-    if (abelha1.vida <= 0) {
-        abelha1.morta = true;
-    }
-}
-    if (!peixe1.morta && detectarColisao(projetil, peixe1)) {
-    peixe1.vida--;
-    projetil.ativo = false;
-
-    if (peixe1.vida <= 0) {
-        peixe1.morta = true;
-    }
-}
     }
 
+    // Remove os projéteis que atingiram algum alvo.
     for (let i = projeteis.length - 1; i >= 0; i--) {
         if (!projeteis[i].ativo) {
             projeteis.splice(i, 1);
-        } 
+        }
     }
-    if (
-    !inimigo.morto &&
-    detectarColisao(
-        {
-            x: jogador.posicaoX,
-            y: jogador.posicaoY,
-            largura: jogador.width,
-            altura: jogador.height
-        },
-        inimigo
-    )
-) {
-    jogador.receberDano();
-}
-if (
-    !peixe1.morta &&
-    detectarColisao(
-        {
-            x: jogador.posicaoX,
-            y: jogador.posicaoY,
-            largura: jogador.width,
-            altura: jogador.height
-        },
-        peixe1
-    )
-) {
-    jogador.receberDano();
-}
-}
 
+    // Define a área de colisão do jogador.
+    const areaJogador = {
+        x: jogador.posicaoX,
+        y: jogador.posicaoY,
+        largura: jogador.width,
+        altura: jogador.height
+    };
+
+    // Verifica o contato do jogador com todos os inimigos vivos.
+    for (const alvo of alvos) {
+        if (alvoEstaMorto(alvo)) {
+            continue;
+        }
+
+        if (detectarColisao(areaJogador, alvo)) {
+            jogador.receberDano();
+            break;
+        }
+    }
+}

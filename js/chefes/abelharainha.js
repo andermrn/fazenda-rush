@@ -5,12 +5,16 @@ class Rainha {
         this.largura = 100;
         this.altura = 100;
         this.cor = "brown";
+        this.vida = 10;
+        this.morto = false;
     }
     mover() {
-    this.y = canvas.height - this.altura;
-}
+        if (this.morto) return;
+        this.y = canvas.height - this.altura;
+    }
 
     draw() {
+        if (this.morto) return;
         ctx.fillStyle = this.cor;
         ctx.fillRect(
             this.x,
@@ -19,5 +23,10 @@ class Rainha {
             this.altura
         );
     }
-   
+    reiniciar() {
+        this.x = 900;
+        this.y = canvas.height - this.altura;
+        this.vida = 10;
+        this.morto = false;
+    }
 }
