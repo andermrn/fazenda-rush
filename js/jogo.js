@@ -13,6 +13,13 @@ const plataforma2 = new plataforma(180, 650, 300, 40, "assets/cenarios/plataform
 const plataforma3 = new plataforma(1160, 650, 300, 40, "assets/cenarios/plataformac.png")
 const plataformas = [plataforma1, plataforma2, plataforma3];//cplt
 
+// Cria um peixe em cada plataforma.
+const peixe1 = new Peixe(plataforma1);
+const peixe2 = new Peixe(plataforma2);
+const peixe3 = new Peixe(plataforma3);
+
+const peixes = [peixe1, peixe2, peixe3];
+
 const carpa = new Carpa();
 const bodao = new Bodao();
 const rainha = new Rainha();
@@ -31,7 +38,7 @@ let faseAtual = 1;
 
 // Pré-carrega o cenário da fase 2 (o navegador já baixa a imagem antes de precisar dela)
 const cenarioFase2 = new Image();
-cenarioFase2.src = "assets/cenarios/cenario-fase2.png";
+cenarioFase2.src = "assets/cenarios/fases/cenario-fase2.png";
 
 function trocarCenario() {
     if (faseAtual === 1) {
@@ -60,6 +67,9 @@ function reiniciarPartida() {
     }
 
     abelha1.reiniciar();
+    for (const peixe of peixes) {
+    peixe.reiniciar();
+}
     projeteis.length = 0;
     jogoEncerrado = false;
     window.reiniciarPartida = reiniciarPartida;
@@ -93,8 +103,11 @@ function animate() {
     abelha1.mover();
     abelha1.draw();
 
-    peixe1.mover();
-    peixe1.draw();
+   // Atualiza e desenha todos os peixes.
+for (const peixe of peixes) {
+    peixe.mover();
+    peixe.draw();
+}
 
  for (const inimigo of inimigos) {
     inimigo.atualizar(); //ele percorre a lista inimigos e atualiza os três, um por vez, a cada quadro do jogo.

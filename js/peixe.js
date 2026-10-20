@@ -1,3 +1,4 @@
+
 const imagemPeixe = new Image();
 imagemPeixe.src = "assets/sprites/fase3/inimigo.png";
 
@@ -11,87 +12,197 @@ const intervaloFramePeixe = 8;
 const escalaPeixe = 1; // Escala do peixe: 1 = tamanho original do desenho (96x96)
 
 class Peixe extends Abelha {
-    constructor() {
+    constructor(plataforma = plataformas[0]) {
         super();
+
         this.vida = 10;
         this.morta = false;
-        this.x = 600;//eixo X
-        this.y = 200;//eixo Y
 
-        this.velocidade = 2;// velocidade que o inimigo se move
+        // Usa o tamanho de um quadro da sprite do peixe.
+        this.altura = alturaFramePeixe * escalaPeixe;
+        this.largura = larguraFramePeixe * escalaPeixe;
 
+        // Guarda a plataforma original para reiniciar o peixe no lugar certo.
+        this.plataformaInicial = plataforma;
+        this.plataformaAtual = plataforma;
+
+        this.x = plataforma.x + 50;
+        this.y = plataforma.y - this.altura;
+
+        this.velocidade = 2;
+        this.velocidadeY = 0;
+        this.gravidade = 0.5;
+        this.forcaPulo = -10;
+        this.estanochao = true;
+
+        this.intervaloSalto = 90;
+        this.contadorSalto = 0;
 
         this.direcaoX = 1;//direção que o inimigo se move horizontalmente
         this.direcaoY = 1;//direcao que o inimigo se mexe verticalmente
 
-        this.altura = alturaFramePeixe * escalaPeixe;
-        this.largura = larguraFramePeixe * escalaPeixe;
+        // Controle da inteligência artificial
+        this.estado = "patrulhando";
+        this.alcanceDeteccao = 180;
 
         // ANIMAÇÃO
         this.frameX = 0;      // coluna do quadro atual (0 a 3)
-        this.frameY = 0;      // linha do quadro atual (0 = direita, 1 = esquerda)
+        this.frameY = 0;      // linha (0 = direita, 1 = esquerda)
         this.gameFrame = 0;   // contador para controlar a velocidade do nado
 
         this.atacando = false;         // true = encostou no jogador (vai morder)
         this.olhandoDireita = true;    // para qual lado o peixe está virado
+    }
 
+    reiniciar() {
+        this.vida = 10;
+        this.morta = false;
+
+        this.plataformaAtual = this.plataformaInicial;
+
+        this.x = this.plataformaAtual.x + 50;
+        this.y = this.plataformaAtual.y - this.altura;
+
+        this.velocidade = 2;
+        this.velocidadeY = 0;
+        this.direcaoX = 1;
+        this.direcaoY = 1;
+
+        this.estanochao = true;
+        this.contadorSalto = 0;
+
+        this.estado = "patrulhando";
+        this.atacando = false;
+
+        this.frameX = 0;
+        this.frameY = 0;
+        this.gameFrame = 0;
+        this.olhandoDireita = true;
+    }
+
+    // Verifica se o jogador está apoiado na mesma plataforma do peixe.
+    jogadorNaMesmaPlataforma() {
+        const plataforma = this.plataformaAtual;
+
+        const baseJogador =
+            jogador.posicaoY + jogador.height;
+
+        const jogadorSobrePlataforma =
+            jogador.posicaoX + jogador.width > plataforma.x &&
+            jogador.posicaoX < plataforma.x + plataforma.largura;
+
+        const alinhadoComTopo =
+            Math.abs(baseJogador - plataforma.y) <= 3;
+
+        return (
+            jogador.estanochao &&
+            jogadorSobrePlataforma &&
+            alinhadoComTopo
+        );
+    }
+
+    // Decide se o peixe deve patrulhar ou perseguir.
+    atualizarEstado() {
+        if (this.morta) return;
+
+        const mesmaPlataforma = this.jogadorNaMesmaPlataforma();
+
+        const centroPeixe = this.x + this.largura / 2;
+        const centroJogador =
+            jogador.posicaoX + jogador.width / 2;
+
+        const distanciaX = Math.abs(centroJogador - centroPeixe);
+
+        if (
+            mesmaPlataforma &&
+            distanciaX <= this.alcanceDeteccao
+        ) {
+            this.estado = "perseguindo";
+
+            if (centroJogador > centroPeixe) {
+                this.direcaoX = 1;
+            } else if (centroJogador < centroPeixe) {
+                this.direcaoX = -1;
+            }
+        } else {
+            // Se perder o jogador ou ele sair da plataforma, retorna à patrulha.
+            this.estado = "patrulhando";
+        }
     }
 
     mover() {
-        if (this.morta) return; //peixe para quando morre
-        this.atacando = false;
+        if (this.morta) return;
 
-        const diferencaX = jogador.posicaoX - this.x;//indica se o jogador está à direita ou a esquerda da abelha
-        const diferencaY = jogador.posicaoY - this.y;//indica se está acima ou abaixo
-        const distancia = Math.sqrt(Math.pow(diferencaX, 2) + Math.pow(diferencaY, 2));// transforma as duas diferenças em uma unica distância(Math.pow eleva as diferenças ao quadrado) e (Math.sqrt calcula a raiz quadrada)
-       
-        //COLISÃO
-        if (this.x + this.largura >= jogador.posicaoX - 10 && jogador.posicaoX + jogador.width + 10 >= this.x && jogador.posicaoY + jogador.height >= this.y && this.y + this.altura >= jogador.posicaoY) {
-            jogador.receberDano();
-            this.atacando = true;
-            //ele para
+        this.atualizarEstado();
+
+        const plataforma = this.plataformaAtual;
+
+        // Guarda a posição anterior para detectar a aterrissagem
+        const yAnterior = this.y;
+
+        // Aplica a gravidade e atualiza a posição vertical
+        this.velocidadeY += this.gravidade;
+        this.y += this.velocidadeY;
+
+        // A perseguição é mais rápida que a patrulha.
+        this.velocidade = this.estado === "perseguindo" ? 3 : 2;
+
+        // Atualiza a posição horizontal
+        this.x += this.velocidade * this.direcaoX;
+
+        // Limites horizontais da plataforma atual
+        const limiteEsquerdo = plataforma.x;
+        const limiteDireito =
+            plataforma.x + plataforma.largura - this.largura;
+
+        if (this.x <= limiteEsquerdo) {
+            this.x = limiteEsquerdo;
+            this.direcaoX = 1;
+        } else if (this.x >= limiteDireito) {
+            this.x = limiteDireito;
+            this.direcaoX = -1;
+        }
+
+        // Verifica se o Peixe aterrissou na plataforma
+        const estavaAcima =
+            yAnterior + this.altura <= plataforma.y;
+
+        const passouPeloTopo =
+            this.y + this.altura >= plataforma.y;
+
+        const sobrepoeNaHorizontal =
+            this.x + this.largura > plataforma.x &&
+            this.x < plataforma.x + plataforma.largura;
+
+        if (
+            this.velocidadeY >= 0 &&
+            estavaAcima &&
+            passouPeloTopo &&
+            sobrepoeNaHorizontal
+        ) {
+            this.y = plataforma.y - this.altura;
+            this.velocidadeY = 0;
+            this.estanochao = true;
         } else {
-            //PERSEGUIÇÃO
-            if (distancia <= 600 && jogador.height + jogador.posicaoY >= 470) {
-                this.velocidade = 3; // ela persegue mais rapido que patrulha
-                if (diferencaX < -30) {
-                    this.direcaoX = -1;//Verifica os limites do canva caso a abelha chege ela troca de direção
-                } else if (diferencaX > 30) {
-                    this.direcaoX = 1;
-                } else {
-                    this.direcaoX = 0
-                }
-                if (diferencaY < -10) {
-                    this.direcaoY = -1;
-                } else if (diferencaY > 10) {
-                    this.direcaoY = 1;
-                } else {
-                    this.direcaoY = 0;
-                }
-                if (this.y + this.altura >= canvas.height - 10) {
-                    this.direcaoY = -1;
-                }
-                if (this.y <= 400) {
-                    this.direcaoY = 1;
-                }
-            } else {
-                //PATRULHA
-                this.velocidade = 2;
-                if (this.x + this.largura >= canvas.width) {
-                    this.direcaoX = -1;  // se for maior que o limite do eixo horizontal do canvas (limite direito) ele fica com a negativa que faz se mover para esquerda
-                }
-                if (this.x <= 0) {
-                    this.direcaoX = 1; // se for menor que 0 (limite esquerdo) do canvas ele fica com a direcao horizontal positiva que faz mover para direita
-                }
-                if (this.y <= 440) {
-                    this.direcaoY = 1;// se o eixo y for menor que a posicao 440 a posicao fica positiva o que faz se mover para baixo
-                }
-                if (this.y + this.altura >= canvas.height - 40) {
-                    this.direcaoY = -1;// se o eixo Y for maior que a altura do canvas (limite inferior) - 40 a posicao fica negativa o que faz se mover para cima
-                }
+            this.estanochao = false;
+        }
+
+        // Verifica o chão do canvas
+        if (this.y + this.altura >= canvas.height) {
+            this.y = canvas.height - this.altura;
+            this.velocidadeY = 0;
+            this.estanochao = true;
+        }
+
+        // Espera antes de iniciar outro salto
+        if (this.estanochao) {
+            this.contadorSalto++;
+
+            if (this.contadorSalto >= this.intervaloSalto) {
+                this.velocidadeY = this.forcaPulo;
+                this.estanochao = false;
+                this.contadorSalto = 0;
             }
-            this.x += this.velocidade * this.direcaoX;// atualiza o eixo X
-            this.y += this.velocidade * this.direcaoY;// atualiza o eixo Y
         }
     }
 
@@ -143,5 +254,3 @@ class Peixe extends Abelha {
         this.gameFrame = this.gameFrame + 1;
     }
 }
-
-const peixe1 = new Peixe();
