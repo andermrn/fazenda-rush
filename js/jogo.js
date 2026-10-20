@@ -7,11 +7,15 @@ function ajustarCanvas() {
 
 ajustarCanvas();
 window.addEventListener("resize", ajustarCanvas);
-
+ 
 const plataforma1 = new plataforma(670, 450, 300, 40, "assets/cenarios/plataformac.png")
 const plataforma2 = new plataforma(180, 650, 300, 40, "assets/cenarios/plataformac.png")
 const plataforma3 = new plataforma(1160, 650, 300, 40, "assets/cenarios/plataformac.png")
 const plataformas = [plataforma1, plataforma2, plataforma3];//cplt
+
+const carpa = new Carpa();
+const bodao = new Bodao();
+const rainha = new Rainha();
 
 const inimigo1 = new Inimigo(plataforma1);
 const inimigo2 = new Inimigo(plataforma2);
@@ -76,6 +80,15 @@ function animate() {
 
     jogador.update();
     jogador.draw();
+    
+    carpa.mover();
+    carpa.draw();
+     
+    rainha.draw();
+    rainha.mover();
+    
+    bodao.movimento();
+    bodao.draw();
 
     abelha1.mover();
     abelha1.draw();
