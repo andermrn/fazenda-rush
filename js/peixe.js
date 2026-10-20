@@ -35,8 +35,13 @@ class Peixe extends Abelha {
         this.forcaPulo = -10;
         this.estanochao = true;
 
-        this.intervaloSalto = 90;
-        this.contadorSalto = 0;
+        // Intervalo aleatório entre os pulos.
+this.intervaloSalto = this.gerarIntervaloSalto();
+this.contadorSalto = 0;
+
+// Controle da mudança aleatória de direção.
+this.intervaloMudancaDirecao = this.gerarIntervaloDirecao();
+this.contadorDirecao = 0;
 
         this.direcaoX = 1;//direção que o inimigo se move horizontalmente
         this.direcaoY = 1;//direcao que o inimigo se mexe verticalmente
@@ -53,6 +58,15 @@ class Peixe extends Abelha {
         this.atacando = false;         // true = encostou no jogador (vai morder)
         this.olhandoDireita = true;    // para qual lado o peixe está virado
     }
+    // Gera um intervalo aleatório entre 60 e 150 quadros para os pulos.
+gerarIntervaloSalto() {
+    return Math.floor(Math.random() * 91) + 60;
+}
+
+// Gera um intervalo aleatório entre 60 e 180 quadros para mudar de direção.
+gerarIntervaloDirecao() {
+    return Math.floor(Math.random() * 121) + 60;
+}
 
     reiniciar() {
         this.vida = 10;
@@ -78,6 +92,9 @@ class Peixe extends Abelha {
         this.frameY = 0;
         this.gameFrame = 0;
         this.olhandoDireita = true;
+        this.intervaloSalto = this.gerarIntervaloSalto();
+this.intervaloMudancaDirecao = this.gerarIntervaloDirecao();
+this.contadorDirecao = 0;
     }
 
     // Verifica se o jogador está apoiado na mesma plataforma do peixe.
@@ -134,8 +151,24 @@ class Peixe extends Abelha {
         if (this.morta) return;
 
         this.atualizarEstado();
+    
 
         const plataforma = this.plataformaAtual;
+
+        // Só muda de direção aleatoriamente durante a patrulha.
+if (this.estado === "patrulhando") {
+    this.contadorDirecao++;
+
+    if (this.contadorDirecao >= this.intervaloMudancaDirecao) {
+        this.direcaoX *= -1;
+
+        this.contadorDirecao = 0;
+        this.intervaloMudancaDirecao = this.gerarIntervaloDirecao();
+    }
+} else {
+    // Ao perseguir o jogador, não usa a mudança aleatória.
+    this.contadorDirecao = 0;
+}
 
         // Guarda a posição anterior para detectar a aterrissagem
         const yAnterior = this.y;
@@ -202,6 +235,9 @@ class Peixe extends Abelha {
                 this.velocidadeY = this.forcaPulo;
                 this.estanochao = false;
                 this.contadorSalto = 0;
+
+                // Sorteia o tempo de espera para o próximo pulo.
+    this.intervaloSalto = this.gerarIntervaloSalto();
             }
         }
     }
