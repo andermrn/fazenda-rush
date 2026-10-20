@@ -8,30 +8,30 @@ function ajustarCanvas() {
 ajustarCanvas();
 window.addEventListener("resize", ajustarCanvas);
 
-const plataforma1 = new plataforma(670,450,300,40,"assets/cenarios/plataformac.png")
-const plataforma2 = new plataforma(180,650,300,40,"assets/cenarios/plataformac.png")
-const plataforma3 = new plataforma(1160,650,300,40,"assets/cenarios/plataformac.png")
+const plataforma1 = new plataforma(670, 450, 300, 40, "assets/cenarios/plataformac.png")
+const plataforma2 = new plataforma(180, 650, 300, 40, "assets/cenarios/plataformac.png")
+const plataforma3 = new plataforma(1160, 650, 300, 40, "assets/cenarios/plataformac.png")
 const plataformas = [plataforma1, plataforma2, plataforma3];//cplt
 
-const portal = new Portal();
-
+const portalAbelha = new Portal("abelha", 5, "assets/cenarios/portais/portal-abelha.png");
+const portalPeixe = new Portal("peixe", 24, "assets/cenarios/portais/portal-peixe.png");
 let faseAtual = 1;
 
 // Pré-carrega o cenário da fase 2 (o navegador já baixa a imagem antes de precisar dela)
 const cenarioFase2 = new Image();
-cenarioFase2.src = "assets/cenarios/cenario2.png";
+cenarioFase2.src = "assets/cenarios/cenario-fase2.png";
 
 function trocarCenario() {
-    if( faseAtual === 1 ) {
-        canvas.style.backgroundImage = 'url("assets/cenarios/cenario2.png")';
+    if (faseAtual === 1) {
+        canvas.style.backgroundImage = 'url("assets/cenarios/fases/cenario-fase2.png")';
         faseAtual = 2;
 
         // Volta o jogador para o começo da fase, no chão
         jogador.posicaoX = 100;
         jogador.posicaoY = canvas.height - jogador.height;
-    } else {
-        canvas.style.backgroundImage = 'url("assets/cenarios/cenario1.jpeg")';
-        faseAtual = 1;
+    } else if( faseAtual === 2 ) {
+        canvas.style.backgroundImage = 'url("assets/cenarios/fases/cenario-fase3.png")';
+        faseAtual = 3;
 
         // Volta o jogador para o começo da fase, no chão
         jogador.posicaoX = 100;
@@ -49,18 +49,18 @@ function reiniciarPartida() {
     window.reiniciarPartida = reiniciarPartida;
 }
 
-function animate(){
+function animate() {
     requestAnimationFrame(animate);
     if (jogoEncerrado) {
-    return;
-}
+        return;
+    }
 
-if (jogador.vidas <= 0) {
-    jogoEncerrado = true;
-    window.voltarParaSelecao();
-    return;
-}
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if (jogador.vidas <= 0) {
+        jogoEncerrado = true;
+        window.voltarParaSelecao();
+        return;
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     jogador.update();
     jogador.draw();
@@ -78,10 +78,18 @@ if (jogador.vidas <= 0) {
     plataforma2.draw();
     plataforma3.draw();
 
-    portal.atualizar();   
-    portal.draw();        
-    if (portal.colisaoJogador() === true) {
-        trocarCenario();
+    if( faseAtual === 1 ) {
+        portalAbelha.atualizar();
+        portalAbelha.draw();
+        if (portalAbelha.colisaoJogador() === true) {
+            trocarCenario();
+        }
+    } else if( faseAtual === 2 ) {
+        portalPeixe.atualizar();
+        portalPeixe.draw();
+        if (portalAbelha.colisaoJogador() === true) {
+            trocarCenario();
+        }
     }
 
     atualizarProjeteis();

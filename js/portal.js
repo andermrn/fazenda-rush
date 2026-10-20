@@ -1,21 +1,24 @@
-const imagemPortal = new Image();
-imagemPortal.src = "assets/cenarios/portal.png";
-
-// Tamanho de cada sprite no .png: 128x192
-const larguraFramePortal = 128;
-const alturaFramePortal = 192;
-
-const colunasPortal = 5;
-const intervaloFramePortal = 10;   // a cada 8 chamadas de draw(), troca a coluna
-
-// Escala do portal: 1 = tamanho original do desenho (128x192)
 const escalaPortal = 1.2;
 
 class Portal {
 
-    constructor() {
-        this.largura = larguraFramePortal * escalaPortal;
-        this.altura = alturaFramePortal * escalaPortal;
+    constructor(tipo, colunasPortal, imagemPortalSrc) {
+        if( tipo == "abelha" ) {
+            this.larguraFramePortal = 128;
+            this.alturaFramePortal = 192;
+            this.intervaloFrame = 12
+            
+            this.largura = this.larguraFramePortal * escalaPortal;
+            this.altura = this.alturaFramePortal * escalaPortal;
+
+        } else if( tipo == "peixe" ) {
+            this.larguraFramePortal = 160;
+            this.alturaFramePortal = 160;
+
+            this.largura = this.larguraFramePortal * escalaPortal;
+            this.altura = this.alturaFramePortal * escalaPortal;
+            this.intervaloFrame = 5;
+        }
 
         this.x = 0;
         this.y = 0;
@@ -23,6 +26,11 @@ class Portal {
         // Animação
         this.frameX = 0;       // coluna do quadro atual (0 a 4)
         this.gameFrame = 0;    // contador para controlar a velocidade do girinho
+        this.colunasPortal = colunasPortal;
+
+        this.image = new Image();
+        this.image.src = imagemPortalSrc;
+
     }
 
     atualizar() {
@@ -30,16 +38,15 @@ class Portal {
         this.y = canvas.height - this.altura;
     }
 
-    // DRAW TEMPORÁRIO: só um retângulo para ver a posição (vamos trocar no Passo 3)
     draw() {
         // Só desenha se a imagem já terminou de carregar
-        if ( imagemPortal.complete && imagemPortal.naturalWidth > 0 ) {
+        if ( this.image.complete && this.image.naturalWidth > 0 ) {
             ctx.drawImage(
-                imagemPortal,                      
-                this.frameX * larguraFramePortal,   // onde começa o recorte (horizontal)
+                this.image,                      
+                this.frameX * this.larguraFramePortal,   // onde começa o recorte (horizontal)
                 0,                                  // onde começa o recorte (vertical): sempre 0, só tem uma linha
-                larguraFramePortal,                 
-                alturaFramePortal,                  
+                this.larguraFramePortal,                 
+                this.alturaFramePortal,                  
                 this.x,                             
                 this.y,                             
                 this.largura,                       
@@ -47,10 +54,10 @@ class Portal {
             );
         }
 
-        if ( this.gameFrame % intervaloFramePortal === 0 ) {
+        if ( this.gameFrame % this.intervaloFrame === 0 ) {
             this.frameX += 1;
 
-            if ( this.frameX >= colunasPortal ) {
+            if ( this.frameX >= this.colunasPortal ) {
                 this.frameX = 0;
             }
         }

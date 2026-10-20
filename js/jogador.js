@@ -211,7 +211,7 @@ class Player {
         return;
     }
 
-    this.vidas--;
+    if( vida_infinita === false ) this.vidas--;
     this.invulneravel = true;
 
     console.log(`Vidas restantes: ${this.vidas}`);
