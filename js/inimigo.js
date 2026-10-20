@@ -12,10 +12,20 @@ const intervaloFrameInimigo = 6; // intervalo para deixar a animação mais lent
 
 
 
-class Inimigo {
     //atributos do inimigo
-    x = 300;//posição horizontal
-    y = 400;//posição vertical
+   class Inimigo {
+    constructor(plataforma) {
+        this.plataforma = plataforma;
+
+        // Nasce em uma posição aleatória dentro da plataforma
+        this.x = plataforma.x + Math.random() *
+            (plataforma.largura - this.largura);
+
+        // Fica apoiado sobre a plataforma
+        this.y = plataforma.y - this.altura;
+    }
+
+    // A posição inicial agora é definida pelo construtor
 
     // Alterei para 125x100 agora para a adição dos sprites!
     largura = 125;
@@ -23,6 +33,7 @@ class Inimigo {
 
     velocidade = 3;
     direcao = 1;
+    proximaMudanca = Date.now() + 2000 + Math.random() * 3000;// define quando o inimigo deve mudar de direção pela primeira vez
 
     // Parte da Animação Joabão! Não alterei nenhuma lógica aqui do seu script!
     frameX = 0;       // coluna do quadro atual, como são 6 colunas, vai de 0 a 5
@@ -90,54 +101,86 @@ class Inimigo {
 
 
     //atualiza a posição e controla a direção do inimigo
-    atualizar() { //faz se mover, patrulhar e perseguir
-       this.atacando = false;   // a cada atualização vamos assumir que o inimigo NÃO está atacando
-        let distancia;// armazena a distância entre as bordas do inimigo e do jogador
-        let distanciaEsquerda = jogador.posicaoX - (this.x + this.largura);// calcula a distãncia entre a borda direita do inimigo e a borda esquerda do jogador
-        let distanciaDireita = this.x - (jogador.posicaoX + jogador.width);// calcula os limites da borda direita do jogador e a borda esquerda do inimigo
-        if (this.x + this.largura < jogador.posicaoX) {// verifica se o inimigo está a esquerda do jogador
-            distancia = distanciaEsquerda;
-        } else if (this.x > jogador.posicaoX + jogador.width) {// verfica se o inimigo está a direita do jogador
-            distancia = distanciaDireita;
-        } else {
-            distancia = 0//inimigo está encostando ou sobrepondo o jogador
-        }
-        if (this.morto) return;
-        //perseguição
-        if(distancia <=150) { //se a distancia entre o inimigo e o personagem for de até 150 pixels ele persegue
-            let passo = Math.min(this.velocidade,distancia);
-            if (this.x < jogador.posicaoX) {//define a direcao que o inimigo deve perseguir
-                this.direcao = 1;
-            } else {
-                this.direcao = -1
-            }
-            if(distancia > 0){
-            if (this.direcao == 1 && this.x + this.largura < jogador.posicaoX) { //move o inimigo até enconstar no jogador
-                this.x += passo * this.direcao;
-            } else if (this.direcao == -1 && this.x > jogador.posicaoX + jogador.width) {
-                this.x += passo * this.direcao;
-            }
-         } else { // Aqui ele encostou no jogador
-           
-                this.atacando = true; // para e ataca
-            }
+    
+atualizar() {
+    if (this.morto) return;
 
-        } else {
-            
-            if (this.x >= canvas.width) { //faz o inimigo reaparecer pela esquerda quando sai completamente pela direita.
-                this.x = -this.largura;
-            }
-             else if (this.x + this.largura <= 0) {//// Faz o inimigo reaparecer pela direita ao sair completamente pela esquerda.
-                this.x = canvas.width;
-            }
-            this.x += this.velocidade * this.direcao;
-        }
-        // faz ele sempre estar no "chão"
-        this.y = canvas.height - this.altura;
+    this.atacando = false;
+
+    // Calcula a distância horizontal entre o inimigo e o jogador
+    let distancia;
+    const distanciaEsquerda =
+        jogador.posicaoX - (this.x + this.largura);
+    const distanciaDireita =
+        this.x - (jogador.posicaoX + jogador.width);
+
+    if (this.x + this.largura < jogador.posicaoX) {
+        distancia = distanciaEsquerda;
+    } else if (this.x > jogador.posicaoX + jogador.width) {
+        distancia = distanciaDireita;
+    } else {
+        distancia = 0;
     }
-    reiniciar() {
-    this.x = 300;
-    this.y = 400;
+
+    // Limites que o inimigo pode alcançar na plataforma
+    const limiteEsquerdo = this.plataforma.x;
+    const limiteDireito =
+        this.plataforma.x + this.plataforma.largura - this.largura;
+
+        const mesmaAltura =
+    jogador.posicaoY < this.y + this.altura &&
+    jogador.posicaoY + jogador.height > this.y;
+
+    // Perseguição
+    if (distancia <= 150 && mesmaAltura) {
+        const passo = Math.min(this.velocidade, distancia);
+
+        if (this.x < jogador.posicaoX) {
+            this.direcao = 1;
+        } else {
+            this.direcao = -1;
+        }
+
+        if (distancia > 0) {
+            if (
+                this.direcao === 1 &&
+                this.x + this.largura < jogador.posicaoX
+            ) {
+                this.x = Math.min(limiteDireito, this.x + passo);
+            } else if (
+                this.direcao === -1 &&
+                this.x > jogador.posicaoX + jogador.width
+            ) {
+                this.x = Math.max(limiteEsquerdo, this.x - passo);
+            }
+        } else {
+            this.atacando = true;
+        }
+    } else {
+        // Patrulha com mudança aleatória de direção
+        if (Date.now() >= this.proximaMudanca) {
+            this.direcao = Math.random() < 0.5 ? -1 : 1;
+
+            this.proximaMudanca =
+                Date.now() + 2000 + Math.random() * 3000;
+        }
+
+        if (this.x <= limiteEsquerdo) {
+            this.direcao = 1;
+        } else if (this.x >= limiteDireito) {
+            this.direcao = -1;
+        }
+
+        this.x += this.velocidade * this.direcao;
+    }
+
+    // Mantém o inimigo na altura da plataforma
+    this.y = this.plataforma.y - this.altura;
+}
+
+reiniciar() {
+    this.x = this.plataforma.x;
+    this.y = this.plataforma.y - this.altura;
     this.vida = 10;
     this.morto = false;
     this.atacando = false;
@@ -146,5 +189,3 @@ class Inimigo {
     this.frameY = 0;
 }
 }
-//cria um objeto da classe inimigo
-let inimigo = new Inimigo();

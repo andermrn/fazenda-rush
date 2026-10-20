@@ -13,6 +13,14 @@ const plataforma2 = new plataforma(180, 650, 300, 40, "assets/cenarios/plataform
 const plataforma3 = new plataforma(1160, 650, 300, 40, "assets/cenarios/plataformac.png")
 const plataformas = [plataforma1, plataforma2, plataforma3];//cplt
 
+const inimigo1 = new Inimigo(plataforma1);
+const inimigo2 = new Inimigo(plataforma2);
+const inimigo3 = new Inimigo(plataforma3);
+
+const inimigos = [inimigo1, inimigo2, inimigo3];
+
+const inimigo = inimigo1; // Compatibilidade com o combate antigo
+
 const portalAbelha = new Portal("abelha", 5, "assets/cenarios/portais/portal-abelha.png");
 const portalPeixe = new Portal("peixe", 24, "assets/cenarios/portais/portal-peixe.png");
 let faseAtual = 1;
@@ -42,7 +50,11 @@ function trocarCenario() {
 let jogoEncerrado = false;
 function reiniciarPartida() {
     jogador.reiniciar();
-    inimigo.reiniciar();
+
+    for (const inimigo of inimigos) {
+        inimigo.reiniciar();
+    }
+
     abelha1.reiniciar();
     projeteis.length = 0;
     jogoEncerrado = false;
@@ -71,8 +83,10 @@ function animate() {
     peixe1.mover();
     peixe1.draw();
 
-    inimigo.atualizar();
+ for (const inimigo of inimigos) {
+    inimigo.atualizar(); //ele percorre a lista inimigos e atualiza os três, um por vez, a cada quadro do jogo.
     inimigo.draw();
+   }
 
     plataforma1.draw();
     plataforma2.draw();
