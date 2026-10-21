@@ -1,4 +1,3 @@
-
 const imagemPeixe = new Image();
 imagemPeixe.src = "assets/sprites/fase3/inimigo.png";
 
@@ -11,12 +10,10 @@ const colunasPeixe = 4;
 const intervaloFramePeixe = 8;
 const escalaPeixe = 1; // Escala do peixe: 1 = tamanho original do desenho (96x96)
 
-class Peixe extends Abelha {
-    constructor(plataforma = plataformas[0]) {
-        super();
-
+class Peixe {
+    constructor(plataforma) {
         this.vida = 10;
-        this.morta = false;
+        this.morto = false;
 
         // Usa o tamanho de um quadro da sprite do peixe.
         this.altura = alturaFramePeixe * escalaPeixe;
@@ -29,48 +26,48 @@ class Peixe extends Abelha {
         this.x = plataforma.x + 50;
         this.y = plataforma.y - this.altura;
 
+        // Movimento
         this.velocidade = 2;
         this.velocidadeY = 0;
         this.gravidade = 0.5;
         this.forcaPulo = -10;
         this.estanochao = true;
+        this.direcaoX = 1;
 
         // Intervalo aleatório entre os pulos.
-this.intervaloSalto = this.gerarIntervaloSalto();
-this.contadorSalto = 0;
+        this.intervaloSalto = this.gerarIntervaloSalto();
+        this.contadorSalto = 0;
 
-// Controle da mudança aleatória de direção.
-this.intervaloMudancaDirecao = this.gerarIntervaloDirecao();
-this.contadorDirecao = 0;
+        // Controle da mudança aleatória de direção.
+        this.intervaloMudancaDirecao = this.gerarIntervaloDirecao();
+        this.contadorDirecao = 0;
 
-        this.direcaoX = 1;//direção que o inimigo se move horizontalmente
-        this.direcaoY = 1;//direcao que o inimigo se mexe verticalmente
-
-        // Controle da inteligência artificial
+        // Inteligência: "patrulhando" ou "perseguindo"
         this.estado = "patrulhando";
         this.alcanceDeteccao = 180;
 
-        // ANIMAÇÃO
-        this.frameX = 0;      // coluna do quadro atual (0 a 3)
-        this.frameY = 0;      // linha (0 = direita, 1 = esquerda)
-        this.gameFrame = 0;   // contador para controlar a velocidade do nado
+        // Animação (linha 0 = direita, 1 = esquerda, 2 = morde direita, 3 = morde esquerda)
+        this.frameX = 0;
+        this.frameY = 0;
+        this.gameFrame = 0;
 
-        this.atacando = false;         // true = encostou no jogador (vai morder)
-        this.olhandoDireita = true;    // para qual lado o peixe está virado
+        this.atacando = false;
+        this.olhandoDireita = true;
     }
-    // Gera um intervalo aleatório entre 60 e 150 quadros para os pulos.
-gerarIntervaloSalto() {
-    return Math.floor(Math.random() * 91) + 60;
-}
 
-// Gera um intervalo aleatório entre 60 e 180 quadros para mudar de direção.
-gerarIntervaloDirecao() {
-    return Math.floor(Math.random() * 121) + 60;
-}
+    // Gera um intervalo aleatório entre 60 e 150 quadros para os pulos.
+    gerarIntervaloSalto() {
+        return Math.floor(Math.random() * 91) + 60;
+    }
+
+    // Gera um intervalo aleatório entre 60 e 180 quadros para mudar de direção.
+    gerarIntervaloDirecao() {
+        return Math.floor(Math.random() * 121) + 60;
+    }
 
     reiniciar() {
         this.vida = 10;
-        this.morta = false;
+        this.morto = false;
 
         this.plataformaAtual = this.plataformaInicial;
 
@@ -80,7 +77,6 @@ gerarIntervaloDirecao() {
         this.velocidade = 2;
         this.velocidadeY = 0;
         this.direcaoX = 1;
-        this.direcaoY = 1;
 
         this.estanochao = true;
         this.contadorSalto = 0;
@@ -93,8 +89,8 @@ gerarIntervaloDirecao() {
         this.gameFrame = 0;
         this.olhandoDireita = true;
         this.intervaloSalto = this.gerarIntervaloSalto();
-this.intervaloMudancaDirecao = this.gerarIntervaloDirecao();
-this.contadorDirecao = 0;
+        this.intervaloMudancaDirecao = this.gerarIntervaloDirecao();
+        this.contadorDirecao = 0;
     }
 
     // Verifica se o jogador está apoiado na mesma plataforma do peixe.
@@ -120,7 +116,7 @@ this.contadorDirecao = 0;
 
     // Decide se o peixe deve patrulhar ou perseguir.
     atualizarEstado() {
-        if (this.morta) return;
+        if (this.morto) return;
 
         const mesmaPlataforma = this.jogadorNaMesmaPlataforma();
 
@@ -147,28 +143,28 @@ this.contadorDirecao = 0;
         }
     }
 
-    mover() {
-        if (this.morta) return;
+    atualizar() {
+        if (this.morto) return;
 
         this.atualizarEstado();
-    
+
 
         const plataforma = this.plataformaAtual;
 
         // Só muda de direção aleatoriamente durante a patrulha.
-if (this.estado === "patrulhando") {
-    this.contadorDirecao++;
+        if (this.estado === "patrulhando") {
+            this.contadorDirecao++;
 
-    if (this.contadorDirecao >= this.intervaloMudancaDirecao) {
-        this.direcaoX *= -1;
+            if (this.contadorDirecao >= this.intervaloMudancaDirecao) {
+                this.direcaoX *= -1;
 
-        this.contadorDirecao = 0;
-        this.intervaloMudancaDirecao = this.gerarIntervaloDirecao();
-    }
-} else {
-    // Ao perseguir o jogador, não usa a mudança aleatória.
-    this.contadorDirecao = 0;
-}
+                this.contadorDirecao = 0;
+                this.intervaloMudancaDirecao = this.gerarIntervaloDirecao();
+            }
+        } else {
+            // Ao perseguir o jogador, não usa a mudança aleatória.
+            this.contadorDirecao = 0;
+        }
 
         // Guarda a posição anterior para detectar a aterrissagem
         const yAnterior = this.y;
@@ -237,7 +233,7 @@ if (this.estado === "patrulhando") {
                 this.contadorSalto = 0;
 
                 // Sorteia o tempo de espera para o próximo pulo.
-    this.intervaloSalto = this.gerarIntervaloSalto();
+                this.intervaloSalto = this.gerarIntervaloSalto();
             }
         }
     }
@@ -245,7 +241,7 @@ if (this.estado === "patrulhando") {
     // === [ DAVI ] === 
     draw() {
         // Peixe morto não é desenhado
-        if (this.morta) return;
+        if (this.morto) return;
 
         // linha 0 = direita e linha 1 = esquerda
         if (this.direcaoX === -1) {
@@ -254,12 +250,12 @@ if (this.estado === "patrulhando") {
             this.olhandoDireita = true;
         }
 
-        if( this.atacando === true ) {
-            if( this.olhandoDireita === true ) {
+        if (this.atacando === true) {
+            if (this.olhandoDireita === true) {
                 this.frameY = 2;
             } else this.frameY = 3;
         } else {
-            if ( this.olhandoDireita === true ) {
+            if (this.olhandoDireita === true) {
                 this.frameY = 0;   // nadando para a direita
             } else this.frameY = 1;   // nadando para a esquerda
         }
@@ -269,15 +265,15 @@ if (this.estado === "patrulhando") {
                 imagemPeixe,                       // a folha de sprites inteira
                 this.frameX * larguraFramePeixe,   // onde começa o recorte (horizontal)
                 this.frameY * alturaFramePeixe,    // onde começa o recorte (vertical)
-                larguraFramePeixe,                 
-                alturaFramePeixe,                  
-                this.x,                            
-                this.y,                           
-                this.largura,                      
-                this.altura                        
+                larguraFramePeixe,
+                alturaFramePeixe,
+                this.x,
+                this.y,
+                this.largura,
+                this.altura
             );
         }
-            
+
         // Troca de quadro a cada "intervaloFramePeixe" chamadas do draw()
         if (this.gameFrame % intervaloFramePeixe === 0) {
             this.frameX = this.frameX + 1;

@@ -322,3 +322,19 @@ body {
     cursor: not-allowed;
     opacity: 0.5;
 }
+
+/* Tela de Game Over */
+.tela-game-over {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+
+    background-image: url("../assets/cenarios/gameover.jpeg");
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.tela-game-over[hidden] {
+    display: none !important;
+}

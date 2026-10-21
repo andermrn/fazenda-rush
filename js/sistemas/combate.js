@@ -81,11 +81,12 @@ function desenharProjeteis() {
     }
 }
 
+
 // Reúne todos os inimigos e chefes que podem receber dano.
 function obterAlvos() {
     return [
         ...inimigos,
-        abelha1,
+        ...abelhas,
         ...peixes,
         bodao,
         carpa,
@@ -93,43 +94,20 @@ function obterAlvos() {
     ];
 }
 
-// Verifica se o alvo já morreu.
-function alvoEstaMorto(alvo) {
-    return alvo.morto === true || alvo.morta === true;
-}
-
-// Aplica dano e elimina o alvo quando sua vida chega a zero.
+// Tira 1 de vida do alvo e marca como morto quando a vida acaba.
 function causarDano(alvo) {
-    if (alvoEstaMorto(alvo)) {
-        return;
-    }
-
     alvo.vida--;
-
-    console.log(
-        `${alvo.constructor.name}: ${alvo.vida} de vida restante`
-    );
 
     if (alvo.vida <= 0) {
         alvo.vida = 0;
-
-        if ("morta" in alvo) {
-            alvo.morta = true;
-        } else {
-            alvo.morto = true;
-        }
-
-        console.log(`${alvo.constructor.name} foi derrotado!`);
+        alvo.morto = true;
     }
-
-
 }
 
 function verificarColisoes() {
-    const alvos = obterAlvos();
+    const alvos = alvosDaFase();
 
-
-    // Verifica os projéteis contra todos os inimigos.
+    // Verifica os projéteis contra todos os alvos vivos.
     for (let i = projeteis.length - 1; i >= 0; i--) {
         const projetil = projeteis[i];
 
@@ -138,7 +116,7 @@ function verificarColisoes() {
         }
 
         for (const alvo of alvos) {
-            if (alvoEstaMorto(alvo)) {
+            if (alvo.morto) {
                 continue;
             }
 
@@ -147,7 +125,6 @@ function verificarColisoes() {
 
                 // Um projétil só pode atingir um alvo.
                 projetil.ativo = false;
-
                 break;
             }
         }
@@ -160,7 +137,7 @@ function verificarColisoes() {
         }
     }
 
-    // Define a área de colisão do jogador.
+    // Área de colisão do jogador.
     const areaJogador = {
         x: jogador.posicaoX,
         y: jogador.posicaoY,
@@ -168,9 +145,9 @@ function verificarColisoes() {
         altura: jogador.height
     };
 
-    // Verifica o contato do jogador com todos os inimigos vivos.
+    // Se encostar em qualquer alvo vivo, o jogador leva dano.
     for (const alvo of alvos) {
-        if (alvoEstaMorto(alvo)) {
+        if (alvo.morto) {
             continue;
         }
 

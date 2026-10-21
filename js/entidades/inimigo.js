@@ -1,19 +1,19 @@
 const imagemInimigo = new Image();
-imagemInimigo.src = "assets/sprites/fase1/inimigo.png"; 
+imagemInimigo.src = "assets/sprites/fase1/inimigo.png";
 
 // Aqui é a largura de cada sprite no .png: 640x512
 const larguraFrameInimigo = 640;
 const alturaFrameInimigo = 512;
 
 // Numero de colunas por linha (os calculos vou trabalhar em cima dela)
-const colunasInimigo = 6; 
+const colunasInimigo = 6;
 const intervaloFrameInimigo = 6; // intervalo para deixar a animação mais lenta, tipo: a cada 5 chamadas de draw(), troca a coluna
 
 
 
 
-    //atributos do inimigo
-   class Inimigo {
+//atributos do inimigo
+class Inimigo {
     constructor(plataforma) {
         this.plataforma = plataforma;
 
@@ -53,7 +53,7 @@ const intervaloFrameInimigo = 6; // intervalo para deixar a animação mais lent
 
     draw() {
         if (this.morto) return;
-        if( this.atacando === true ) {
+        if (this.atacando === true) {
             // Atacando: usa as linhas do coice
             if (this.direcao === -1) {
                 this.frameY = 2;   // coice para a esquerda (LINHA 3)
@@ -64,14 +64,14 @@ const intervaloFrameInimigo = 6; // intervalo para deixar a animação mais lent
         } else { // Caso ele não esteja atacando
             // Aqui é simples, se o inimig tiver indo para esquerda (direcao == -1), a linha vai ser a 0
             // Se estiver indo pra direita (direcao == 1), a linha vai ser a 1
-            if( this.direcao === -1 ) {
+            if (this.direcao === -1) {
                 this.frameY = 0;
             } else this.frameY = 1;
         }
 
 
         // So desenha se a imageme ja terminou de carregar (Script de Vini7)
-        if( imagemInimigo.complete && imagemInimigo.naturalWidth > 0 ) {
+        if (imagemInimigo.complete && imagemInimigo.naturalWidth > 0) {
             ctx.drawImage(
                 imagemInimigo,                      // .png do Inimigo
                 this.frameX * larguraFrameInimigo,  // onde começa o recorte (na horizontal)
@@ -88,10 +88,10 @@ const intervaloFrameInimigo = 6; // intervalo para deixar a animação mais lent
 
         // Aqui ele faz aquela conta: espera passar 5 frames (intervaloFrameInimigo) do draw() para ai sim trocar para o proximo sprite
         // Vini criou isso aqui pra deixar a animação não muito rapida
-        if( (this.gameFrame % intervaloFrameInimigo) === 0 ) {
+        if ((this.gameFrame % intervaloFrameInimigo) === 0) {
             this.frameX += 1; // Aqui adiciona +1, ou seja, vai pra proxima coluna da linha
 
-            if( this.frameX >= colunasInimigo ) this.frameX = 0; // Ai se frameX for igual a 6, ele reinicia pra 0!!
+            if (this.frameX >= colunasInimigo) this.frameX = 0; // Ai se frameX for igual a 6, ele reinicia pra 0!!
         }
 
         this.gameFrame += 1; // aqui é aquele contador de frames do draw() que eu criei. 
@@ -101,91 +101,91 @@ const intervaloFrameInimigo = 6; // intervalo para deixar a animação mais lent
 
 
     //atualiza a posição e controla a direção do inimigo
-    
-atualizar() {
-    if (this.morto) return;
 
-    this.atacando = false;
+    atualizar() {
+        if (this.morto) return;
 
-    // Calcula a distância horizontal entre o inimigo e o jogador
-    let distancia;
-    const distanciaEsquerda =
-        jogador.posicaoX - (this.x + this.largura);
-    const distanciaDireita =
-        this.x - (jogador.posicaoX + jogador.width);
+        this.atacando = false;
 
-    if (this.x + this.largura < jogador.posicaoX) {
-        distancia = distanciaEsquerda;
-    } else if (this.x > jogador.posicaoX + jogador.width) {
-        distancia = distanciaDireita;
-    } else {
-        distancia = 0;
-    }
+        // Calcula a distância horizontal entre o inimigo e o jogador
+        let distancia;
+        const distanciaEsquerda =
+            jogador.posicaoX - (this.x + this.largura);
+        const distanciaDireita =
+            this.x - (jogador.posicaoX + jogador.width);
 
-    // Limites que o inimigo pode alcançar na plataforma
-    const limiteEsquerdo = this.plataforma.x;
-    const limiteDireito =
-        this.plataforma.x + this.plataforma.largura - this.largura;
+        if (this.x + this.largura < jogador.posicaoX) {
+            distancia = distanciaEsquerda;
+        } else if (this.x > jogador.posicaoX + jogador.width) {
+            distancia = distanciaDireita;
+        } else {
+            distancia = 0;
+        }
+
+        // Limites que o inimigo pode alcançar na plataforma
+        const limiteEsquerdo = this.plataforma.x;
+        const limiteDireito =
+            this.plataforma.x + this.plataforma.largura - this.largura;
 
         const mesmaAltura =
-    jogador.posicaoY < this.y + this.altura &&
-    jogador.posicaoY + jogador.height > this.y;
+            jogador.posicaoY < this.y + this.altura &&
+            jogador.posicaoY + jogador.height > this.y;
 
-    // Perseguição
-    if (distancia <= 150 && mesmaAltura) {
-        const passo = Math.min(this.velocidade, distancia);
+        // Perseguição
+        if (distancia <= 150 && mesmaAltura) {
+            const passo = Math.min(this.velocidade, distancia);
 
-        if (this.x < jogador.posicaoX) {
-            this.direcao = 1;
-        } else {
-            this.direcao = -1;
-        }
+            if (this.x < jogador.posicaoX) {
+                this.direcao = 1;
+            } else {
+                this.direcao = -1;
+            }
 
-        if (distancia > 0) {
-            if (
-                this.direcao === 1 &&
-                this.x + this.largura < jogador.posicaoX
-            ) {
-                this.x = Math.min(limiteDireito, this.x + passo);
-            } else if (
-                this.direcao === -1 &&
-                this.x > jogador.posicaoX + jogador.width
-            ) {
-                this.x = Math.max(limiteEsquerdo, this.x - passo);
+            if (distancia > 0) {
+                if (
+                    this.direcao === 1 &&
+                    this.x + this.largura < jogador.posicaoX
+                ) {
+                    this.x = Math.min(limiteDireito, this.x + passo);
+                } else if (
+                    this.direcao === -1 &&
+                    this.x > jogador.posicaoX + jogador.width
+                ) {
+                    this.x = Math.max(limiteEsquerdo, this.x - passo);
+                }
+            } else {
+                this.atacando = true;
             }
         } else {
-            this.atacando = true;
-        }
-    } else {
-        // Patrulha com mudança aleatória de direção
-        if (Date.now() >= this.proximaMudanca) {
-            this.direcao = Math.random() < 0.5 ? -1 : 1;
+            // Patrulha com mudança aleatória de direção
+            if (Date.now() >= this.proximaMudanca) {
+                this.direcao = Math.random() < 0.5 ? -1 : 1;
 
-            this.proximaMudanca =
-                Date.now() + 2000 + Math.random() * 3000;
+                this.proximaMudanca =
+                    Date.now() + 2000 + Math.random() * 3000;
+            }
+
+            if (this.x <= limiteEsquerdo) {
+                this.direcao = 1;
+            } else if (this.x >= limiteDireito) {
+                this.direcao = -1;
+            }
+
+            this.x += this.velocidade * this.direcao;
         }
 
-        if (this.x <= limiteEsquerdo) {
-            this.direcao = 1;
-        } else if (this.x >= limiteDireito) {
-            this.direcao = -1;
-        }
-
-        this.x += this.velocidade * this.direcao;
+        // Mantém o inimigo na altura da plataforma
+        this.y = this.plataforma.y - this.altura;
     }
 
-    // Mantém o inimigo na altura da plataforma
-    this.y = this.plataforma.y - this.altura;
-}
-
-reiniciar() {
-    this.x = this.plataforma.x;
-    this.y = this.plataforma.y - this.altura;
-    this.vida = 10;
-    this.morto = false;
-    this.atacando = false;
-    this.direcao = 1;
-    this.frameX = 0;
-    this.frameY = 0;
-}
+    reiniciar() {
+        this.x = this.plataforma.x;
+        this.y = this.plataforma.y - this.altura;
+        this.vida = 10;
+        this.morto = false;
+        this.atacando = false;
+        this.direcao = 1;
+        this.frameX = 0;
+        this.frameY = 0;
+    }
 }

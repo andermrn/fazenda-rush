@@ -9,7 +9,7 @@ class Carpa {
         this.morto = false;
     }
 
-    mover() {
+    atualizar() {
         if (this.morto) return;
         this.y = canvas.height - this.altura;
     }

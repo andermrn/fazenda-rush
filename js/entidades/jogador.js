@@ -1,15 +1,14 @@
-const ctx = canvas.getContext("2d");
-
 let andandoesquerda = false;
 let andandodireita = false;
 
 const GRAVIDADE = 0.8;//*padrao 0.8
+const VIDA_INFINITA = false;
 
 // Carrega os sprites usados para animar o jogador
 const imagemJogador = new Image();
 
 const spritesPersonagens = {
-    Ander: "assets/sprites/personagens/davi.png",
+    Ander: "assets/sprites/personagens/joanderson.png",
     Joabe: "assets/sprites/personagens/joabe.png",
     Vinicius: "assets/sprites/personagens/vinicius.png",
     Davi: "assets/sprites/personagens/davi.png",
@@ -27,12 +26,11 @@ function trocarPersonagem(nome) {
     imagemJogador.src = caminho;
 }
 
-const larguraFrame = 256;// largura de cada frame
-const alturaFrame = 256;// altura de cada frame
-const framesPorAnimacao = 6;// quantidade de frames em cada linha 
-const intervaloFrame = 10;// intervalo pra deixar a animação mais lenta
+const larguraFrameJogador = 256;// largura de cada frame
+const alturaFrameJogador = 256;// altura de cada frame
+const colunasJogador = 6;// quantidade de frames em cada linha 
+const intervaloFrameJogador = 10;// intervalo pra deixar a animação mais lenta
 
-const vida_infinita = true;
 
 class Player {
     width = 20;//largura do player, hitbox,
@@ -83,9 +81,9 @@ class Player {
         } else if (this.velocidadeY > 0 && this.velocidadeX < 0) {
             this.frameY = 4;
             //animações verticais paradas
-        }  if ((this.velocidadeY < 0 ||this.velocidadeY > 0) && (this.velocidadeX == 0)&& (this.direcao == 1)) {
+        } if ((this.velocidadeY < 0 || this.velocidadeY > 0) && (this.velocidadeX == 0) && (this.direcao == 1)) {
             this.frameY = 9;
-        }else if ((this.velocidadeY < 0 ||this.velocidadeY > 0) && (this.velocidadeX == 0)&& (this.direcao == -1)) {
+        } else if ((this.velocidadeY < 0 || this.velocidadeY > 0) && (this.velocidadeX == 0) && (this.direcao == -1)) {
             this.frameY = 10;
         }
 
@@ -94,8 +92,8 @@ class Player {
             const larguraDesenho = 150;// define a largura do personagem na tela
             const alturaDesenho = 150;// define a altura do personagem na tela
             const ajustevisual = 12;//o sprite do personagem abaixo dele tem um espaço em branco, isso faz com que ele pareça flutuar nas plataformas
-        //logo defino um valor que vai fazer ele ficar mais embaixo, somando no posicaodesenhoy
-        // Centraliza o sprite dentro da largura usada para colisão do jogado
+            //logo defino um valor que vai fazer ele ficar mais embaixo, somando no posicaodesenhoy
+            // Centraliza o sprite dentro da largura usada para colisão do jogado
 
             const posicaoDesenhoX =
                 this.posicaoX + (this.width - larguraDesenho) / 2;
@@ -103,7 +101,7 @@ class Player {
             const posicaoDesenhoY =
                 this.posicaoY + this.height - alturaDesenho + ajustevisual;// Alinha a base do sprite com a base do jogador; Y cresce de cima para baixo no canvas
 
-             // Guarda o contexto antes de espelhar, para não afetar o cenário.
+            // Guarda o contexto antes de espelhar, para não afetar o cenário.
             ctx.save();
 
             // Pisca durante a invulnerabilidade
@@ -120,11 +118,11 @@ class Player {
             }
 
             ctx.drawImage(
-                 imagemJogador, // imagem que contém os frames do personagem
-                this.frameX * larguraFrame, // posição horizontal do frame na imagem
-                this.frameY * alturaFrame, // posição vertical do frame na imagem
-                larguraFrame, // largura do recorte do frame na imagem original
-                alturaFrame, // altura do recorte do frame na imagem original
+                imagemJogador, // imagem que contém os frames do personagem
+                this.frameX * larguraFrameJogador, // posição horizontal do frame na imagem
+                this.frameY * alturaFrameJogador, // posição vertical do frame na imagem
+                larguraFrameJogador, // largura do recorte do frame na imagem original
+                alturaFrameJogador, // altura do recorte do frame na imagem original
                 posicaoDesenhoX, // coordenada X onde o sprite começa a ser desenhado no canvas
                 posicaoDesenhoY, // coordenada Y onde o sprite começa a ser desenhado no canvas
                 larguraDesenho, // largura final do personagem na tela
@@ -142,8 +140,8 @@ class Player {
                 this.frameX = 4;
                 this.frameY = 4;
             } else {
-                if (this.gameFrame % intervaloFrame === 0) {//a cada 10, ira dar 0, e um frame ira rodar
-                    this.frameX = (this.frameX + 1) % framesPorAnimacao;
+                if (this.gameFrame % intervaloFrameJogador === 0) {//a cada 10, ira dar 0, e um frame ira rodar
+                    this.frameX = (this.frameX + 1) % colunasJogador;
                 }
 
                 this.gameFrame++;
@@ -164,7 +162,7 @@ class Player {
 
         this.posicaoX += this.velocidadeX;//posicaox = posicaox + velocidadex
 
-        this.posicaoX = Math.max(0,Math.min(this.posicaoX, canvas.width - this.width));//*preciso entender ainda
+        this.posicaoX = Math.max(0, Math.min(this.posicaoX, canvas.width - this.width));//*preciso entender ainda
 
         // Guarda a posição vertical anterior
         const yAnterior = this.posicaoY;
@@ -179,10 +177,9 @@ class Player {
 
         // Verifica colisões com as plataformas
         if (this.velocidadeY >= 0) {
-            for (const plataformaAtual of plataformas) {
-                const estavaAcima =
-                    yAnterior + this.height <= plataformaAtual.y;//como o y cresce pra baixo, pra cima diminui, ou seja, quanto menor o y, mais alto
-        //o yAnterior + this.height vai calcular a altura da base do jogador, se ela for menor que a altura da plataforma atual, ou seja, mais alta, estavaAcima = true
+            for (const plataformaAtual of plataformasDaFase()) {
+                const estavaAcima = yAnterior + this.height <= plataformaAtual.y;//como o y cresce pra baixo, pra cima diminui, ou seja, quanto menor o y, mais alto
+                //o yAnterior + this.height vai calcular a altura da base do jogador, se ela for menor que a altura da plataforma atual, ou seja, mais alta, estavaAcima = true
 
                 const passouPeloTopo =
                     this.posicaoY + this.height >= plataformaAtual.y;//passoupelotopo é true se a base do jogador tiver abaixo ou na altura da plataforma
@@ -191,7 +188,7 @@ class Player {
                     this.posicaoX > plataformaAtual.x &&
                     this.posicaoX < plataformaAtual.x + plataformaAtual.largura;
 
-                if (estavaAcima && passouPeloTopo && sobrepoeNaHorizontal ) {
+                if (estavaAcima && passouPeloTopo && sobrepoeNaHorizontal) {
                     // Alinha a base do jogador exatamente ao topo da plataforma para
                     // que ele não fique parcialmente dentro dela.
                     this.posicaoY = plataformaAtual.y - this.height;
@@ -213,23 +210,19 @@ class Player {
 
     // Recebe dano e ativa a invulnerabilidade temporária
     receberDano() {
-    if (this.invulneravel || this.vidas <= 0) {
-        return;
+        if (this.invulneravel || this.vidas <= 0) {
+            return;
+        }
+
+        if (VIDA_INFINITA === false) this.vidas--;
+        this.invulneravel = true;
+
+        console.log(`Vidas restantes: ${this.vidas}`);
+
+        setTimeout(() => {
+            this.invulneravel = false;
+        }, this.tempoInvulnerabilidade);
     }
-
-    if( vida_infinita === false ) this.vidas--;
-    this.invulneravel = true;
-
-    console.log(`Vidas restantes: ${this.vidas}`);
-
-    if (this.vidas <= 0) {
-        this.morto = true;
-    }
-
-    setTimeout(() => {
-        this.invulneravel = false;
-    }, this.tempoInvulnerabilidade);
-}
 
     pular() {
         if (this.estanochao) {//se esta no chao for true, velocidadey recebe forcadopulo e estanochao fica false
@@ -241,21 +234,21 @@ class Player {
     reiniciar() { // Reinicia os atributos do jogador para iniciar uma nova partida.
         this.vidas = 3;
         this.invulneravel = false;
-    
+
         this.posicaoX = 100;
         this.posicaoY = 400;
-    
+
         this.velocidadeX = 0;
         this.velocidadeY = 0;
-    
+
         this.direcao = 1;
         this.frameX = 0;
         this.frameY = 0;
         this.gameFrame = 0;
-    
+
         this.tiro = false;
         this.estanochao = false;
-    
+
         andandoesquerda = false;
         andandodireita = false;
     }
@@ -271,29 +264,37 @@ window.addEventListener("keydown", (e) => {//ao pressionar espaço pular
         jogador.pular();
     }
 
-    if (e.key === "d") {//ao pressionar d andar direita
+    // KeyD = PEGA TANTO d QUANTO D
+    if (e.code === "KeyD") {//ao pressionar d andar direita
         andandodireita = true;
         jogador.direcao = 1;
     }
 
-    if (e.key === "a") {//ao pressionar a andar esquerda
+    // KeyA = PEGA TANTO a QUANTO A
+    if (e.code === "KeyA") {//ao pressionar a andar esquerda
         andandoesquerda = true;
         jogador.direcao = -1;
     }
 });
 
 window.addEventListener("keyup", (e) => {//ao soltar d parar andar direita
-    if (e.key === "d") {
+    if (e.code === "KeyD") {
         andandodireita = false;
     }
 
-    if (e.key === "a") {//ao soltar a parar andar esquerda
+    if (e.code === "KeyA") {//ao soltar a parar andar esquerda
         andandoesquerda = false;
     }
 });
 
 // Controles do disparo
 window.addEventListener("mousedown", (e) => {//ao clicar no mouse fazer:
+
+    // Isso aqui evita o jogador conseguir atirar na tela inicial (DAVI)
+    if (jogoRodando === false) {
+        return;
+    }
+
     e.preventDefault();
     jogador.tiro = true;
     atirar();
