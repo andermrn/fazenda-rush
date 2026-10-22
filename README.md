@@ -1,57 +1,67 @@
 # 🌾 Fazenda Rush
 
-**Fazenda Rush** é um jogo 2D de plataforma desenvolvido como projeto acadêmico para o componente curricular **Programação Visual e Autoria Web**, utilizando apenas tecnologias web nativas.
+**Fazenda Rush** é um jogo 2D de plataforma e combate desenvolvido como projeto acadêmico para o componente curricular **Programação Visual e Autoria Web**, utilizando apenas tecnologias web nativas.
 
-O jogo reúne menu interativo, seleção de personagens, movimentação com física, combate por projéteis, dois tipos de inimigos, plataformas e um portal de troca de fase.
+O jogador escolhe um dos cinco personagens e atravessa **três fases**, enfrentando inimigos comuns e um **chefe** em cada uma delas, até chegar à vitória.
 
-> **Versão:** 0.5.0 — em desenvolvimento.
+> **Versão:** 1.0.0 — versão final.
 
 ---
 
 ## Sobre o jogo
 
-O jogador controla um personagem em um cenário de fazenda, enfrentando inimigos, desviando de ataques e atravessando um portal para mudar de fase. O projeto é construído em JavaScript puro, com a lógica separada em módulos para jogador, inimigos, combate, plataformas, portal e menu.
+Cada fase tem seu próprio cenário, layout de plataformas, inimigos e chefe. Ao derrotar todos os alvos da fase, um portal aparece e leva o jogador à fase seguinte. Ao concluir a terceira fase, a tela de vitória é exibida. Se as três vidas acabarem, aparece a tela de Game Over.
+
+| Fase | Inimigos comuns | Chefe |
+| --- | --- | --- |
+| 1 | 3 bodes | **Bodão** |
+| 2 | 3 abelhas | **Abelha Rainha** |
+| 3 | 3 peixes | **Carpa** |
 
 ---
 
 ## Funcionalidades
 
-### Menu e navegação
+### Menu e telas
 
-* Página única (`index.html`) que reúne **menu**, **seleção de personagens** e **jogo**, com alternância de telas via DOM.
-* Menu inicial com as opções **Jogar** e **Sair**.
-* Vídeo de fundo em loop no menu.
-* Música de fundo no menu, com botão para **mutar/desmutar**.
-* Tela de seleção com cinco personagens (clique, destaque e botão **Confirmar**), além do botão **Voltar**.
-* Sprites animados nos cartões de seleção.
+* Página única (`index.html`) com menu, seleção de personagens, jogo, Game Over e vitória, alternando telas via DOM.
+* Menu com **Jogar** e **Sair**, vídeo de fundo em loop e música.
+* Seleção de **cinco personagens**, cada um com sprite próprio, animado no cartão e usado no jogo.
+* Botão para **mutar/desmutar** a música (menu e jogo).
+* Música própria do menu e trilha sonora durante o jogo, com troca automática ao entrar e sair da partida.
+* Tela de **Game Over** com imagem de fundo e tela de **vitória** com retorno automático à seleção.
 
 ### Jogador
 
-* Movimentação com as teclas **A** e **D**.
-* Pulo com a tecla **Espaço**.
-* Gravidade e limitação de movimento nas bordas do Canvas.
-* Colisão com plataformas (o jogador pousa sobre elas ao descer).
-* Disparo de projéteis com o **clique do mouse**, com animação de tiro.
-* Sistema de **3 vidas**, com 1,5 s de invulnerabilidade após receber dano (efeito de piscar).
-* Animações por spritesheet (parado, esquerda, direita, pulo e tiro).
-* Reinício da partida ao perder todas as vidas.
+* Movimentação com **A** e **D**.
+* Pulo com **Espaço** ou **W**.
+* Disparo de projéteis com o **clique do mouse** ou a tecla **Enter**.
+* Gravidade, limites nas bordas do Canvas e colisão com plataformas.
+* **3 vidas** com 1,5 s de invulnerabilidade após dano (efeito de piscar).
+* Animações por spritesheet: parado, andando, pulo e tiro.
 
-### Inimigos
+### Inimigos e chefes
 
-* **Cavalo:** patrulha, perseguição ao jogador e ataque de coice, com animação própria. Fica sempre no chão e possui 10 pontos de vida.
-* **Abelha:** inimigo aéreo com patrulha em 2D e perseguição ao jogador (velocidade aumenta ao perseguir). Possui 10 pontos de vida.
-* Ambos causam dano ao jogador por contato e morrem ao ter a vida zerada.
+* **Bode:** patrulha sobre uma plataforma, persegue e ataca de perto.
+* **Abelha:** inimigo aéreo com movimento variado e perseguição.
+* **Peixe:** patrulha sobre plataforma, com pulos aleatórios e perseguição.
+* **Bodão:** alterna entre patrulha, preparo, investida (*dash*) e descanso.
+* **Abelha Rainha:** persegue o jogador em 2D e ferroa ao se aproximar.
+* **Carpa:** patrulha no chão e, ao detectar o jogador acima, salta na vertical.
 
-### Cenário e fases
+### HUD
 
-* Três plataformas com sprite e colisão.
-* Portal animado no canto inferior direito.
-* Duas fases (cenários de fundo diferentes), alternadas ao tocar no portal.
-* Canvas responsivo: altura fixa e largura proporcional à janela.
+* Indicador de vidas por imagem (corações).
+* Pontuação.
+* Contador de inimigos restantes.
 
-### Loop do jogo
+### Cenário e arquitetura
 
-* Atualização, limpeza e redesenho contínuos do Canvas com `requestAnimationFrame`.
+* Três cenários, com layouts de plataformas diferentes por fase (3, 4 e 3 plataformas).
+* Dois portais animados, que aparecem apenas depois que a fase é limpa.
+* Canvas responsivo: altura fixa de 900 px e largura proporcional à janela.
+* Loop principal com `requestAnimationFrame`.
+* Código organizado em `js/entidades/`, `js/sistemas/` e `js/telas/`.
 
 ---
 
@@ -61,52 +71,24 @@ O jogador controla um personagem em um cenário de fazenda, enfrentando inimigos
 | --- | --- |
 | **A** | Move para a esquerda |
 | **D** | Move para a direita |
-| **Espaço** | Pula (no chão ou sobre plataforma) |
-| **Clique esquerdo do mouse** | Dispara um projétil na direção em que o jogador olha |
-| Botão 🔇 (canto superior esquerdo) | Muta/desmuta a música do menu |
+| **Espaço** ou **W** | Pula (no chão ou sobre plataforma) |
+| **Clique esquerdo** ou **Enter** | Dispara um projétil na direção em que o jogador olha |
+| **Qualquer tecla** (Game Over) | Volta à seleção de personagens, após 2 s |
+| Botão 🔇 (canto superior esquerdo) | Muta/desmuta a música |
 
 ---
 
 ## Tecnologias utilizadas
 
 * **HTML5** — estrutura da página.
-* **CSS3** — estilização das telas.
+* **CSS3** — estilização das telas e do HUD.
 * **JavaScript** — lógica e comportamento do jogo.
-* **Canvas** — renderização dos elementos gráficos.
-* **Spritesheets** — animações de personagens, inimigos e portal.
+* **Canvas API** — renderização dos elementos gráficos.
+* **Spritesheets** — animações de personagens, inimigos, chefes e portais.
 * **Git e GitHub** — versionamento e colaboração.
 * **GitHub Actions** — workflow que notifica um canal do Discord a cada push na branch `develop`.
 
 O projeto utiliza JavaScript puro, sem frameworks ou bibliotecas externas.
-
----
-
-## 🎯 Estado atual do projeto
-
-| Funcionalidade | Estado |
-| --- | --- |
-| Menu inicial, vídeo de fundo e música | Implementado |
-| Botão de mutar música | Implementado |
-| Integração seleção ↔ jogo (página única) | Implementada |
-| Seleção de personagens (clique, destaque, confirmar) | Implementada |
-| Personagem escolhido alterar o sprite no jogo | Pendente |
-| Sprites distintos para os cinco personagens | Pendente |
-| Movimentação, pulo, gravidade e bordas | Implementados |
-| Colisão com plataformas | Implementada |
-| Disparo de projéteis com o mouse | Implementado |
-| Sistema de vidas e invulnerabilidade | Implementado |
-| Inimigo Cavalo | Implementado |
-| Inimigo Abelha | Implementado |
-| Portal e troca de cenário | Implementados |
-| Animação de pulo | Parcial (bug conhecido) |
-| HUD (vidas, pontuação, tempo) | Pendente |
-| Tela de Game Over | Pendente |
-| Condição de vitória | Pendente |
-| Pontuação e coletáveis | Pendente |
-| Trilha sonora e efeitos sonoros durante o jogo | Pendente |
-| Tela de pausa | Pendente |
-| Controles para dispositivos móveis | Pendente |
-| Câmera com scroll | Pendente |
 
 ---
 
@@ -121,3 +103,9 @@ Projeto desenvolvido colaborativamente por estudantes do curso de Tecnologia em 
 * Joaquim Vinicius
 * Davi Silva
 * Joanderson Moreno
+
+---
+
+## Contexto acadêmico
+
+Projeto desenvolvido para fins acadêmicos em 2026, com o objetivo de aplicar conhecimentos de programação, desenvolvimento web, lógica de jogos, animação gráfica, organização de código, controle de versão e trabalho em equipe.

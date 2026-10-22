@@ -1,9 +1,3 @@
-// Cria uma função anônima e a executa imediatamente.
-// Isso cria um escopo próprio para as variáveis e funções deste arquivo,
-// evitando que suas declarações sejam expostas no escopo global.
-// Também ajuda a evitar conflitos de nomes com outros scripts,
-// como jogador.js, inimigo.js e jogo.js.
-
 (() => {
     const telaMenu = document.getElementById("tela-menu");
     const telaSelecao = document.getElementById("tela-selecao");
@@ -13,11 +7,13 @@
     const btnSair = document.getElementById("btn-sair");
     const btnConfirmar = document.getElementById("btn-confirmar");
     const btnVoltar = document.getElementById("btn-voltar");
+    const btnMusica = document.getElementById("btn-musica");
 
     const botoesPersonagens = document.querySelectorAll(".personagem");
     const textoPersonagem = document.getElementById("personagem-selecionado");
+
     const musicaMenu = document.getElementById("musica-menu");
-    const btnMusica = document.getElementById("btn-musica");
+    const musicaGameplay = document.getElementById("musica-gameplay");
 
     let personagemEscolhido = null;
 
@@ -28,9 +24,7 @@
     }
 
     function iniciarMusica() {
-        if (!musicaMenu) {
-            return;
-        }
+        if (!musicaMenu || musicaMenu.muted) return;
 
         musicaMenu.play().catch(() => {
             console.log("A reprodução da música foi bloqueada pelo navegador.");
@@ -38,12 +32,13 @@
     }
 
     function alternarMusica() {
-    if (!musicaMenu) {
-        return;
-    }
+        if (!musicaMenu || !musicaGameplay) return;
 
-    musicaMenu.muted = !musicaMenu.muted;
-}
+        const mutar = !musicaMenu.muted;
+
+        musicaMenu.muted = mutar;
+        musicaGameplay.muted = mutar;
+    }
 
     function selecionarPersonagem(botao) {
         personagemEscolhido = botao.dataset.personagem;
@@ -62,14 +57,24 @@
     }
 
     function confirmarPersonagem() {
-        if (!personagemEscolhido) {
-            return;
-        }
+        if (!personagemEscolhido) return;
+
+        trocarPersonagem(personagemEscolhido);
         window.reiniciarPartida();
 
         telaJogo.dataset.personagem = personagemEscolhido;
-
         mostrarTela(telaJogo);
+
+        musicaMenu.pause();
+        musicaMenu.currentTime = 0;
+
+        musicaGameplay.currentTime = 0;
+
+        if (!musicaGameplay.muted) {
+            musicaGameplay.play().catch(() => {
+                console.log("Não foi possível iniciar a música da gameplay.");
+            });
+        }
 
         console.log("Personagem escolhido:", personagemEscolhido);
     }
@@ -77,30 +82,54 @@
     function voltarAoMenu() {
         personagemEscolhido = null;
 
-        textoPersonagem.textContent =
-            "Nenhum personagem selecionado.";
-
+        textoPersonagem.textContent = "Nenhum personagem selecionado.";
         btnConfirmar.disabled = true;
 
         botoesPersonagens.forEach((botao) => {
             botao.classList.remove("selecionado");
         });
 
+        musicaGameplay.pause();
+        musicaGameplay.currentTime = 0;
+
         mostrarTela(telaMenu);
+
+        musicaMenu.currentTime = 0;
+
+        if (!musicaMenu.muted) {
+            musicaMenu.play().catch(() => {
+                console.log("Não foi possível iniciar a música do menu.");
+            });
+        }
     }
+
     function voltarParaSelecao() {
-    personagemEscolhido = null;
+        personagemEscolhido = null;
 
-    textoPersonagem.textContent = "Nenhum personagem selecionado.";
-    btnConfirmar.disabled = true;
+        textoPersonagem.textContent = "Nenhum personagem selecionado.";
+        btnConfirmar.disabled = true;
 
-    botoesPersonagens.forEach((botao) => {
-        botao.classList.remove("selecionado");
-    });
-    
-    mostrarTela(telaSelecao);
-}
-window.voltarParaSelecao = voltarParaSelecao;
+        botoesPersonagens.forEach((botao) => {
+            botao.classList.remove("selecionado");
+        });
+
+        musicaGameplay.pause();
+        musicaGameplay.currentTime = 0;
+
+        mostrarTela(telaSelecao);
+
+        musicaMenu.currentTime = 0;
+
+        if (!musicaMenu.muted) {
+            musicaMenu.play().catch(() => {
+                console.log("Não foi possível iniciar a música do menu.");
+            });
+        }
+    }
+
+    window.voltarParaSelecao = voltarParaSelecao;
+
+    mostrarTela(telaMenu);
 
     btnJogar.addEventListener("click", () => {
         mostrarTela(telaSelecao);
@@ -114,9 +143,7 @@ window.voltarParaSelecao = voltarParaSelecao;
     });
 
     btnConfirmar.addEventListener("click", confirmarPersonagem);
-
     btnVoltar.addEventListener("click", voltarAoMenu);
-
     btnMusica.addEventListener("click", alternarMusica);
 
     btnSair.addEventListener("click", () => {

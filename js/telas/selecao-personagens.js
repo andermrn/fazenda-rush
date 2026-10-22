@@ -23,6 +23,9 @@ imagemSelecaoJoabe.src = "assets/sprites/personagens/joabe.png";
 const imagemSelecaoJoaquim = new Image();
 imagemSelecaoJoaquim.src = "assets/sprites/personagens/joaquim.png";
 
+const imagemSelecaoJoanderson = new Image();
+imagemSelecaoJoanderson.src = "assets/sprites/personagens/joanderson.png";
+
 
 const larguraFrameSelecao = 256;
 const alturaFrameSelecao = 256;
@@ -56,7 +59,7 @@ function animarSelecao() {
     requestAnimationFrame(animarSelecao); // Fica rodando a 60 fps
 
     // Um desenho por cartão, chamados um a um
-    desenharPersonagem(ctxAnder, imagemSelecaoDavi, 0);
+    desenharPersonagem(ctxAnder, imagemSelecaoJoanderson, 1);
     desenharPersonagem(ctxJoabe, imagemSelecaoJoabe, 13);
     desenharPersonagem(ctxVinicius, imagemSelecaoVinicius, 5);
     desenharPersonagem(ctxDavi, imagemSelecaoDavi, 0);
