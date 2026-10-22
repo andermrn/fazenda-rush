@@ -10,9 +10,9 @@ const plataforma_fase2_3 = new plataforma(1100, 400, 300, 40, "assets/cenarios/p
 const plataforma_fase2_4 = new plataforma(1100, 650, 300, 40, "assets/cenarios/plataforma.png");
 const plataformas_fase2 = [plataforma_fase2_1, plataforma_fase2_2, plataforma_fase2_3, plataforma_fase2_4];
 
-const plataforma_fase3_1 = new plataforma(670,450,300,40,"assets/cenarios/plataforma.png");
-const plataforma_fase3_2 = new plataforma(180,650,300,40,"assets/cenarios/plataforma.png");
-const plataforma_fase3_3 = new plataforma(1160,650,300,40,"assets/cenarios/plataforma.png");
+const plataforma_fase3_1 = new plataforma(670, 450, 300, 40, "assets/cenarios/plataforma.png");
+const plataforma_fase3_2 = new plataforma(180, 650, 300, 40, "assets/cenarios/plataforma.png");
+const plataforma_fase3_3 = new plataforma(1160, 650, 300, 40, "assets/cenarios/plataforma.png");
 const plataformas_fase3 = [plataforma_fase3_1, plataforma_fase3_2, plataforma_fase3_3];
 
 
@@ -50,16 +50,16 @@ const portalAbelha = new Portal("abelha", 5, "assets/cenarios/portais/portal-abe
 const portalPeixe = new Portal("peixe", 24, "assets/cenarios/portais/portal-peixe.png");
 
 
-const fases = [ 
+const fases = [
     {
         cenario: "",
-        alvos:  [...inimigos, bodao], // ESSES ... "DESPEJAM" OS ITENS DO ARRAY DE INIMIGOS [DAVI]
+        alvos: [...inimigos, bodao], // ESSES ... "DESPEJAM" OS ITENS DO ARRAY DE INIMIGOS [DAVI]
         plataformas: plataformas_fase1,
         portal: portalAbelha
     },
     {
         cenario: "assets/cenarios/fases/cenario-fase2.png",
-        alvos:  [...abelhas, rainha],
+        alvos: [...abelhas, rainha],
         plataformas: plataformas_fase2,
         portal: portalPeixe
     },
@@ -79,7 +79,7 @@ let faseAtual = 1;
 let jogoRodando = false;
 
 
-function iniciarFase( numero ) {
+function iniciarFase(numero) {
     faseAtual = numero;
 
     const fase = fases[numero - 1];
@@ -114,39 +114,49 @@ function faseLimpa() {
 }
 
 // Para o jogo, desenha a mensagem de vitória e volta para a seleção depois de 4 segundos
+// Para o jogo, exibe a imagem de vitória e volta para a seleção.
 function mostrarVitoria() {
     jogoRodando = false;
 
-    // save/restore: as configurações de texto não afetam o resto do jogo
-    ctx.save();
+    const telaVitoria = document.getElementById("tela-vitoria");
 
-    // Escurece a tela inteira
-    ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Escreve a mensagem no centro
-    ctx.fillStyle = "white";
-    ctx.textAlign = "center";
-
-    ctx.font = "bold 80px sans-serif";
-    ctx.fillText("VITÓRIA!", canvas.width / 2, canvas.height / 2);
-
-    ctx.font = "32px sans-serif";
-    ctx.fillText("Você salvou a fazenda!", canvas.width / 2, canvas.height / 2 + 60);
-
-    ctx.restore();
+    telaVitoria.hidden = false;
 
     setTimeout(() => {
+        telaVitoria.hidden = true;
         window.voltarParaSelecao();
-    }, 10000); // Esperar 10 segundinhos
+    }, 10000);
 }
 
+// Atualiza a imagem de acordo com as vidas restantes do jogador.
+function atualizarIndicadorVidas() {
+    const indicador = document.getElementById("indicador-vidas");
+
+    if (!indicador) {
+        console.error("Elemento indicador-vidas não encontrado.");
+        return;
+    }
+    if (jogador.vidas >= 3) {
+        indicador.src = "assets/sprites/vidas/Vida_3_Coracoes.png";
+        indicador.alt = "3 vidas restantes";
+    } else if (jogador.vidas === 2) {
+        indicador.src = "assets/sprites/vidas/Vida_2_Coracoes.png";
+        indicador.alt = "2 vidas restantes";
+    } else if (jogador.vidas === 1) {
+        indicador.src = "assets/sprites/vidas/Vida_1_Coracoes.png";
+        indicador.alt = "1 vida restante";
+    }
+}
 
 // Volta tudo ao começo para uma nova partida
 function reiniciarPartida() {
     iniciarFase(1); // Joga o player para a fase 1
 
     jogador.reiniciar();
+
+    // Restaura o indicador para a quantidade inicial de vidas.
+    atualizarIndicadorVidas();
+    document.getElementById("indicador-vidas").hidden = false
 
     for (const alvo of obterAlvos()) {
         alvo.reiniciar();
@@ -165,6 +175,8 @@ function animate() {
     if (jogoRodando === false) {
         return;
     }
+    // Atualiza a imagem conforme as vidas restantes.
+    atualizarIndicadorVidas();
 
     // Sem vidas: para o jogo e volta para a seleção
     if (jogador.vidas <= 0) {
@@ -174,7 +186,7 @@ function animate() {
 
         setTimeout(() => {
             window.addEventListener("keydown", () => {
-                if( podeSairDoGameOver === true ) {
+                if (podeSairDoGameOver === true) {
                     document.getElementById("tela-game-over").hidden = true;
                     window.voltarParaSelecao();
                     podeSairDoGameOver = false;
@@ -201,17 +213,17 @@ function animate() {
 
     const portalDaFase = fases[faseAtual - 1].portal;
 
-    if ( portalDaFase !== null && faseLimpa() === true ) { // Ou seja, terceira fase
+    if (portalDaFase !== null && faseLimpa() === true) { // Ou seja, terceira fase
         portalDaFase.atualizar();
         portalDaFase.draw();
 
-        if ( portalDaFase.colisaoJogador() === true ) {
+        if (portalDaFase.colisaoJogador() === true) {
             iniciarFase(faseAtual + 1);
         }
     }
 
 
-    if ( fases[faseAtual - 1].portal === null && faseLimpa() === true ) { // OU SEJA, QUANDO ESTIVER FINALIZADA!
+    if (fases[faseAtual - 1].portal === null && faseLimpa() === true) { // OU SEJA, QUANDO ESTIVER FINALIZADA!
         mostrarVitoria();
     }
 

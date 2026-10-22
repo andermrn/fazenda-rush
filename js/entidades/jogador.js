@@ -264,6 +264,12 @@ window.addEventListener("keydown", (e) => {//ao pressionar espaço pular
         jogador.pular();
     }
 
+    if (e.key === "Enter") {//ao pressionar d andar direita
+        e.preventDefault();
+        jogador.tiro = true;
+        atirar();
+    }
+
     // KeyD = PEGA TANTO d QUANTO D
     if (e.code === "KeyD") {//ao pressionar d andar direita
         andandodireita = true;
@@ -285,7 +291,12 @@ window.addEventListener("keyup", (e) => {//ao soltar d parar andar direita
     if (e.code === "KeyA") {//ao soltar a parar andar esquerda
         andandoesquerda = false;
     }
+    if (e.key === "Enter") {//ao pressionar d andar direita
+        e.preventDefault();
+        jogador.tiro = false;
+    }
 });
+
 
 // Controles do disparo
 window.addEventListener("mousedown", (e) => {//ao clicar no mouse fazer:

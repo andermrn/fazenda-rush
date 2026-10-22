@@ -329,12 +329,39 @@ body {
     inset: 0;
     z-index: 2000;
 
-    background-image: url("../assets/cenarios/gameover.jpeg");
+    background-image: url("../assets/cenarios/bg-game-over.jpeg");
     background-position: center;
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 
 .tela-game-over[hidden] {
+    display: none !important;
+}
+
+/* Indicador de vidas no canto superior esquerdo */
+#indicador-vidas {
+position: absolute;
+top: 20px;
+right: 20px;
+width: 150px;
+height: auto;
+z-index: 10;
+pointer-events: none;
+}
+
+/* Tela de vitória */
+.tela-vitoria {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+
+    background-image: url("../assets/cenarios/win.jpeg");
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.tela-vitoria[hidden] {
     display: none !important;
 }

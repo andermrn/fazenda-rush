@@ -110,7 +110,7 @@ class Inimigo {
         // Calcula a distância horizontal entre o inimigo e o jogador
         let distancia;
         const distanciaEsquerda =
-            jogador.posicaoX - (this.x + this.largura);
+            jogador.posicaoX - (this.x + this.largura);//100 - 30 + 50 = distancia de 20 px
         const distanciaDireita =
             this.x - (jogador.posicaoX + jogador.width);
 
