@@ -59,11 +59,17 @@ class Player {
     tempoInvulnerabilidade = 1500;
 
     draw() {
-        // Animações horizontais
-        if (this.tiro === true && this.direcao === 1) {
+        //animações de tiro
+         if (this.tiro === true && this.direcao === 1) {
             this.frameY = 5;
         } else if (this.tiro === true && this.direcao === -1) {
             this.frameY = 6;
+            //animações verticais paradas
+        } else if ((this.velocidadeY < 0 || this.velocidadeY > 0) && (this.velocidadeX == 0) && (this.direcao == 1)) {
+            this.frameY = 9;
+        } else if ((this.velocidadeY < 0 || this.velocidadeY > 0) && (this.velocidadeX == 0) && (this.direcao == -1)) {
+            this.frameY = 10;
+            // Animações horizontais
         } else if (this.velocidadeX < 0) {
             this.frameY = 2;//velocidade negativa, ou seja o personagem vai para esquerda, entãoa acessa a linha 2 dos sprites que é o personagem indo pra esquerda
         } else if (this.velocidadeX > 0) {
@@ -80,11 +86,6 @@ class Player {
             this.frameY = 4;
         } else if (this.velocidadeY > 0 && this.velocidadeX < 0) {
             this.frameY = 4;
-            //animações verticais paradas
-        } if ((this.velocidadeY < 0 || this.velocidadeY > 0) && (this.velocidadeX == 0) && (this.direcao == 1)) {
-            this.frameY = 9;
-        } else if ((this.velocidadeY < 0 || this.velocidadeY > 0) && (this.velocidadeX == 0) && (this.direcao == -1)) {
-            this.frameY = 10;
         }
 
         // Desenha o sprite depois da imagem carregar corretamente
