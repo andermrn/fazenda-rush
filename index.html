@@ -1,124 +1,171 @@
 <!doctype html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fazenda Rush</title>
 
-  <title>Fazenda Rush</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="shortcut icon"
+      href="assets/logo/fazenda-rush-logo.jpeg"
+      type="image/x-icon"
+    />
+  </head>
 
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="shortcut icon" href="assets/logo/fazenda-rush-logo.jpeg" type="image/x-icon" />
-</head>
+  <body>
+    <audio id="musica-menu" src="assets/audio/musica-menu.mp3" loop></audio>
+    <audio
+      id="musica-gameplay"
+      src="assets/audio/musica-boss1.mp3"
+      loop
+    ></audio>
+    <button id="btn-musica" aria-label="Mutar música">
+      <img src="assets/cenarios/btn-mutar-musica-removebg.png" alt="" />
+    </button>
+    <main>
+      <!-- Tela inicial -->
 
-<body>
-  <audio id="musica-menu" src="assets/audio/musica-menu.mp3" loop></audio>
-  <audio id="musica-gameplay" src="assets/audio/musica-boss1.mp3" loop></audio>
-  <button id="btn-musica" aria-label="Mutar música">
-    <img src="assets/cenarios/btn-mutar-musica-removebg.png" alt="" />
-  </button>
-  <main>
-    <!-- Tela inicial -->
+      <section id="tela-menu">
+        <video id="video-fundo" autoplay muted loop playsinline>
+          <source src="assets/videos/men-fazenda-rush.mp4" type="video/mp4" />
+          Seu navegador não suporta vídeos.
+        </video>
 
-    <section id="tela-menu">
-      <video id="video-fundo" autoplay muted loop playsinline>
-        <source src="assets/videos/men-fazenda-rush.mp4" type="video/mp4" />
-        Seu navegador não suporta vídeos.
-      </video>
+        <div class="conteudo-menu">
+          <h1 class="titulo-jogo">
+            <img
+              src="assets/cenarios/logo-fazenda-rush-removebg-preview.png"
+              alt="Fazenda rush logo"
+            />
+          </h1>
+          <button id="btn-jogar" type="button" aria-label="Jogar">
+            <img
+              src="assets/cenarios/Botão de Madeira Pixelado “JOGAR”.png"
+              alt=""
+            />
+          </button>
+          <button id="btn-sair" type="button" aria-label="Sair">
+            <img src="assets/cenarios/btn-sair-removebg.png" alt="" />
+          </button>
+        </div>
+      </section>
 
-      <div class="conteudo-menu">
-        <h1 class="titulo-jogo">
-          <img src="assets/cenarios/logo-fazenda-rush-removebg-preview.png" alt="Fazenda rush logo" />
-        </h1>
-        <button id="btn-jogar" type="button" aria-label="Jogar">
-          <img src="assets/cenarios/Botão de Madeira Pixelado “JOGAR”.png" alt="" />
+      <!-- Tela de seleção de personagens -->
+      <section id="tela-selecao" hidden>
+        <div class="titulo-selecao">
+          <img
+            src="assets/cenarios/esp-menu-selecao.png"
+            alt="Escolha seu personagem"
+          />
+        </div>
+        <div id="lista-personagens">
+          <button class="personagem" data-personagem="Ander" type="button">
+            <canvas
+              id="sprite-ander"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
+            <span>Ander</span>
+          </button>
+
+          <button class="personagem" data-personagem="Joabe" type="button">
+            <canvas
+              id="sprite-joabe"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
+            <span>Joabe</span>
+          </button>
+
+          <button class="personagem" data-personagem="Vinicius" type="button">
+            <canvas
+              id="sprite-vinicius"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
+            <span>Vinicius</span>
+          </button>
+
+          <button class="personagem" data-personagem="Davi" type="button">
+            <canvas
+              id="sprite-davi"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
+            <span>Davi</span>
+          </button>
+
+          <button class="personagem" data-personagem="Joaquim" type="button">
+            <canvas
+              id="sprite-joaquim"
+              class="sprite-placeholder"
+              width="256"
+              height="256"
+            ></canvas>
+            <span>Joaquim</span>
+          </button>
+        </div>
+
+        <p id="personagem-selecionado" aria-live="polite">
+          Nenhum personagem selecionado.
+        </p>
+
+        <button id="btn-confirmar" type="button" disabled>
+          <img src="assets/cenarios/btn-confirmar.png" alt="" />
         </button>
-        <button id="btn-sair" type="button" aria-label="Sair">
-          <img src="assets/cenarios/btn-sair-removebg.png" alt="" />
+
+        <button id="btn-voltar" type="button">
+          <img src="assets/cenarios/btn-voltar.png" alt="" />
         </button>
-      </div>
-    </section>
+      </section>
 
-    <!-- Tela de seleção de personagens -->
-    <section id="tela-selecao" hidden>
-      <div class="titulo-selecao">
-        <img src="assets/cenarios/esp-menu-selecao.png" alt="Escolha seu personagem" />
-      </div>
-      <div id="lista-personagens">
-        <button class="personagem" data-personagem="Ander" type="button">
-          <canvas id="sprite-ander" class="sprite-placeholder" width="256" height="256"></canvas>
-          <span>Ander</span>
-        </button>
+      <!-- Tela do jogo -->
+      <section id="tela-jogo" hidden>
+        <canvas id="canvas"></canvas>
+        <img
+          id="indicador-vidas"
+          src="assets/sprites/vidas/Vida_3_Coracoes.png"
+          alt="3 vidas restantes"
+        />
 
-        <button class="personagem" data-personagem="Joabe" type="button">
-          <canvas id="sprite-joabe" class="sprite-placeholder" width="256" height="256"></canvas>
-          <span>Joabe</span>
-        </button>
+        <div id="hud-contadores">
+          <div class="contador">
+            <span id="pontuacao-titulo">Pontuação:</span>
+            <span id="pontos">0</span>
+          </div>
 
-        <button class="personagem" data-personagem="Vinicius" type="button">
-          <canvas id="sprite-vinicius" class="sprite-placeholder" width="256" height="256"></canvas>
-          <span>Vinicius</span>
-        </button>
+          <div class="contador">
+            <span id="inimigos2">Inimigos restantes:</span>
+            <span id="ninimigos">12</span>
+          </div>
+        </div>
+      </section>
+    </main>
 
-        <button class="personagem" data-personagem="Davi" type="button">
-          <canvas id="sprite-davi" class="sprite-placeholder" width="256" height="256"></canvas>
-          <span>Davi</span>
-        </button>
+    <script src="js/config.js" defer></script>
 
-        <button class="personagem" data-personagem="Joaquim" type="button">
-          <canvas id="sprite-joaquim" class="sprite-placeholder" width="256" height="256"></canvas>
-          <span>Joaquim</span>
-        </button>
-      </div>
+    <script src="js/entidades/plataforma.js" defer></script>
+    <script src="js/entidades/portal.js" defer></script>
+    <script src="js/entidades/jogador.js" defer></script>
+    <script src="js/entidades/inimigo.js" defer></script>
+    <script src="js/entidades/abelha.js" defer></script>
+    <script src="js/entidades/peixe.js" defer></script>
+    <script src="js/entidades/chefes/bodao.js" defer></script>
+    <script src="js/entidades/chefes/carpa.js" defer></script>
+    <script src="js/entidades/chefes/abelharainha.js" defer></script>
 
-      <p id="personagem-selecionado" aria-live="polite">
-        Nenhum personagem selecionado.
-      </p>
+    <script src="js/sistemas/combate.js" defer></script>
+    <script src="js/sistemas/cheat.js" defer></script>
 
-      <button id="btn-confirmar" type="button" disabled>
-        <img src="assets/cenarios/btn-confirmar.png" alt="" />
-      </button>
+    <script src="js/telas/menu.js" defer></script>
+    <script src="js/telas/selecao-personagens.js" defer></script>
 
-      <button id="btn-voltar" type="button">
-        <img src="assets/cenarios/btn-voltar.png" alt="" />
-      </button>
-    </section>
-
-    <!-- Tela do jogo -->
-    <section id="tela-jogo" hidden>
-      <canvas id="canvas"></canvas>
-
-      <img id="indicador-vidas" src="assets/sprites/vidas/Vida_3_Coracoes.png" alt="3 vidas restantes" >
-      <hs id = "pontuação"><b>pontuação:</b></h1>
-      <h2 id = "pontos"><b>0</b></h2>
-      <h2 id = "inimigos2"><b>InimigosRestantes:</b></h2>
-      <h2 id = "ninimigos"><b>12</b></h2>
-      <div id="tela-game-over" class="tela-game-over" hidden></div>
-      <div id="tela-vitoria" class="tela-vitoria" hidden></div>
-      
-
-    </section>
-  </main>
-
-  <script src="js/config.js" defer></script>
-
-  <script src="js/entidades/plataforma.js" defer></script>
-  <script src="js/entidades/portal.js" defer></script>
-  <script src="js/entidades/jogador.js" defer></script>
-  <script src="js/entidades/inimigo.js" defer></script>
-  <script src="js/entidades/abelha.js" defer></script>
-  <script src="js/entidades/peixe.js" defer></script>
-  <script src="js/entidades/chefes/bodao.js" defer></script>
-  <script src="js/entidades/chefes/carpa.js" defer></script>
-  <script src="js/entidades/chefes/abelharainha.js" defer></script>
-
-  <script src="js/sistemas/combate.js" defer></script>
-  <script src="js/sistemas/cheat.js" defer></script>
-
-  <script src="js/telas/menu.js" defer></script>
-  <script src="js/telas/selecao-personagens.js" defer></script>
-
-  <script src="js/jogo.js" defer></script>
-</body>
-
+    <script src="js/jogo.js" defer></script>
+  </body>
 </html>
