@@ -158,8 +158,14 @@ class Inimigo {
         } else {
             // Patrulha com mudança aleatória de direção
             if (Date.now() >= this.proximaMudanca) {
-                this.direcao = Math.random() < 0.5 ? -1 : 1;
+                // Sorteia uma nova direção para o inimigo.
+                if (Math.random() < 0.5) {
+                    this.direcao = -1; // Vai para a esquerda.
+                } else {
+                    this.direcao = 1; // Vai para a direita.
+                }
 
+                // Define a próxima mudança de direção entre 2 e 5 segundos.
                 this.proximaMudanca =
                     Date.now() + 2000 + Math.random() * 3000;
             }
