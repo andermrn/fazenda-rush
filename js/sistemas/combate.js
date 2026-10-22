@@ -1,3 +1,8 @@
+let pontuacao = 0;
+let pontos = document.getElementById("pontos");
+let inimigos2 = document.getElementById("ninimigos");
+let inimigosrestantes = 12;
+
 class Projetil {
     constructor(x, y, direcao) {
         this.x = x;
@@ -9,7 +14,6 @@ class Projetil {
 
         this.velocidade = 8;
         this.direcao = direcao;
-
         this.ativo = true;
     }
 
@@ -101,6 +105,11 @@ function causarDano(alvo) {
     if (alvo.vida <= 0) {
         alvo.vida = 0;
         alvo.morto = true;
+        pontuacao++;
+        pontos.textContent = pontuacao;
+        inimigosrestantes--;
+        inimigos2.textContent = inimigosrestantes;
+        console.log(pontuacao);
     }
 }
 

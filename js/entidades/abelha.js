@@ -68,7 +68,7 @@ class Abelha {
 
 
     atualizar() {
-        if (this.morto) return;
+        if (this.morto)return;
 
         const diferencaX = jogador.posicaoX - this.x; // Indica se o jogador está à direita ou à esquerda da abelha
         const diferencaY = jogador.posicaoY - this.y; // Indica se está acima ou abaixo

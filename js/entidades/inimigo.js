@@ -11,7 +11,6 @@ const intervaloFrameInimigo = 6; // intervalo para deixar a animação mais lent
 
 
 
-
 //atributos do inimigo
 class Inimigo {
     constructor(plataforma) {

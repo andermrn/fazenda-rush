@@ -17,8 +17,6 @@ const plataformas_fase3 = [plataforma_fase3_1, plataforma_fase3_2, plataforma_fa
 
 
 
-
-
 // Um bode em cada plataforma
 const inimigos = [
     new Inimigo(plataforma_fase1_1),
@@ -225,6 +223,10 @@ function animate() {
 
     if (fases[faseAtual - 1].portal === null && faseLimpa() === true) { // OU SEJA, QUANDO ESTIVER FINALIZADA!
         mostrarVitoria();
+        pontuacao = 0;
+        inimigosrestantes = 12;
+        pontos.textContent = 0;
+        inimigos2.textContent = 12;
     }
 
     atualizarProjeteis();

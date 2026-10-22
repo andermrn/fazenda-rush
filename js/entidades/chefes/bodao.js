@@ -18,6 +18,7 @@ const duracaoDescansoBodao = 90;   // quadros parado depois do dash (90 quadros 
 // criei essa const aqui pra medir a distância (em pixels) em que ele percebe o player
 const alcanceBodao = 800; 
 
+
 class Bodao {
     constructor() {
         // ajustando para a escalaBodao escolhida por mim :)
@@ -42,6 +43,7 @@ class Bodao {
         this.frameX = 0;
         this.frameY = 5;
         this.gameFrame = 0;
+
     }
 
     mudarEstado(novoEstado) {
@@ -55,7 +57,7 @@ class Bodao {
 
     atualizar() {
         // Se tiver morto, obviamente n faz nada
-        if ( this.morto ) return;
+        if ( this.morto )return;
 
         // POR ENQUANTO, fica so no chão
         this.y = canvas.height - this.altura;
