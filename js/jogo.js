@@ -181,6 +181,10 @@ function animate() {
         jogoRodando = false;
         document.getElementById("tela-game-over").hidden = false;
         podeSairDoGameOver = true;
+        pontuacao = 0;
+            inimigosrestantes = 12;
+            pontos.textContent = 0;
+            inimigos2.textContent = 12;
 
         setTimeout(() => {
             window.addEventListener("keydown", () => {
