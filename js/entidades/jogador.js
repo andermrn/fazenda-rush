@@ -2,7 +2,7 @@ let andandoesquerda = false;
 let andandodireita = false;
 
 const GRAVIDADE = 0.8;//*padrao 0.8
-const VIDA_INFINITA = false;
+let VIDA_INFINITA = false;
 
 // Carrega os sprites usados para animar o jogador
 const imagemJogador = new Image();

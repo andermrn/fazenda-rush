@@ -14,9 +14,14 @@ const escalaAbelha = 1.5; // (1 = Tamanho Default) !!!!!
 
 class Abelha {
 
-    constructor() {//Atributos
-        this.x = 600;//eixo X
-        this.y = 200;//eixo Y
+    constructor(x, y) { //Coloquei esses atributos joabao pq as abelhas estao nascendo todas juntas
+
+        // Guarda onde ela nasce, para o reiniciar() voltar para o mesmo lugar
+        this.xInicial = x;
+        this.yInicial = y;
+
+        this.x = x;
+        this.y = y;
 
         this.velocidade = 2;// velocidade que o inimigo se move
 
@@ -45,8 +50,8 @@ class Abelha {
     }
 
     reiniciar() {
-        this.x = 600;
-        this.y = 200;
+        this.x = this.xInicial;
+        this.y = this.yInicial;
 
         this.velocidade = 2;
 

@@ -27,9 +27,9 @@ const inimigos = [
 ];
 
 const abelhas = [
-    new Abelha(),
-    new Abelha(),
-    new Abelha()
+    new Abelha(500, 450),
+    new Abelha(900, 600),
+    new Abelha(1300, 500)
 ];
 
 // Cria um peixe em cada plataforma.
