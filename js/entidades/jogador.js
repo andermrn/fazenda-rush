@@ -2,12 +2,12 @@ let andandoesquerda = false;
 let andandodireita = false;
 
 const GRAVIDADE = 0.8;//*padrao 0.8
-let VIDA_INFINITA = false;
+const VIDA_INFINITA = false;
 
-// Carrega os sprites usados para animar o jogador
+// Imagem que carrega os sprites 
 const imagemJogador = new Image();
 
-const spritesPersonagens = {
+const spritesPersonagens = {//o spritesPersonagens pode ser qualquer um desses, vai ser definido pela função
     Ander: "assets/sprites/personagens/joanderson.png",
     Joabe: "assets/sprites/personagens/joabe.png",
     Vinicius: "assets/sprites/personagens/vinicius.png",
@@ -16,19 +16,19 @@ const spritesPersonagens = {
 };
 
 function trocarPersonagem(nome) {
-    const caminho = spritesPersonagens[nome];
+    const caminho = spritesPersonagens[nome];//sprites personagens é definido pelo nome escolhido, um dos de spritepersonagem
+    //e o caminho é recebe esse valor
 
-    if (!caminho) {
+    if (!caminho) {//se caminho não existir
         console.error("Personagem não encontrado:", nome);
         return;
     }
 
-    imagemJogador.src = caminho;
+    imagemJogador.src = caminho;//então imagemjogador recebe o arquivo daquele Personagem
 }
 
 const larguraFrameJogador = 256;// largura de cada frame
 const alturaFrameJogador = 256;// altura de cada frame
-const colunasJogador = 6;// quantidade de frames em cada linha 
 const intervaloFrameJogador = 10;// intervalo pra deixar a animação mais lenta
 
 
@@ -47,10 +47,10 @@ class Player {
     velocidadeandar = 6;
 
     frameX = 0;// coluna do quadro atual
-    frameY = 0;// coluna do quadro atual
+    frameY = 0;// linha do quadro atual
     gameFrame = 0;// controla o intervalo entre os quadros da animação
 
-    direcao = 1;
+    direcao = 1;//direcao pra onde o personagem olha
     tiro = false;
 
     // Sistema de vidas
@@ -93,28 +93,29 @@ class Player {
             const alturaDesenho = 150;// define a altura do personagem na tela
             const ajustevisual = 12;//o sprite do personagem abaixo dele tem um espaço em branco, isso faz com que ele pareça flutuar nas plataformas
             //logo defino um valor que vai fazer ele ficar mais embaixo, somando no posicaodesenhoy
-            // Centraliza o sprite dentro da largura usada para colisão do jogado
+            
 
             const posicaoDesenhoX =
-                this.posicaoX + (this.width - larguraDesenho) / 2;
-
+                this.posicaoX + (this.width - larguraDesenho) / 2;// Centraliza o sprite dentro da largura da colisão do jogador
+            
             const posicaoDesenhoY =
                 this.posicaoY + this.height - alturaDesenho + ajustevisual;// Alinha a base do sprite com a base do jogador; Y cresce de cima para baixo no canvas
 
-            // Guarda o contexto antes de espelhar, para não afetar o cenário.
+            // Guarda o contexto antes de espelhar, para não afetar o cenário, tambem serve pra a opacidade da invulnerabilidade
             ctx.save();
 
-            // Pisca durante a invulnerabilidade
-            if (this.invulneravel) {
-                ctx.globalAlpha = Math.floor(Date.now() / 100) % 2 === 0
-                    ? 0.3
-                    : 1;
+            if (this.invulneravel) {//se a invulnerabilidade for true
+                if (Math.floor(Date.now() / 100) % 2 === 0) {;//math.floor é uma função q arredonda pra baixo, pra um valor inteiro
+                     ctx.globalAlpha = 0.3;//global alpha age como a opacidade
+                } else {
+                    ctx.globalAlpha = 1;
+                }
             }
 
             // Espelha o personagem parado quando está virado para a esquerda
             if (this.frameY === 0 && this.direcao === -1) {
-                ctx.translate(2 * posicaoDesenhoX + larguraDesenho, 0);
-                ctx.scale(-1, 1);
+                ctx.translate(2 * posicaoDesenhoX + larguraDesenho, 0);//feito pra inverter sem mudar de lugar
+                ctx.scale(-1, 1);//-1 inverte o eixo x, 1 não faz nada em y
             }
 
             ctx.drawImage(
@@ -129,10 +130,10 @@ class Player {
                 alturaDesenho // altura final do personagem na tela
             );
 
-            // Restaura o contexto para os próximos desenhos não ficarem espelhados.
+            // Restaura o contexto para os próximos desenhos não ficarem espelhados nem com a opacidade alterada.
             ctx.restore();
 
-            // Controle da animação
+            // Controle da animação para ficar em animação estatica ao queda longa
             if (this.frameX === 4 && this.frameY === 3) {
                 this.frameX = 4;
                 this.frameY = 3;
@@ -141,8 +142,11 @@ class Player {
                 this.frameY = 4;
             } else {
                 if (this.gameFrame % intervaloFrameJogador === 0) {//a cada 10, ira dar 0, e um frame ira rodar
-                    this.frameX = (this.frameX + 1) % colunasJogador;
-                }
+                    if(this.frameX<5){
+                            this.frameX++;
+                    }else{
+                            this.frameX = 0;
+                        } }
 
                 this.gameFrame++;
             }
@@ -162,7 +166,7 @@ class Player {
 
         this.posicaoX += this.velocidadeX;//posicaox = posicaox + velocidadex
 
-        this.posicaoX = Math.max(0, Math.min(this.posicaoX, canvas.width - this.width));//*preciso entender ainda
+        this.posicaoX = Math.max(0, Math.min(this.posicaoX, canvas.width - this.width));//limita pra não sair da tela
 
         // Guarda a posição vertical anterior
         const yAnterior = this.posicaoY;
@@ -174,6 +178,7 @@ class Player {
         this.estanochao = false;
         //y - this.height = topo
         //y + this.height = base
+
 
         // Verifica colisões com as plataformas
         if (this.velocidadeY >= 0) {
@@ -210,18 +215,19 @@ class Player {
 
     // Recebe dano e ativa a invulnerabilidade temporária
     receberDano() {
-        if (this.invulneravel || this.vidas <= 0) {
+        if (this.invulneravel || this.vidas <= 0) {//se o jogador estiver ivulneravel ou sem nenhuma vida, return pra não aplicar dano novamente
             return;
         }
 
-        if (VIDA_INFINITA === false) this.vidas--;
-        this.invulneravel = true;
+        if (VIDA_INFINITA === false) this.vidas--;//se nao tiver vida infinita, receba dano
+        this.invulneravel = true;//fica ivulneravel por um periodo depois de receber dano
 
         console.log(`Vidas restantes: ${this.vidas}`);
 
-        setTimeout(() => {
-            this.invulneravel = false;
-        }, this.tempoInvulnerabilidade);
+        setTimeout(() => {//agenda uma ação, nessa função primeiro você bota a ação que sera feita
+            //e depois o tempo de espera pra ela ser feita
+            this.invulneravel = false;//ação q sera feita
+        }, this.tempoInvulnerabilidade);//tempo de espera
     }
 
     pular() {
@@ -260,14 +266,7 @@ const jogador = new Player();//instanciação de objeto
 // Controles do teclado
 window.addEventListener("keydown", (e) => {//ao pressionar espaço pular
     if (e.code === "Space") {
-        e.preventDefault();
         jogador.pular();
-    }
-
-    if (e.key === "Enter") {//ao pressionar d andar direita
-        e.preventDefault();
-        jogador.tiro = true;
-        atirar();
     }
 
     // KeyD = PEGA TANTO d QUANTO D
@@ -291,27 +290,20 @@ window.addEventListener("keyup", (e) => {//ao soltar d parar andar direita
     if (e.code === "KeyA") {//ao soltar a parar andar esquerda
         andandoesquerda = false;
     }
-    if (e.key === "Enter") {//ao pressionar d andar direita
-        e.preventDefault();
-        jogador.tiro = false;
-    }
 });
-
 
 // Controles do disparo
 window.addEventListener("mousedown", (e) => {//ao clicar no mouse fazer:
 
-    // Isso aqui evita o jogador conseguir atirar na tela inicial (DAVI)
+    // Isso aqui evita o jogador conseguir atirar na tela inicial
     if (jogoRodando === false) {
         return;
     }
 
-    e.preventDefault();
     jogador.tiro = true;
     atirar();
 });
 
 window.addEventListener("mouseup", (e) => {//ao soltar o mouse fazer:
-    e.preventDefault();
     jogador.tiro = false;
 });
